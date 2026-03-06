@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import MultiStepForm from '@/components/form/MultiStepForm';
@@ -53,7 +53,9 @@ export default function PlanTripPage() {
                             </p>
                         </div>
 
-                        <MultiStepForm onComplete={setResult} />
+                        <Suspense fallback={<div className="flex justify-center py-20"><div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" /></div>}>
+                            <MultiStepForm onComplete={setResult} />
+                        </Suspense>
                     </motion.div>
                 ) : (
                     <motion.div

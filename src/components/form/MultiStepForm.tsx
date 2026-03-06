@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button, ProgressSteps, Spinner } from '@/components/ui';
 import TravelerInfoStep from './TravelerInfoStep';
@@ -58,13 +58,41 @@ interface Props {
 
 export default function MultiStepForm({ onComplete }: Props) {
     const router = useRouter();
-    const [step, setStep] = useState(0);
+    const searchParams = useSearchParams();
+    const isEditMode = searchParams.get('edit') === 'true';
+    const initialStep = (() => {
+        const s = parseInt(searchParams.get('step') || '', 10);
+        return s >= 1 && s <= STEPS.length ? s - 1 : 0;
+    })();
+
+    const [step, setStep] = useState(initialStep);
     const [formData, setFormData] = useState<TripFormData>(DEFAULT_FORM);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [direction, setDirection] = useState(1);
 
+    // Load existing trip data from localStorage when in edit mode
+    useEffect(() => {
+        if (isEditMode) {
+            try {
+                const raw = localStorage.getItem('tripData');
+                if (raw) {
+                    const parsed: TripFormData = JSON.parse(raw);
+                    setFormData(parsed);
+                }
+            } catch {
+                // ignore malformed data
+            }
+        }
+    }, [isEditMode]);
+
     const next = () => {
+        // In edit mode, save changes and redirect back to dashboard
+        if (isEditMode) {
+            localStorage.setItem('tripData', JSON.stringify(formData));
+            router.push('/trip/dashboard');
+            return;
+        }
         if (step < STEPS.length - 1) {
             setDirection(1);
             setStep(s => s + 1);
@@ -224,7 +252,7 @@ export default function MultiStepForm({ onComplete }: Props) {
                     Back
                 </Button>
 
-                {isLastStep ? (
+                {isLastStep && !isEditMode ? (
                     <Button
                         onClick={handleSubmit}
                         disabled={loading || !validateStep()}
