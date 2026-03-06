@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button, ProgressSteps, Spinner } from '@/components/ui';
 import TravelerInfoStep from './TravelerInfoStep';
@@ -56,6 +57,7 @@ interface Props {
 }
 
 export default function MultiStepForm({ onComplete }: Props) {
+    const router = useRouter();
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState<TripFormData>(DEFAULT_FORM);
     const [loading, setLoading] = useState(false);
@@ -89,6 +91,9 @@ export default function MultiStepForm({ onComplete }: Props) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ city: destination_city, country: destination_country }),
                 });
+                if (!valRes.ok) {
+                    throw new Error('City validation service unavailable');
+                }
                 const valData = await valRes.json();
                 if (!valData.valid) {
                     setError('Selected city does not belong to selected country.');
@@ -102,6 +107,18 @@ export default function MultiStepForm({ onComplete }: Props) {
                 body: JSON.stringify({ formData }),
             });
 
+            if (!res.ok) {
+                const errorText = await res.text();
+                let errorMsg = 'Failed to generate itinerary';
+                try {
+                    const errorJson = JSON.parse(errorText);
+                    errorMsg = errorJson.error || errorMsg;
+                } catch {
+                    // response was not JSON (likely HTML error page)
+                }
+                throw new Error(errorMsg);
+            }
+
             const result = await res.json();
 
             if (!result.success) {
@@ -109,6 +126,10 @@ export default function MultiStepForm({ onComplete }: Props) {
             }
 
             onComplete(result.data);
+
+            // Save trip data to localStorage and redirect to dashboard
+            localStorage.setItem('tripData', JSON.stringify(formData));
+            router.push('/trip/dashboard');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Something went wrong');
         } finally {
