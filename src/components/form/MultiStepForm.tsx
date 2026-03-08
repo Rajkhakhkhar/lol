@@ -1,18 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button, ProgressSteps, Spinner } from '@/components/ui';
 import TravelerInfoStep from './TravelerInfoStep';
 import TravelLogisticsStep from './TravelLogisticsStep';
+import DayPlanStep from './DayPlanStep';
 import BudgetStep from './BudgetStep';
 import InterestsStep from './InterestsStep';
 import ConstraintsStep from './ConstraintsStep';
-import type { TripFormData, GeminiItineraryResponse } from '@/types';
+import type { TripFormData, GeminiItineraryResponse, DayPlanForm } from '@/types';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 
-const STEPS = ['Travelers', 'Logistics', 'Budget', 'Interests', 'Constraints'];
+const BASE_STEPS_BEFORE_DAYS = ['Travelers', 'Logistics'];
+const BASE_STEPS_AFTER_DAYS = ['Budget', 'Interests', 'Constraints'];
 
 const DEFAULT_FORM: TripFormData = {
     traveler_info: {
@@ -33,6 +35,8 @@ const DEFAULT_FORM: TripFormData = {
         hotel_checkout_time: '11:00',
         transport_mode: 'mixed',
     },
+    day_plans: [],
+    sameHotelForAllDays: true,
     budget: {
         total_budget: 2000,
         currency: 'USD',
@@ -56,20 +60,77 @@ interface Props {
     onComplete: (data: { tripId: string; itinerary: GeminiItineraryResponse }) => void;
 }
 
+/** Calculate trip days from arrival/departure datetime strings */
+function calculateTripDays(arrival: string, departure: string): number {
+    if (!arrival || !departure) return 0;
+    const start = new Date(arrival);
+    const end = new Date(departure);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) return 0;
+    const diffMs = end.getTime() - start.getTime();
+    if (diffMs <= 0) return 0;
+    return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+}
+
+/** Generate day plan forms from date range */
+function generateDayPlans(arrival: string, departure: string, existingPlans: DayPlanForm[], globalHotel: string, sameHotel: boolean): DayPlanForm[] {
+    const numDays = calculateTripDays(arrival, departure);
+    if (numDays <= 0) return [];
+
+    const startDate = new Date(arrival);
+    const plans: DayPlanForm[] = [];
+
+    for (let i = 0; i < numDays; i++) {
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + i);
+        const dateStr = date.toISOString().split('T')[0];
+
+        // Reuse existing plan if available for this day number
+        const existing = existingPlans.find(p => p.dayNumber === i + 1);
+
+        plans.push({
+            date: dateStr,
+            dayNumber: i + 1,
+            hotel: existing?.hotel || (sameHotel ? globalHotel : ''),
+            places: existing?.places || [],
+        });
+    }
+
+    return plans;
+}
+
 export default function MultiStepForm({ onComplete }: Props) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const isEditMode = searchParams.get('edit') === 'true';
-    const initialStep = (() => {
-        const s = parseInt(searchParams.get('step') || '', 10);
-        return s >= 1 && s <= STEPS.length ? s - 1 : 0;
-    })();
 
-    const [step, setStep] = useState(initialStep);
+    const [step, setStep] = useState(0);
     const [formData, setFormData] = useState<TripFormData>(DEFAULT_FORM);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [direction, setDirection] = useState(1);
+
+    // Calculate trip days dynamically
+    const tripDays = useMemo(
+        () => calculateTripDays(
+            formData.travel_logistics.arrival_datetime,
+            formData.travel_logistics.departure_datetime
+        ),
+        [formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime]
+    );
+
+    // Build dynamic step labels
+    const STEPS = useMemo(() => {
+        const daySteps = Array.from({ length: tripDays }, (_, i) => `Day ${i + 1}`);
+        return [...BASE_STEPS_BEFORE_DAYS, ...daySteps, ...BASE_STEPS_AFTER_DAYS];
+    }, [tripDays]);
+
+    // Set initial step from URL params
+    useEffect(() => {
+        const s = parseInt(searchParams.get('step') || '', 10);
+        if (s >= 1 && s <= STEPS.length) {
+            setStep(s - 1);
+        }
+    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     // Load existing trip data from localStorage when in edit mode
     useEffect(() => {
@@ -78,6 +139,9 @@ export default function MultiStepForm({ onComplete }: Props) {
                 const raw = localStorage.getItem('tripData');
                 if (raw) {
                     const parsed: TripFormData = JSON.parse(raw);
+                    // Ensure new fields have defaults
+                    if (!parsed.day_plans) parsed.day_plans = [];
+                    if (parsed.sameHotelForAllDays === undefined) parsed.sameHotelForAllDays = true;
                     setFormData(parsed);
                 }
             } catch {
@@ -85,6 +149,27 @@ export default function MultiStepForm({ onComplete }: Props) {
             }
         }
     }, [isEditMode]);
+
+    // Regenerate day plans when dates change
+    useEffect(() => {
+        const { arrival_datetime, departure_datetime } = formData.travel_logistics;
+        const newDays = calculateTripDays(arrival_datetime, departure_datetime);
+
+        if (newDays > 0 && newDays !== formData.day_plans.length) {
+            const globalHotel = formData.sameHotelForAllDays && formData.day_plans.length > 0
+                ? formData.day_plans[0].hotel
+                : formData.travel_logistics.hotel_location || '';
+
+            const newPlans = generateDayPlans(
+                arrival_datetime,
+                departure_datetime,
+                formData.day_plans,
+                globalHotel,
+                formData.sameHotelForAllDays
+            );
+            setFormData(prev => ({ ...prev, day_plans: newPlans }));
+        }
+    }, [formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const next = () => {
         // In edit mode, save changes and redirect back to dashboard
@@ -167,15 +252,93 @@ export default function MultiStepForm({ onComplete }: Props) {
 
     const isLastStep = step === STEPS.length - 1;
 
+    // Map step index to logical step type
+    const getStepType = (s: number): { type: 'traveler' | 'logistics' | 'day' | 'budget' | 'interests' | 'constraints'; dayIndex?: number } => {
+        if (s === 0) return { type: 'traveler' };
+        if (s === 1) return { type: 'logistics' };
+        // Day steps: indices 2 through (2 + tripDays - 1)
+        if (tripDays > 0 && s >= 2 && s < 2 + tripDays) {
+            return { type: 'day', dayIndex: s - 2 };
+        }
+        // After-day steps offset
+        const afterDayStart = 2 + tripDays;
+        if (s === afterDayStart) return { type: 'budget' };
+        if (s === afterDayStart + 1) return { type: 'interests' };
+        if (s === afterDayStart + 2) return { type: 'constraints' };
+        return { type: 'constraints' }; // fallback
+    };
+
     const validateStep = (): boolean => {
-        switch (step) {
-            case 0: return formData.traveler_info.adults >= 1;
-            case 1: return !!(formData.travel_logistics.destination_city && formData.travel_logistics.arrival_datetime && formData.travel_logistics.departure_datetime);
-            case 2: return formData.budget.total_budget > 0;
-            case 3: return formData.interests.interests.length > 0;
-            case 4: return true;
+        const { type, dayIndex } = getStepType(step);
+        switch (type) {
+            case 'traveler': return formData.traveler_info.adults >= 1;
+            case 'logistics': {
+                const tl = formData.travel_logistics;
+                if (!tl.destination_city || !tl.arrival_datetime || !tl.departure_datetime) return false;
+                // Validate end date is not before start date
+                const start = new Date(tl.arrival_datetime);
+                const end = new Date(tl.departure_datetime);
+                if (end <= start) return false;
+                return true;
+            }
+            case 'day': return true; // Day plans are optional (places can be empty)
+            case 'budget': return formData.budget.total_budget > 0;
+            case 'interests': return formData.interests.interests.length > 0;
+            case 'constraints': return true;
             default: return true;
         }
+    };
+
+    // Date validation error message
+    const dateError = useMemo(() => {
+        const { arrival_datetime, departure_datetime } = formData.travel_logistics;
+        if (arrival_datetime && departure_datetime) {
+            const start = new Date(arrival_datetime);
+            const end = new Date(departure_datetime);
+            if (end <= start) {
+                return 'Departure date must be after arrival date.';
+            }
+        }
+        return null;
+    }, [formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime]);
+
+    // Global hotel handling for "same hotel for all days"
+    const globalHotel = formData.day_plans.length > 0 ? formData.day_plans[0].hotel : '';
+
+    const handleSameHotelToggle = (checked: boolean) => {
+        setFormData(prev => {
+            const updated = { ...prev, sameHotelForAllDays: checked };
+            if (checked && prev.day_plans.length > 0) {
+                // Apply first day's hotel to all
+                const hotel = prev.day_plans[0].hotel;
+                updated.day_plans = prev.day_plans.map(dp => ({ ...dp, hotel }));
+            }
+            return updated;
+        });
+    };
+
+    const handleGlobalHotelChange = (hotel: string) => {
+        setFormData(prev => ({
+            ...prev,
+            day_plans: prev.day_plans.map(dp => ({ ...dp, hotel })),
+        }));
+    };
+
+    const handleDayPlanChange = (dayIndex: number, dayPlan: DayPlanForm) => {
+        setFormData(prev => {
+            const updated = [...prev.day_plans];
+            updated[dayIndex] = dayPlan;
+
+            // If same hotel mode and hotel changed, apply to all
+            if (prev.sameHotelForAllDays && dayPlan.hotel !== prev.day_plans[dayIndex]?.hotel) {
+                return {
+                    ...prev,
+                    day_plans: updated.map(dp => ({ ...dp, hotel: dayPlan.hotel })),
+                };
+            }
+
+            return { ...prev, day_plans: updated };
+        });
     };
 
     const variants = {
@@ -183,6 +346,8 @@ export default function MultiStepForm({ onComplete }: Props) {
         center: { x: 0, opacity: 1 },
         exit: (d: number) => ({ x: d > 0 ? -300 : 300, opacity: 0 }),
     };
+
+    const { type: currentStepType, dayIndex: currentDayIndex } = getStepType(step);
 
     return (
         <div className="w-full max-w-3xl mx-auto">
@@ -199,31 +364,56 @@ export default function MultiStepForm({ onComplete }: Props) {
                         exit="exit"
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                     >
-                        {step === 0 && (
+                        {currentStepType === 'traveler' && (
                             <TravelerInfoStep
                                 data={formData.traveler_info}
                                 onChange={traveler_info => setFormData({ ...formData, traveler_info })}
                             />
                         )}
-                        {step === 1 && (
-                            <TravelLogisticsStep
-                                data={formData.travel_logistics}
-                                onChange={travel_logistics => setFormData({ ...formData, travel_logistics })}
+                        {currentStepType === 'logistics' && (
+                            <>
+                                <TravelLogisticsStep
+                                    data={formData.travel_logistics}
+                                    onChange={travel_logistics => setFormData({ ...formData, travel_logistics })}
+                                />
+                                {dateError && (
+                                    <div className="mt-3 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                                        {dateError}
+                                    </div>
+                                )}
+                                {tripDays > 0 && !dateError && (
+                                    <div className="mt-3 p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm">
+                                        📅 Trip duration: <strong>{tripDays} day{tripDays > 1 ? 's' : ''}</strong> — {tripDays} daily planning page{tripDays > 1 ? 's' : ''} will be generated.
+                                    </div>
+                                )}
+                            </>
+                        )}
+                        {currentStepType === 'day' && currentDayIndex !== undefined && formData.day_plans[currentDayIndex] && (
+                            <DayPlanStep
+                                data={formData.day_plans[currentDayIndex]}
+                                onChange={(dayPlan) => handleDayPlanChange(currentDayIndex, dayPlan)}
+                                city={formData.travel_logistics.destination_city}
+                                country={formData.travel_logistics.destination_country}
+                                sameHotelForAllDays={formData.sameHotelForAllDays}
+                                onSameHotelToggle={handleSameHotelToggle}
+                                globalHotel={globalHotel}
+                                onGlobalHotelChange={handleGlobalHotelChange}
+                                isFirstDay={currentDayIndex === 0}
                             />
                         )}
-                        {step === 2 && (
+                        {currentStepType === 'budget' && (
                             <BudgetStep
                                 data={formData.budget}
                                 onChange={budget => setFormData({ ...formData, budget })}
                             />
                         )}
-                        {step === 3 && (
+                        {currentStepType === 'interests' && (
                             <InterestsStep
                                 data={formData.interests}
                                 onChange={interests => setFormData({ ...formData, interests })}
                             />
                         )}
-                        {step === 4 && (
+                        {currentStepType === 'constraints' && (
                             <ConstraintsStep
                                 data={formData.constraints}
                                 onChange={constraints => setFormData({ ...formData, constraints })}

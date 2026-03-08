@@ -28,6 +28,13 @@ export default function TripDashboardPage() {
             const data: TripFormData = JSON.parse(raw);
             const built: DashboardRow[] = [];
 
+            // Calculate number of day plans to determine step offsets
+            const numDayPlans = data.day_plans?.length || 0;
+            // Steps: 1=Travelers, 2=Logistics, 3...(2+N)=Day plans, (3+N)=Budget, (4+N)=Interests, (5+N)=Constraints
+            const budgetStep = 3 + numDayPlans;
+            const interestsStep = 4 + numDayPlans;
+            const constraintsStep = 5 + numDayPlans;
+
             // ── Step 1: Travelers ──────────────────────────────
             const ti = data.traveler_info;
             if (ti) {
@@ -94,67 +101,102 @@ export default function TripDashboardPage() {
                 });
             }
 
-            // ── Step 3: Budget ─────────────────────────────────
+            // ── Day Plans ──────────────────────────────────────
+            if (data.day_plans && data.day_plans.length > 0) {
+                // Show same-hotel info
+                if (data.sameHotelForAllDays) {
+                    built.push({
+                        label: 'Hotel (all days)',
+                        value: data.day_plans[0]?.hotel || 'Not set',
+                        step: 3, // First day step
+                    });
+                }
+
+                data.day_plans.forEach((dp, idx) => {
+                    const dayStep = 3 + idx; // step numbers for each day
+                    const dateLabel = dp.date
+                        ? new Date(dp.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                        : '';
+
+                    if (!data.sameHotelForAllDays) {
+                        built.push({
+                            label: `Day ${dp.dayNumber} Hotel`,
+                            value: dp.hotel || 'Not set',
+                            step: dayStep,
+                        });
+                    }
+
+                    built.push({
+                        label: `Day ${dp.dayNumber} (${dateLabel})`,
+                        value: dp.places.length > 0
+                            ? dp.places.map(p => `${p.name} @ ${p.time}`).join(', ')
+                            : 'No places planned',
+                        step: dayStep,
+                    });
+                });
+            }
+
+            // ── Budget ─────────────────────────────────────────
             const b = data.budget;
             if (b) {
                 built.push({
                     label: 'Total Budget',
                     value: b.total_budget ? `${b.total_budget} ${b.currency || 'USD'}` : 'Not selected',
-                    step: 3,
+                    step: budgetStep,
                 });
                 built.push({
                     label: 'Daily Budget Cap',
                     value: b.daily_budget_cap ? `${b.daily_budget_cap} ${b.currency || 'USD'}` : 'Not selected',
-                    step: 3,
+                    step: budgetStep,
                 });
             }
 
-            // ── Step 4: Interests ──────────────────────────────
+            // ── Interests ──────────────────────────────────────
             const int = data.interests;
             if (int) {
                 built.push({
                     label: 'Interests',
                     value: int.interests?.length ? int.interests.join(', ') : 'Not selected',
-                    step: 4,
+                    step: interestsStep,
                 });
                 built.push({
                     label: 'Must-Visit Places',
                     value: int.must_visit_places?.length ? int.must_visit_places.join(', ') : 'None',
-                    step: 4,
+                    step: interestsStep,
                 });
                 built.push({
                     label: 'Environment Preference',
                     value: int.environment_preference
                         ? int.environment_preference.charAt(0).toUpperCase() + int.environment_preference.slice(1)
                         : 'Not selected',
-                    step: 4,
+                    step: interestsStep,
                 });
             }
 
-            // ── Step 5: Constraints ────────────────────────────
+            // ── Constraints ────────────────────────────────────
             const c = data.constraints;
             if (c) {
                 built.push({
                     label: 'Max Attractions/Day',
                     value: c.max_attractions_per_day?.toString() ?? 'Not selected',
-                    step: 5,
+                    step: constraintsStep,
                 });
                 built.push({
                     label: 'Daily Rest Hours',
                     value: c.daily_rest_hours?.toString() ?? 'Not selected',
-                    step: 5,
+                    step: constraintsStep,
                 });
                 built.push({
                     label: 'Avoid Crowded',
                     value: c.avoid_crowded ? 'Yes' : 'No',
-                    step: 5,
+                    step: constraintsStep,
                 });
                 built.push({
                     label: 'Fixed Bookings',
                     value: c.fixed_bookings?.length
                         ? `${c.fixed_bookings.length} booking(s)`
                         : 'None',
-                    step: 5,
+                    step: constraintsStep,
                 });
             }
 

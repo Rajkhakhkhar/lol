@@ -187,9 +187,24 @@ export interface ConstraintsForm {
   fixed_bookings: FixedBooking[];
 }
 
+// ── Day Plan (multi-day planning) ────────────────────────────
+export interface DayPlanPlace {
+  name: string;
+  time: string; // HH:MM format
+}
+
+export interface DayPlanForm {
+  date: string;        // ISO date string (YYYY-MM-DD)
+  dayNumber: number;
+  hotel: string;
+  places: DayPlanPlace[];
+}
+
 export interface TripFormData {
   traveler_info: TravelerInfoForm;
   travel_logistics: TravelLogisticsForm;
+  day_plans: DayPlanForm[];
+  sameHotelForAllDays: boolean;
   budget: BudgetForm;
   interests: InterestsForm;
   constraints: ConstraintsForm;
