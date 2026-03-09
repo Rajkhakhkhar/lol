@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button, ProgressSteps, Spinner } from '@/components/ui';
@@ -108,6 +108,7 @@ export default function MultiStepForm({ onComplete }: Props) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [direction, setDirection] = useState(1);
+    const autofillTriggeredRef = useRef(false);
 
     // Calculate trip days dynamically
     const tripDays = useMemo(
@@ -170,6 +171,88 @@ export default function MultiStepForm({ onComplete }: Props) {
             setFormData(prev => ({ ...prev, day_plans: newPlans }));
         }
     }, [formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // ── AI Auto-fill: fetch AI itinerary and pre-populate day schedules ──
+    const autoFillSuggestions = useCallback(async () => {
+        if (autofillTriggeredRef.current) return;
+        const { destination_city, destination_country, arrival_datetime, departure_datetime } = formData.travel_logistics;
+        if (!destination_city || tripDays <= 0) return;
+
+        // Don't trigger until day plans have been generated
+        if (formData.day_plans.length === 0) return;
+
+        // Only auto-fill if all day plans are currently empty
+        const allEmpty = formData.day_plans.every(dp => dp.places.length === 0);
+        if (!allEmpty) {
+            autofillTriggeredRef.current = true;
+            return;
+        }
+
+        autofillTriggeredRef.current = true;
+
+        try {
+            const res = await fetch('/api/itinerary/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    city: destination_city,
+                    country: destination_country,
+                    days: tripDays,
+                }),
+            });
+            if (!res.ok) return;
+
+            const data = await res.json();
+            const itinerary: Array<{ day: number; places: Array<{ name: string; time: string }> }> =
+                Array.isArray(data.itinerary) ? data.itinerary : [];
+            if (itinerary.length === 0) return;
+
+            // Distribute AI-generated places into day_plans using functional updater
+            // to get the latest state (avoids race with generateDayPlans effect)
+            setFormData(prev => {
+                // If day_plans are still empty at apply-time, generate them first
+                let plans = prev.day_plans;
+                if (plans.length === 0 && arrival_datetime && departure_datetime) {
+                    const globalHotel = prev.travel_logistics.hotel_location || '';
+                    plans = generateDayPlans(
+                        arrival_datetime,
+                        departure_datetime,
+                        [],
+                        globalHotel,
+                        prev.sameHotelForAllDays
+                    );
+                }
+
+                const updatedPlans = plans.map((dp, i) => {
+                    // Find the matching day from the AI response
+                    const aiDay = itinerary.find(d => d.day === i + 1) || itinerary[i];
+                    if (aiDay && Array.isArray(aiDay.places) && aiDay.places.length > 0 && dp.places.length === 0) {
+                        return {
+                            ...dp,
+                            places: aiDay.places
+                                .filter(p => p && typeof p.name === 'string' && p.name.trim())
+                                .map(p => ({
+                                    name: p.name.trim(),
+                                    time: typeof p.time === 'string' && /^\d{2}:\d{2}$/.test(p.time) ? p.time : '10:00',
+                                })),
+                        };
+                    }
+                    return dp;
+                });
+                return { ...prev, day_plans: updatedPlans };
+            });
+        } catch {
+            // Silently fail — user can still add places manually
+        }
+    }, [formData.travel_logistics.destination_city, formData.travel_logistics.destination_country, formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime, formData.day_plans, tripDays]);
+
+    // Trigger auto-fill when entering the first Day step
+    useEffect(() => {
+        const { type: stepType, dayIndex } = getStepType(step);
+        if (stepType === 'day' && dayIndex === 0) {
+            autoFillSuggestions();
+        }
+    }, [step, autoFillSuggestions]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const next = () => {
         // In edit mode, save changes and redirect back to dashboard
