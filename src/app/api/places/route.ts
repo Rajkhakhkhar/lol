@@ -28,10 +28,18 @@ function getFallbackPlaces(city: string): string[] | null {
     return FALLBACK_PLACES[normalized] || null;
 }
 
-async function callGeminiForPlaces(apiKey: string, locationStr: string): Promise<string[]> {
+// Models to try in order — using a fallback chain avoids quota exhaustion on any single model
+const GEMINI_MODELS = [
+    'gemini-2.5-flash-lite',
+    'gemini-2.5-flash',
+    'gemini-2.0-flash-lite',
+    'gemini-2.0-flash',
+];
+
+async function callGeminiForPlaces(apiKey: string, locationStr: string, modelName: string): Promise<string[]> {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-        model: 'gemini-2.0-flash',
+        model: modelName,
         generationConfig: {
             responseMimeType: 'application/json',
             temperature: 0.3,
@@ -86,29 +94,22 @@ export async function GET(req: NextRequest) {
     const locationStr = country ? `${city}, ${country}` : city;
     const apiKey = process.env.GEMINI_API_KEY;
 
-    // Try Gemini API first
+    // Try Gemini API with model fallback chain
     if (apiKey) {
-        try {
-            const places = await callGeminiForPlaces(apiKey, locationStr);
-            if (places.length > 0) {
-                console.log(`[/api/places] Gemini returned ${places.length} places for ${locationStr}`);
-                return NextResponse.json(places);
+        for (const modelName of GEMINI_MODELS) {
+            try {
+                console.log(`[/api/places] Trying model ${modelName} for ${locationStr}...`);
+                const places = await callGeminiForPlaces(apiKey, locationStr, modelName);
+                if (places.length > 0) {
+                    console.log(`[/api/places] ${modelName} returned ${places.length} places for ${locationStr}`);
+                    return NextResponse.json(places);
+                }
+                console.warn(`[/api/places] ${modelName} returned empty array for ${locationStr}`);
+            } catch (error) {
+                const msg = error instanceof Error ? error.message : String(error);
+                console.error(`[/api/places] ${modelName} failed for ${locationStr}:`, msg);
+                // Continue to next model in the chain
             }
-        } catch (error) {
-            console.error('[/api/places] Gemini API error:', error instanceof Error ? error.message : error);
-            // Fall through to fallback
-        }
-
-        // Retry once after a short delay (in case of transient rate limit)
-        try {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            const places = await callGeminiForPlaces(apiKey, locationStr);
-            if (places.length > 0) {
-                console.log(`[/api/places] Gemini retry returned ${places.length} places for ${locationStr}`);
-                return NextResponse.json(places);
-            }
-        } catch (retryError) {
-            console.error('[/api/places] Gemini retry also failed:', retryError instanceof Error ? retryError.message : retryError);
         }
     } else {
         console.error('[/api/places] GEMINI_API_KEY is not configured');
@@ -121,6 +122,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json(fallback);
     }
 
-    console.warn(`[/api/places] No places available for ${locationStr} (API failed, no fallback)`);
+    console.warn(`[/api/places] No places available for ${locationStr} (all models failed, no fallback)`);
     return NextResponse.json([]);
 }
