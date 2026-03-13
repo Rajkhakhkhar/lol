@@ -1,18 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import s from "./landing.module.css";
-
-const GridScan = dynamic(() => import("@/components/landing/GridScan"), {
-  ssr: false,
-});
-
-/* ═══════════════════════════════════════════════════════════
-   Iconéra — Landing Page
-   This file is the ONLY change. Nothing else was modified.
-   ═══════════════════════════════════════════════════════════ */
+import { GridScan } from "@/components/landing/GridScan";
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -24,14 +15,14 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <>
+    <div style={{ scrollBehavior: "smooth" }}>
       {/* ── Navbar ──────────────────────────────────────── */}
       <nav className={`${s.navbar} ${scrolled ? s.navbarScrolled : ""}`}>
         <span className={s.logo}>Iconéra</span>
 
         <ul className={s.navLinks}>
+          <li><a href="#how-it-works">Intro</a></li>
           <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How It Works</a></li>
           <li><a href="#cta">Get Started</a></li>
         </ul>
 
@@ -40,19 +31,10 @@ export default function LandingPage() {
         </Link>
       </nav>
 
-      {/* ── Hero / Main Section ─────────────────────────── */}
+      {/* ── Hero Section ─────────────────────────── */}
       <section className={s.hero} id="hero">
         {/* GridScan animation background */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "600px",
-            zIndex: 0,
-            pointerEvents: "auto",
-          }}
-        >
+        <div style={{ width: "100%", height: "600px", position: "absolute", top: 0, left: 0, zIndex: 0, pointerEvents: "none" }}>
           <GridScan
             sensitivity={0.55}
             lineThickness={1}
@@ -66,10 +48,6 @@ export default function LandingPage() {
             noiseIntensity={0.01}
           />
         </div>
-
-        {/* Decorative orbs */}
-        <div className={`${s.heroOrb} ${s.heroOrb1}`} />
-        <div className={`${s.heroOrb} ${s.heroOrb2}`} />
 
         <div className={s.heroBadge} style={{ position: "relative", zIndex: 1 }}>✨ AI-Powered Travel Planning</div>
 
@@ -88,7 +66,7 @@ export default function LandingPage() {
           <Link href="/trip/plan" className={s.primaryBtn} id="hero-start-btn">
             🚀 Start Planning Trip
           </Link>
-          <a href="#features" className={s.secondaryBtn}>
+          <a href="#how-it-works" className={s.secondaryBtn}>
             Learn More ↓
           </a>
         </div>
@@ -99,75 +77,59 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Introduction / How It Works ─────────────────── */}
+      <section className={s.section} id="how-it-works">
+        <span className={s.sectionLabel}>Introduction</span>
+        <h2 className={s.sectionTitle}>Welcome to Iconéra</h2>
+        <p className={s.sectionDesc}>
+          Iconéra is your smart travel companion. No more spreadsheet chaos or dozens of open tabs. 
+          Just answer a few questions and let our AI do the heavy lifting to plan your perfect getaway.
+        </p>
+
+        <div className={s.stepsRow}>
+          <StepCard
+            num="1"
+            title="Enter Details"
+            desc="Tell us your destination and dates."
+          />
+          <StepCard
+            num="2"
+            title="Get Suggestions"
+            desc="Our AI builds a custom itinerary for you."
+          />
+          <StepCard
+            num="3"
+            title="Review & Go"
+            desc="Fine-tune your trip on the dashboard and you are ready!"
+          />
+        </div>
+      </section>
+
       {/* ── Features ────────────────────────────────────── */}
       <section className={s.section} id="features">
         <span className={s.sectionLabel}>Features</span>
         <h2 className={s.sectionTitle}>
-          Everything you need to plan the perfect getaway
+          Everything you need in one place
         </h2>
         <p className={s.sectionDesc}>
-          From choosing your destination to scheduling every hour of your trip,
-          Iconéra handles it all with a clean, step-by-step flow.
+          A clean, intuitive planner designed to take the stress out of travel preparation.
         </p>
 
         <div className={s.featuresGrid}>
           <FeatureCard
             icon="🗺️"
             title="Smart Destination Picker"
-            desc="Select your city and country, and let the AI suggest the best places to visit based on real traveller data."
+            desc="Select your city and get top recommendations instantly."
           />
           <FeatureCard
             icon="🤖"
-            title="AI-Generated Itineraries"
-            desc="Get a fully structured day-by-day plan in seconds — including top attractions, suggested times, and hidden gems."
-          />
-          <FeatureCard
-            icon="📅"
-            title="Multi-Day Scheduler"
-            desc="Organise each day individually. Add hotels, places, and time slots with an intuitive multi-step form."
+            title="AI Itineraries"
+            desc="Get a fully structured day-by-day plan in seconds."
           />
           <FeatureCard
             icon="✏️"
-            title="Fully Editable Plans"
-            desc="AI suggestions are just a starting point. Swap places, adjust times, and personalise every detail to your liking."
-          />
-          <FeatureCard
-            icon="📊"
-            title="Trip Dashboard"
-            desc="View your entire trip at a glance on a beautiful summary dashboard. Edit any section with one click."
-          />
-          <FeatureCard
-            icon="⚡"
-            title="Blazing Fast"
-            desc="Built with Next.js and cutting-edge tech for instant page loads and a butter-smooth planning experience."
-          />
-        </div>
-      </section>
-
-      {/* ── How It Works ────────────────────────────────── */}
-      <section className={s.section} id="how-it-works">
-        <span className={s.sectionLabel}>How It Works</span>
-        <h2 className={s.sectionTitle}>Three simple steps to your itinerary</h2>
-        <p className={s.sectionDesc}>
-          No more spreadsheet chaos. Just answer a few questions and let AI do
-          the heavy lifting.
-        </p>
-
-        <div className={s.stepsRow}>
-          <StepCard
-            num="1"
-            title="Enter Your Details"
-            desc="Tell us your name, destination, and travel dates. We'll tailor everything from there."
-          />
-          <StepCard
-            num="2"
-            title="Get AI Suggestions"
-            desc="Our AI analyses thousands of data points to recommend the best places and schedule for your trip."
-          />
-          <StepCard
-            num="3"
-            title="Review & Customise"
-            desc="Fine-tune your itinerary on the dashboard. Add, remove, or rearrange — you're in full control."
+            title="Customisable Plans"
+            desc="Swap places, adjust times, and personalise every detail."
           />
         </div>
       </section>
@@ -179,7 +141,7 @@ export default function LandingPage() {
             Ready to plan your next adventure?
           </h2>
           <p className={s.ctaDesc}>
-            Join travellers who plan smarter with AI. It takes less than
+            Join travellers who plan smarter. It takes less than
             two minutes to create your first itinerary.
           </p>
           <Link href="/trip/plan" className={s.primaryBtn} id="cta-start-btn">
@@ -192,14 +154,13 @@ export default function LandingPage() {
       <footer className={s.footer}>
         <p>
           © {new Date().getFullYear()} Iconéra — AI Powered Travel Planner.
-          Built with ❤️ and Next.js.
         </p>
       </footer>
-    </>
+    </div>
   );
 }
 
-/* ── Tiny sub-components (local to this file only) ──────── */
+/* ── Tiny sub-components ──────── */
 
 function FeatureCard({
   icon,
