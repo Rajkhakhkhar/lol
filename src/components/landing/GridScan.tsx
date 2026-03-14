@@ -1,3 +1,5 @@
+"use client";
+
 import * as faceapi from 'face-api.js';
 import { BloomEffect, ChromaticAberrationEffect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
 import { useEffect, useRef, useState } from 'react';
@@ -811,13 +813,12 @@ export const GridScan = ({
     return () => {
       stop = true;
       if (video) {
-        const stream = video.srcObject as MediaStream | null;
+        const stream = video.srcObject as MediaStream;
         if (stream) stream.getTracks().forEach(t => t.stop());
         video.pause();
         video.srcObject = null;
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enableWebcam, modelsReady, depthResponse]);
 
   return (
@@ -913,7 +914,7 @@ function median(buf: number[]) {
   return a.length % 2 ? a[mid] : (a[mid - 1] + a[mid]) * 0.5;
 }
 
-function centroid(points: { x: number; y: number }[]) {
+function centroid(points: any[]) {
   let x = 0,
     y = 0;
   const n = points.length || 1;
@@ -924,8 +925,6 @@ function centroid(points: { x: number; y: number }[]) {
   return { x: x / n, y: y / n };
 }
 
-function dist2(a: { x: number; y: number }, b: { x: number; y: number }) {
+function dist2(a: any, b: any) {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
-
-export default GridScan;

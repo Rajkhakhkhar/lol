@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import s from "./landing.module.css";
 import { GridScan } from "@/components/landing/GridScan";
+import ImageTrail from "@/components/landing/ImageTrail";
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -77,12 +78,31 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Secondary Section ─────────────────────────── */}
+      <section>
+        <div style={{ height: "500px", position: "relative", overflow: "hidden" }}>
+          <ImageTrail
+            items={[
+              'https://picsum.photos/id/287/300/300',
+              'https://picsum.photos/id/1001/300/300',
+              'https://picsum.photos/id/1025/300/300',
+              'https://picsum.photos/id/1026/300/300',
+              'https://picsum.photos/id/1027/300/300',
+              'https://picsum.photos/id/1028/300/300',
+              'https://picsum.photos/id/1029/300/300',
+              'https://picsum.photos/id/1030/300/300',
+            ]}
+            variant={1}
+          />
+        </div>
+      </section>
+
       {/* ── Introduction / How It Works ─────────────────── */}
       <section className={s.section} id="how-it-works">
         <span className={s.sectionLabel}>Introduction</span>
         <h2 className={s.sectionTitle}>Welcome to Iconéra</h2>
         <p className={s.sectionDesc}>
-          Iconéra is your smart travel companion. No more spreadsheet chaos or dozens of open tabs. 
+          Iconéra is your smart travel companion. No more spreadsheet chaos or dozens of open tabs.
           Just answer a few questions and let our AI do the heavy lifting to plan your perfect getaway.
         </p>
 
