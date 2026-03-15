@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import TargetCursor from "@/components/TargetCursor";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,7 +15,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <TargetCursor 
+          spinDuration={2}
+          hideDefaultCursor
+          parallaxOn
+          hoverDuration={0.2}
+        />
+        {children}
+      </body>
     </html>
   );
 }

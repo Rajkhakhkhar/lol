@@ -22,11 +22,11 @@ export default function LandingPage() {
         <span className={s.logo}>Iconéra</span>
 
         <ul className={s.navLinks}>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#cta">Get Started</a></li>
+          <li><a href="#features" className="cursor-target">Features</a></li>
+          <li><a href="#cta" className="cursor-target">Get Started</a></li>
         </ul>
 
-        <Link href="/trip/plan" className={s.navCta}>
+        <Link href="/trip/plan" className={`${s.navCta} cursor-target`}>
           Start Planning
         </Link>
       </nav>
@@ -63,10 +63,10 @@ export default function LandingPage() {
         </p>
 
         <div className={s.heroActions} style={{ position: "relative", zIndex: 1 }}>
-          <Link href="/trip/plan" className={s.primaryBtn} id="hero-start-btn">
+          <Link href="/trip/plan" className={`${s.primaryBtn} cursor-target`} id="hero-start-btn">
             🚀 Start Planning Trip
           </Link>
-          <a href="#features" className={s.secondaryBtn}>
+          <a href="#features" className={`${s.secondaryBtn} cursor-target`}>
             Learn More ↓
           </a>
         </div>
@@ -136,7 +136,7 @@ export default function LandingPage() {
             Join travellers who plan smarter. It takes less than
             two minutes to create your first itinerary.
           </p>
-          <Link href="/trip/plan" className={s.primaryBtn} id="cta-start-btn">
+          <Link href="/trip/plan" className={`${s.primaryBtn} cursor-target`} id="cta-start-btn">
             🚀 Start Planning Trip
           </Link>
         </div>
@@ -155,30 +155,30 @@ export default function LandingPage() {
           <div className={s.footerLinks}>
             <h4 className={s.footerLinksTitle}>Quick Links</h4>
             <ul>
-              <li><Link href="/trip/plan">Start Planning</Link></li>
-              <li><a href="#features">Features</a></li>
-              <li><a href="#how-it-works">How It Works</a></li>
-              <li><a href="#cta">Get Started</a></li>
+              <li><Link href="/trip/plan" className="cursor-target">Start Planning</Link></li>
+              <li><a href="#features" className="cursor-target">Features</a></li>
+              <li><a href="#how-it-works" className="cursor-target">How It Works</a></li>
+              <li><a href="#cta" className="cursor-target">Get Started</a></li>
             </ul>
           </div>
 
           <div className={s.footerLinks}>
             <h4 className={s.footerLinksTitle}>Resources</h4>
             <ul>
-              <li><a href="#">Help Center</a></li>
-              <li><a href="#">Documentation</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms</a></li>
+              <li><a href="#" className="cursor-target">Help Center</a></li>
+              <li><a href="#" className="cursor-target">Documentation</a></li>
+              <li><a href="#" className="cursor-target">Privacy Policy</a></li>
+              <li><a href="#" className="cursor-target">Terms</a></li>
             </ul>
           </div>
           
           <div className={s.footerLinks}>
             <h4 className={s.footerLinksTitle}>Connect</h4>
             <div className={s.socialIcons}>
-              <a href="#" aria-label="Twitter">𝕏</a>
-              <a href="#" aria-label="Instagram">📸</a>
-              <a href="#" aria-label="LinkedIn">💼</a>
-              <a href="#" aria-label="GitHub">💻</a>
+              <a href="#" aria-label="Twitter" className="cursor-target">𝕏</a>
+              <a href="#" aria-label="Instagram" className="cursor-target">📸</a>
+              <a href="#" aria-label="LinkedIn" className="cursor-target">💼</a>
+              <a href="#" aria-label="GitHub" className="cursor-target">💻</a>
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@ function FeatureCard({
   desc: string;
 }) {
   return (
-    <div className={s.featureCard}>
+    <div className={`${s.featureCard} cursor-target`}>
       <div className={s.featureIcon}>{icon}</div>
       <h3 className={s.featureTitle}>{title}</h3>
       <p className={s.featureDesc}>{desc}</p>
