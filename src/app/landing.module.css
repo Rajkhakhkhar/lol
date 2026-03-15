@@ -225,6 +225,11 @@
   margin: 0 auto;
 }
 
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
 .sectionLabel {
   display: inline-block;
   font-size: 0.75rem;
@@ -248,14 +253,14 @@
   font-size: 1.05rem;
   line-height: 1.7;
   max-width: 600px;
+  margin: 0 auto;
 }
 
 /* ── Features ───────────────────────────────────────────── */
 .featuresGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 3.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }
 
 .featureCard {
@@ -298,48 +303,6 @@
   line-height: 1.65;
 }
 
-/* ── How It Works ───────────────────────────────────────── */
-.stepsRow {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem;
-  margin-top: 3.5rem;
-  counter-reset: step;
-}
-
-.step {
-  position: relative;
-  text-align: center;
-  padding: 2.5rem 1.5rem 2rem;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.stepNumber {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #8b5cf6, #6366f1);
-  font-weight: 800;
-  font-size: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.stepTitle {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.stepDesc {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.9rem;
-  line-height: 1.6;
-}
 
 /* ── CTA ────────────────────────────────────────────────── */
 .ctaBanner {
@@ -380,21 +343,109 @@
 
 /* ── Footer ─────────────────────────────────────────────── */
 .footer {
-  text-align: center;
-  padding: 3rem 1.5rem;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 0.8rem;
   border-top: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(10, 10, 18, 0.3);
+  padding: 4rem 1.5rem 2rem;
+  margin-top: 4rem;
 }
 
-.footer a {
-  color: rgba(255, 255, 255, 0.35);
+.footerContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.footerBrand {
+  max-width: 320px;
+}
+
+.footerLogo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #a78bfa, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.footerDesc {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.footerLinksTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.25rem;
+  margin-top: 0;
+}
+
+.footerLinks ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.footerLinks a {
+  color: rgba(255, 255, 255, 0.5);
   text-decoration: none;
-  transition: color 0.2s;
+  font-size: 0.95rem;
+  transition: color 0.25s, transform 0.25s;
+  display: inline-block;
 }
 
-.footer a:hover {
+.footerLinks a:hover {
   color: #a78bfa;
+  transform: translateX(3px);
+}
+
+.socialIcons {
+  display: flex;
+  gap: 1rem;
+}
+
+.socialIcons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: border-color 0.25s, color 0.25s, transform 0.25s;
+}
+
+.socialIcons a:hover {
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #fff;
+  transform: translateY(-3px);
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.footerBottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.85rem;
 }
 
 /* ── Keyframes ──────────────────────────────────────────── */
@@ -419,6 +470,17 @@
 }
 
 /* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footerContainer {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem 1.25rem;
@@ -444,7 +506,18 @@
     grid-template-columns: 1fr;
   }
 
-  .stepsRow {
+  .footerContainer {
     grid-template-columns: 1fr;
+    gap: 2.5rem;
+    text-align: center;
+  }
+
+  .footerBrand {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .socialIcons {
+    justify-content: center;
   }
 }

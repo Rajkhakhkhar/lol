@@ -22,7 +22,6 @@ export default function LandingPage() {
         <span className={s.logo}>Iconéra</span>
 
         <ul className={s.navLinks}>
-          <li><a href="#how-it-works">Intro</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#cta">Get Started</a></li>
         </ul>
@@ -67,7 +66,7 @@ export default function LandingPage() {
           <Link href="/trip/plan" className={s.primaryBtn} id="hero-start-btn">
             🚀 Start Planning Trip
           </Link>
-          <a href="#how-it-works" className={s.secondaryBtn}>
+          <a href="#features" className={s.secondaryBtn}>
             Learn More ↓
           </a>
         </div>
@@ -97,43 +96,16 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Introduction / How It Works ─────────────────── */}
-      <section className={s.section} id="how-it-works">
-        <span className={s.sectionLabel}>Introduction</span>
-        <h2 className={s.sectionTitle}>Welcome to Iconéra</h2>
-        <p className={s.sectionDesc}>
-          Iconéra is your smart travel companion. No more spreadsheet chaos or dozens of open tabs.
-          Just answer a few questions and let our AI do the heavy lifting to plan your perfect getaway.
-        </p>
-
-        <div className={s.stepsRow}>
-          <StepCard
-            num="1"
-            title="Enter Details"
-            desc="Tell us your destination and dates."
-          />
-          <StepCard
-            num="2"
-            title="Get Suggestions"
-            desc="Our AI builds a custom itinerary for you."
-          />
-          <StepCard
-            num="3"
-            title="Review & Go"
-            desc="Fine-tune your trip on the dashboard and you are ready!"
-          />
-        </div>
-      </section>
-
       {/* ── Features ────────────────────────────────────── */}
       <section className={s.section} id="features">
-        <span className={s.sectionLabel}>Features</span>
-        <h2 className={s.sectionTitle}>
-          Everything you need in one place
-        </h2>
-        <p className={s.sectionDesc}>
-          A clean, intuitive planner designed to take the stress out of travel preparation.
-        </p>
+        <div className={s.sectionHeader}>
+          <span className={s.sectionLabel}>Why Iconéra?</span>
+          <h2 className={s.sectionTitle}>Smart, Fast, and Personalized</h2>
+          <p className={s.sectionDesc}>
+            Iconéra is your comprehensive travel companion. Experience a clean, 
+            intuitive planner designed to take the stress out of travel preparation.
+          </p>
+        </div>
 
         <div className={s.featuresGrid}>
           <FeatureCard
@@ -143,7 +115,7 @@ export default function LandingPage() {
           />
           <FeatureCard
             icon="🤖"
-            title="AI Itineraries"
+            title="AI Generated Itineraries"
             desc="Get a fully structured day-by-day plan in seconds."
           />
           <FeatureCard
@@ -172,9 +144,47 @@ export default function LandingPage() {
 
       {/* ── Footer ──────────────────────────────────────── */}
       <footer className={s.footer}>
-        <p>
-          © {new Date().getFullYear()} Iconéra — AI Powered Travel Planner.
-        </p>
+        <div className={s.footerContainer}>
+          <div className={s.footerBrand}>
+            <span className={s.footerLogo}>Iconéra</span>
+            <p className={s.footerDesc}>
+              AI-powered travel planning platform that helps you create smart itineraries in seconds.
+            </p>
+          </div>
+          
+          <div className={s.footerLinks}>
+            <h4 className={s.footerLinksTitle}>Quick Links</h4>
+            <ul>
+              <li><Link href="/trip/plan">Start Planning</Link></li>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#how-it-works">How It Works</a></li>
+              <li><a href="#cta">Get Started</a></li>
+            </ul>
+          </div>
+
+          <div className={s.footerLinks}>
+            <h4 className={s.footerLinksTitle}>Resources</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Documentation</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms</a></li>
+            </ul>
+          </div>
+          
+          <div className={s.footerLinks}>
+            <h4 className={s.footerLinksTitle}>Connect</h4>
+            <div className={s.socialIcons}>
+              <a href="#" aria-label="Twitter">𝕏</a>
+              <a href="#" aria-label="Instagram">📸</a>
+              <a href="#" aria-label="LinkedIn">💼</a>
+              <a href="#" aria-label="GitHub">💻</a>
+            </div>
+          </div>
+        </div>
+        <div className={s.footerBottom}>
+          <p>© 2026 Iconéra. All rights reserved.</p>
+        </div>
       </footer>
     </div>
   );
@@ -196,24 +206,6 @@ function FeatureCard({
       <div className={s.featureIcon}>{icon}</div>
       <h3 className={s.featureTitle}>{title}</h3>
       <p className={s.featureDesc}>{desc}</p>
-    </div>
-  );
-}
-
-function StepCard({
-  num,
-  title,
-  desc,
-}: {
-  num: string;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <div className={s.step}>
-      <div className={s.stepNumber}>{num}</div>
-      <h3 className={s.stepTitle}>{title}</h3>
-      <p className={s.stepDesc}>{desc}</p>
     </div>
   );
 }
