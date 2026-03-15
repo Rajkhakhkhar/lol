@@ -110,8 +110,8 @@ export default function DayPlanStep({
         <div className="space-y-6">
             {/* Day Header */}
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-cyan-600/20 flex items-center justify-center">
-                    <Calendar className="w-6 h-6 text-cyan-400" />
+                <div className="w-12 h-12 rounded-2xl bg-[#202020] border border-[#2a2a2a] flex items-center justify-center">
+                    <Calendar className="w-6 h-6 text-blue-500" />
                 </div>
                 <div>
                     <h2 className="text-xl font-bold text-white">
@@ -122,9 +122,9 @@ export default function DayPlanStep({
             </div>
 
             {/* Hotel Toggle + Selection (show toggle only on first day) */}
-            <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4">
+            <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
                 <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Hotel className="w-4 h-4 text-cyan-400" />
+                    <Hotel className="w-4 h-4 text-blue-500" />
                     Hotel
                 </div>
 
@@ -154,9 +154,9 @@ export default function DayPlanStep({
             </div>
 
             {/* Places to Visit */}
-            <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4">
+            <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
                 <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <MapPin className="w-4 h-4 text-cyan-400" />
+                    <MapPin className="w-4 h-4 text-pink-500" />
                     Places to Visit
                 </div>
 
@@ -183,7 +183,7 @@ export default function DayPlanStep({
                     <button
                         type="button"
                         onClick={() => addPlace()}
-                        className="h-11 w-11 rounded-xl bg-cyan-600 hover:bg-cyan-700 flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
+                        className="h-11 w-11 rounded-xl border border-[#2a2a2a] hover:border-blue-500 bg-[#141414] flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
                     >
                         <Plus className="w-5 h-5 text-white" />
                     </button>
@@ -195,10 +195,10 @@ export default function DayPlanStep({
                         {data.places.map((place, index) => (
                             <div
                                 key={index}
-                                className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10"
+                                className="flex items-center justify-between p-3 rounded-lg bg-[#141414] border border-[#2a2a2a]"
                             >
                                 <div className="flex items-center gap-3 flex-1 min-w-0">
-                                    <MapPin className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                                    <MapPin className="w-4 h-4 text-blue-500 flex-shrink-0" />
                                     <span className="text-sm font-medium text-white truncate">{place.name}</span>
                                 </div>
                                 <div className="flex items-center gap-2 flex-shrink-0">
@@ -212,7 +212,7 @@ export default function DayPlanStep({
                                     <button
                                         type="button"
                                         onClick={() => removePlace(index)}
-                                        className="p-1.5 rounded-lg hover:bg-red-500/20 text-white/40 hover:text-red-400 transition-colors cursor-pointer"
+                                        className="p-1.5 rounded-lg hover:bg-pink-500/20 text-[#7a7a7a] hover:text-pink-500 transition-colors cursor-pointer"
                                     >
                                         <Trash2 className="w-3.5 h-3.5" />
                                     </button>
@@ -230,15 +230,15 @@ export default function DayPlanStep({
             </div>
 
             {/* Popular Places Suggestions */}
-            <div className="p-5 rounded-xl bg-gradient-to-br from-cyan-900/20 to-indigo-900/20 border border-cyan-500/20 space-y-3">
+            <div className="p-5 rounded-xl border border-blue-500/20 bg-blue-900/10 space-y-3">
                 <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Sparkles className="w-4 h-4 text-cyan-400" />
+                    <Sparkles className="w-4 h-4 text-blue-500" />
                     Popular places in {city || 'your city'}
                 </div>
 
                 {loadingSuggestions ? (
                     <div className="flex items-center gap-2 py-3">
-                        <Loader2 className="w-4 h-4 text-cyan-400 animate-spin" />
+                        <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
                         <span className="text-sm text-white/40">Loading suggestions...</span>
                     </div>
                 ) : filteredSuggestions.length > 0 ? (
@@ -248,7 +248,7 @@ export default function DayPlanStep({
                                 key={place}
                                 type="button"
                                 onClick={() => addPlace(place)}
-                                className="px-3 py-1.5 rounded-lg bg-cyan-500/15 text-cyan-300 text-sm font-medium border border-cyan-500/25 hover:bg-cyan-500/25 hover:text-cyan-200 transition-all cursor-pointer"
+                                className="px-3 py-1.5 rounded-lg bg-[#141414] hover:bg-[#202020] text-[#b5b5b5] hover:text-[#f5f5f5] text-sm font-medium border border-[#2a2a2a] hover:border-[#3a3a3a] transition-all cursor-pointer"
                             >
                                 + {place}
                             </button>

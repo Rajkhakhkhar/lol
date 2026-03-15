@@ -38,8 +38,8 @@ export default function TravelLogisticsStep({ data, onChange }: Props) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-600/20 flex items-center justify-center">
-                    <Plane className="w-6 h-6 text-indigo-400" />
+                <div className="w-12 h-12 rounded-2xl bg-[#202020] border border-[#2a2a2a] flex items-center justify-center">
+                    <Plane className="w-6 h-6 text-blue-500" />
                 </div>
                 <div>
                     <h2 className="text-xl font-bold text-white">Travel Logistics</h2>
@@ -48,9 +48,9 @@ export default function TravelLogisticsStep({ data, onChange }: Props) {
             </div>
 
             {/* Destination */}
-            <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4">
+            <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
                 <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <MapPin className="w-4 h-4 text-indigo-400" />
+                    <MapPin className="w-4 h-4 text-blue-500" />
                     Destination
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -96,9 +96,9 @@ export default function TravelLogisticsStep({ data, onChange }: Props) {
             </div>
 
             {/* Dates */}
-            <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4">
+            <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
                 <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Plane className="w-4 h-4 text-indigo-400" />
+                    <Plane className="w-4 h-4 text-pink-500" />
                     Dates & Times
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -118,9 +118,9 @@ export default function TravelLogisticsStep({ data, onChange }: Props) {
             </div>
 
             {/* Hotel */}
-            <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4">
+            <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
                 <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Hotel className="w-4 h-4 text-indigo-400" />
+                    <Hotel className="w-4 h-4 text-blue-500" />
                     Hotel
                 </div>
                 <Input
@@ -146,9 +146,9 @@ export default function TravelLogisticsStep({ data, onChange }: Props) {
             </div>
 
             {/* Transport */}
-            <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4">
+            <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
                 <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Car className="w-4 h-4 text-indigo-400" />
+                    <Car className="w-4 h-4 text-pink-500" />
                     Transport
                 </div>
                 <Select

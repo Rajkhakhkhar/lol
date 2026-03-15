@@ -20,8 +20,8 @@ export default function PlanTripPage() {
             <nav className="sticky top-0 z-50 glass">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2 group">
-                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-                            <Globe className="w-5 h-5 text-white" />
+                        <div className="w-9 h-9 rounded-xl bg-[#141414] border border-[#2a2a2a] flex items-center justify-center shadow-[0_0_10px_rgba(79, 140, 255,0.15)] hover:border-blue-500 transition-colors">
+                            <Globe className="w-5 h-5 text-blue-500 group-hover:text-blue-400 transition-colors" />
                         </div>
                         <span className="text-lg font-bold text-white">
                             Icon<span className="gradient-text">éra</span>
@@ -53,7 +53,7 @@ export default function PlanTripPage() {
                             </p>
                         </div>
 
-                        <Suspense fallback={<div className="flex justify-center py-20"><div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" /></div>}>
+                        <Suspense fallback={<div className="flex justify-center py-20"><div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" /></div>}>
                             <MultiStepForm onComplete={setResult} />
                         </Suspense>
                     </motion.div>

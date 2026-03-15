@@ -13,13 +13,13 @@ import { useState } from 'react';
 
 // ── Activity type config ─────────────────────────────────────
 const activityConfig: Record<ActivityType, { icon: typeof MapPin; color: string; bg: string }> = {
-    attraction: { icon: Camera, color: 'text-violet-400', bg: 'bg-violet-500/20 border-violet-500/30' },
-    meal: { icon: Utensils, color: 'text-amber-400', bg: 'bg-amber-500/20 border-amber-500/30' },
-    travel: { icon: Footprints, color: 'text-blue-400', bg: 'bg-blue-500/20 border-blue-500/30' },
-    rest: { icon: Coffee, color: 'text-emerald-400', bg: 'bg-emerald-500/20 border-emerald-500/30' },
-    hotel: { icon: Hotel, color: 'text-pink-400', bg: 'bg-pink-500/20 border-pink-500/30' },
-    fixed_booking: { icon: Calendar, color: 'text-cyan-400', bg: 'bg-cyan-500/20 border-cyan-500/30' },
-    free_time: { icon: Star, color: 'text-yellow-400', bg: 'bg-yellow-500/20 border-yellow-500/30' },
+    attraction: { icon: Camera, color: 'text-blue-500', bg: 'bg-[#141414] border-[#2a2a2a]' },
+    meal: { icon: Utensils, color: 'text-pink-500', bg: 'bg-[#141414] border-[#2a2a2a]' },
+    travel: { icon: Footprints, color: 'text-[#b5b5b5]', bg: 'bg-[#141414] border-[#2a2a2a]' },
+    rest: { icon: Coffee, color: 'text-[#7a7a7a]', bg: 'bg-[#141414] border-[#2a2a2a]' },
+    hotel: { icon: Hotel, color: 'text-[#f5f5f5]', bg: 'bg-[#141414] border-[#2a2a2a]' },
+    fixed_booking: { icon: Calendar, color: 'text-blue-500', bg: 'bg-[#141414] border-[#2a2a2a]' },
+    free_time: { icon: Star, color: 'text-pink-500', bg: 'bg-[#141414] border-[#2a2a2a]' },
 };
 
 // ── Activity Card ────────────────────────────────────────────
@@ -108,8 +108,8 @@ function DayCard({ day, defaultOpen }: { day: ItineraryDay; defaultOpen: boolean
                     className="w-full flex items-center justify-between cursor-pointer"
                 >
                     <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex flex-col items-center justify-center shadow-lg shadow-violet-500/20">
-                            <span className="text-[10px] font-medium text-white/80 uppercase leading-tight">Day</span>
+                        <div className="w-14 h-14 rounded-2xl bg-[#202020] border border-[#2a2a2a] flex flex-col items-center justify-center shadow-[0_0_10px_rgba(79, 140, 255,0.15)] group-hover:border-blue-500 transition-colors">
+                            <span className="text-[10px] font-medium text-[#7a7a7a] uppercase leading-tight">Day</span>
                             <span className="text-xl font-bold text-white leading-tight">{day.day_number}</span>
                         </div>
                         <div className="text-left">
@@ -121,15 +121,15 @@ function DayCard({ day, defaultOpen }: { day: ItineraryDay; defaultOpen: boolean
                     <div className="flex items-center gap-4">
                         <div className="hidden sm:flex items-center gap-3 text-sm text-white/40">
                             <span className="flex items-center gap-1">
-                                <MapPin className="w-3.5 h-3.5 text-violet-400" />
+                                <MapPin className="w-3.5 h-3.5 text-blue-500" />
                                 {day.activities.filter(a => a.type === 'attraction').length} stops
                             </span>
                             <span className="flex items-center gap-1">
-                                <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+                                <DollarSign className="w-3.5 h-3.5 text-[#b5b5b5]" />
                                 {formatCurrency(day.daily_cost_estimate)}
                             </span>
                             <span className="flex items-center gap-1">
-                                <Clock className="w-3.5 h-3.5 text-amber-400" />
+                                <Clock className="w-3.5 h-3.5 text-[#7a7a7a]" />
                                 {day.total_travel_time}min travel
                             </span>
                         </div>
@@ -149,11 +149,11 @@ function DayCard({ day, defaultOpen }: { day: ItineraryDay; defaultOpen: boolean
                         {/* Mobile stats */}
                         <div className="flex sm:hidden items-center gap-3 text-xs text-white/40 mb-4">
                             <span className="flex items-center gap-1">
-                                <MapPin className="w-3 h-3 text-violet-400" />
+                                <MapPin className="w-3 h-3 text-blue-500" />
                                 {day.activities.filter(a => a.type === 'attraction').length} stops
                             </span>
                             <span className="flex items-center gap-1">
-                                <DollarSign className="w-3 h-3 text-emerald-400" />
+                                <DollarSign className="w-3 h-3 text-[#b5b5b5]" />
                                 {formatCurrency(day.daily_cost_estimate)}
                             </span>
                         </div>
@@ -194,26 +194,26 @@ export default function ItineraryDisplay({ itinerary, onReset }: Props) {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <Card className="text-center p-4">
-                    <Calendar className="w-5 h-5 text-violet-400 mx-auto mb-2" />
+                    <Calendar className="w-5 h-5 text-blue-500 mx-auto mb-2" />
                     <p className="text-2xl font-bold text-white">{itinerary.days.length}</p>
-                    <p className="text-xs text-white/40">Days</p>
+                    <p className="text-xs text-[#7a7a7a]">Days</p>
                 </Card>
                 <Card className="text-center p-4">
-                    <DollarSign className="w-5 h-5 text-emerald-400 mx-auto mb-2" />
+                    <DollarSign className="w-5 h-5 text-[#b5b5b5] mx-auto mb-2" />
                     <p className="text-2xl font-bold text-white">{formatCurrency(itinerary.total_estimated_cost)}</p>
-                    <p className="text-xs text-white/40">Est. Cost</p>
+                    <p className="text-xs text-[#7a7a7a]">Est. Cost</p>
                 </Card>
                 <Card className="text-center p-4">
-                    <TrendingUp className="w-5 h-5 text-amber-400 mx-auto mb-2" />
+                    <TrendingUp className="w-5 h-5 text-white mx-auto mb-2" />
                     <p className="text-2xl font-bold text-white">{itinerary.optimization_score}</p>
-                    <p className="text-xs text-white/40">AI Score</p>
+                    <p className="text-xs text-[#7a7a7a]">AI Score</p>
                 </Card>
                 <Card className="text-center p-4">
-                    <MapPin className="w-5 h-5 text-pink-400 mx-auto mb-2" />
+                    <MapPin className="w-5 h-5 text-pink-500 mx-auto mb-2" />
                     <p className="text-2xl font-bold text-white">
                         {itinerary.days.reduce((s, d) => s + d.activities.filter(a => a.type === 'attraction').length, 0)}
                     </p>
-                    <p className="text-xs text-white/40">Attractions</p>
+                    <p className="text-xs text-[#7a7a7a]">Attractions</p>
                 </Card>
             </div>
 
@@ -221,7 +221,7 @@ export default function ItineraryDisplay({ itinerary, onReset }: Props) {
             {itinerary.notes.length > 0 && (
                 <Card className="p-4">
                     <div className="flex items-center gap-2 mb-3">
-                        <AlertCircle className="w-4 h-4 text-amber-400" />
+                        <AlertCircle className="w-4 h-4 text-blue-500" />
                         <span className="text-sm font-medium text-white/80">Generation Notes</span>
                     </div>
                     <ul className="space-y-1">
@@ -246,7 +246,7 @@ export default function ItineraryDisplay({ itinerary, onReset }: Props) {
             <div className="flex justify-center pt-4">
                 <button
                     onClick={onReset}
-                    className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all text-sm font-medium cursor-pointer"
+                    className="px-6 py-3 rounded-xl bg-[#141414] border border-[#2a2a2a] text-[#b5b5b5] hover:text-[#f5f5f5] hover:border-[#3a3a3a] transition-all text-sm font-medium cursor-pointer"
                 >
                     Plan Another Trip
                 </button>

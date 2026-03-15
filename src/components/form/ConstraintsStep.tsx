@@ -32,8 +32,8 @@ export default function ConstraintsStep({ data, onChange }: Props) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-amber-600/20 flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-amber-400" />
+                <div className="w-12 h-12 rounded-2xl bg-[#202020] border border-[#2a2a2a] flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-pink-500" />
                 </div>
                 <div>
                     <h2 className="text-xl font-bold text-white">Constraints & Rules</h2>
@@ -43,9 +43,9 @@ export default function ConstraintsStep({ data, onChange }: Props) {
 
             {/* Numeric Constraints */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-3">
+                <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-3">
                     <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                        <MapPin className="w-4 h-4 text-violet-400" />
+                        <MapPin className="w-4 h-4 text-blue-500" />
                         Max Attractions Per Day
                     </div>
                     <Input
@@ -58,9 +58,9 @@ export default function ConstraintsStep({ data, onChange }: Props) {
                     <p className="text-xs text-white/40">Recommended: 3–6 for balanced pacing</p>
                 </div>
 
-                <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-3">
+                <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-3">
                     <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                        <Clock className="w-4 h-4 text-emerald-400" />
+                        <Clock className="w-4 h-4 text-pink-500" />
                         Daily Rest Hours
                     </div>
                     <Input
@@ -84,16 +84,16 @@ export default function ConstraintsStep({ data, onChange }: Props) {
             />
 
             {/* Fixed Bookings */}
-            <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4">
+            <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                        <Calendar className="w-4 h-4 text-pink-400" />
+                        <Calendar className="w-4 h-4 text-blue-500" />
                         Fixed Bookings
                     </div>
                     <button
                         type="button"
                         onClick={() => setShowBookingForm(!showBookingForm)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-600/20 text-violet-400 text-xs font-medium hover:bg-violet-600/30 transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141414] border border-[#2a2a2a] text-[#b5b5b5] hover:text-[#f5f5f5] hover:border-[#3a3a3a] text-xs font-medium transition-colors cursor-pointer"
                     >
                         <Plus className="w-3.5 h-3.5" />
                         Add Booking
@@ -101,7 +101,7 @@ export default function ConstraintsStep({ data, onChange }: Props) {
                 </div>
 
                 {showBookingForm && (
-                    <div className="p-4 rounded-xl bg-white/5 border border-violet-500/20 space-y-3 animate-in">
+                    <div className="p-4 rounded-xl bg-[#202020] border border-blue-500/30 space-y-3 animate-in">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <Input
                                 label="Booking Name"
@@ -140,7 +140,7 @@ export default function ConstraintsStep({ data, onChange }: Props) {
                             <button
                                 type="button"
                                 onClick={addBooking}
-                                className="px-4 py-2 rounded-lg bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 transition-colors cursor-pointer"
+                                className="px-4 py-2 rounded-lg border border-blue-500 bg-blue-600/10 hover:bg-blue-600/20 text-white text-sm font-medium transition-colors cursor-pointer"
                             >
                                 Add
                             </button>
@@ -160,7 +160,7 @@ export default function ConstraintsStep({ data, onChange }: Props) {
                 )}
 
                 {data.fixed_bookings.map((booking, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                    <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-[#141414] border border-[#2a2a2a]">
                         <div>
                             <p className="text-sm font-medium text-white">{booking.name}</p>
                             <p className="text-xs text-white/40">
@@ -170,7 +170,7 @@ export default function ConstraintsStep({ data, onChange }: Props) {
                         <button
                             type="button"
                             onClick={() => removeBooking(i)}
-                            className="p-2 rounded-lg hover:bg-red-500/20 text-white/40 hover:text-red-400 transition-colors cursor-pointer"
+                            className="p-2 rounded-lg hover:bg-pink-500/20 text-[#7a7a7a] hover:text-pink-500 transition-colors cursor-pointer"
                         >
                             <Trash2 className="w-4 h-4" />
                         </button>

@@ -142,9 +142,8 @@ export default function SearchableDropdown({
                     disabled={disabled}
                     autoComplete="off"
                     className={cn(
-                        'flex h-11 w-full rounded-xl border bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 transition-all duration-200',
-                        'border-white/10 focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 focus:outline-none',
-                        'backdrop-blur-sm',
+                        'flex h-11 w-full rounded-xl border bg-[#141414] px-4 py-2.5 text-white placeholder:text-[#7a7a7a] transition-all duration-250',
+                        'border-[#2a2a2a] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none',
                         disabled && 'opacity-50 cursor-not-allowed'
                     )}
                 />
@@ -152,7 +151,7 @@ export default function SearchableDropdown({
                 {/* Loading spinner inside input */}
                 {loading && (
                     <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        <Loader2 className="w-4 h-4 text-violet-400 animate-spin" />
+                        <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
                     </div>
                 )}
             </div>
@@ -162,7 +161,7 @@ export default function SearchableDropdown({
                 <div
                     className={cn(
                         'absolute z-50 left-0 right-0 mt-1',
-                        'rounded-xl border border-white/10 bg-[#12121e]/95 backdrop-blur-xl',
+                        'rounded-xl border border-[#2a2a2a] bg-[#141414]/95 backdrop-blur-xl',
                         'shadow-2xl shadow-black/40',
                         'overflow-hidden',
                         'animate-slide-up'
@@ -179,8 +178,8 @@ export default function SearchableDropdown({
                                     className={cn(
                                         'w-full text-left px-4 py-2.5 text-sm transition-colors duration-100 cursor-pointer',
                                         idx === highlightIndex
-                                            ? 'bg-violet-600/20 text-violet-200'
-                                            : 'text-white/70 hover:bg-white/5 hover:text-white'
+                                            ? 'bg-[#202020] text-white border-l-2 border-blue-500'
+                                            : 'text-[#b5b5b5] hover:bg-[#202020] hover:text-[#f5f5f5]'
                                     )}
                                 >
                                     {item}

@@ -14,20 +14,20 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 2.5rem;
-  transition: background 0.4s, box-shadow 0.4s, backdrop-filter 0.4s;
+  transition: background 0.4s, box-shadow 0.4s, backdrop-filter 0.4s, all 0.25s ease;
 }
 
 .navbarScrolled {
-  background: rgba(10, 10, 18, 0.8);
+  background: rgba(10, 10, 10, 0.8);
   backdrop-filter: blur(20px);
-  box-shadow: 0 1px 0 rgba(139, 92, 246, 0.1);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #a78bfa, #818cf8);
+  background: linear-gradient(135deg, #f5f5f5, #b5b5b5);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -46,29 +46,31 @@
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
-  transition: color 0.25s;
+  transition: all 0.25s ease;
 }
 
 .navLinks a:hover {
-  color: #a78bfa;
+  color: #f5f5f5;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .navCta {
   padding: 0.5rem 1.25rem;
   border-radius: 0.625rem;
-  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  background: #141414;
   color: white;
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
-  border: none;
+  border: 1px solid #2a2a2a;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.25s ease;
 }
 
 .navCta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.35);
+  box-shadow: 0 0 15px rgba(79, 140, 255, 0.3);
+  border-color: #4f8cff;
 }
 
 /* ── Hero ───────────────────────────────────────────────── */
@@ -98,7 +100,7 @@
   height: 600px;
   top: -10%;
   left: -10%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.3), transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05), transparent 70%);
 }
 
 .heroOrb2 {
@@ -106,7 +108,7 @@
   height: 500px;
   bottom: -5%;
   right: -8%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.25), transparent 70%);
+  background: radial-gradient(circle, rgba(79, 140, 255, 0.08), transparent 70%);
 }
 
 .heroBadge {
@@ -115,9 +117,9 @@
   gap: 0.5rem;
   padding: 0.4rem 1rem;
   border-radius: 9999px;
-  background: rgba(139, 92, 246, 0.1);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  color: #a78bfa;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #b5b5b5;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -134,10 +136,11 @@
   max-width: 800px;
   margin: 0 auto 1.5rem;
   animation: fadeSlideUp 0.8s 0.15s ease-out both;
+  color: #f5f5f5;
 }
 
 .heroTitleGradient {
-  background: linear-gradient(135deg, #8b5cf6, #6366f1, #a78bfa, #818cf8);
+  background: linear-gradient(135deg, #f5f5f5, #7a7a7a, #f5f5f5);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -169,20 +172,21 @@
   gap: 0.5rem;
   padding: 0.9rem 2rem;
   border-radius: 0.75rem;
-  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  background: #141414;
   color: white;
   font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
-  border: none;
+  border: 1px solid #2a2a2a;
   cursor: pointer;
-  transition: transform 0.25s, box-shadow 0.25s;
-  box-shadow: 0 4px 25px rgba(139, 92, 246, 0.3);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .primaryBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 40px rgba(139, 92, 246, 0.5);
+  box-shadow: 0 8px 30px rgba(79, 140, 255, 0.3);
+  border-color: #4f8cff;
 }
 
 .secondaryBtn {
@@ -198,12 +202,12 @@
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.25s, border-color 0.25s;
+  transition: all 0.25s ease;
 }
 
 .secondaryBtn:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(139, 92, 246, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .heroScrollHint {
@@ -236,7 +240,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #8b5cf6;
+  color: #7a7a7a;
   margin-bottom: 1rem;
 }
 
@@ -267,15 +271,15 @@
   position: relative;
   padding: 2rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  background: #202020;
+  border: 1px solid #2a2a2a;
+  transition: all 0.25s ease;
 }
 
 .featureCard:hover {
-  border-color: rgba(139, 92, 246, 0.25);
+  border-color: #3a3a3a;
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .featureIcon {
@@ -287,8 +291,14 @@
   justify-content: center;
   font-size: 1.4rem;
   margin-bottom: 1.25rem;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.1));
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.25s ease;
+}
+
+.featureCard:hover .featureIcon {
+  border-color: rgba(79, 140, 255, 0.3);
+  box-shadow: 0 0 15px rgba(79, 140, 255, 0.15);
 }
 
 .featureTitle {
@@ -310,16 +320,17 @@
   text-align: center;
   padding: 5rem 1.5rem;
   border-radius: 1.5rem;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.06));
-  border: 1px solid rgba(139, 92, 246, 0.12);
+  background: #141414;
+  border: 1px solid #2a2a2a;
   overflow: hidden;
+  transition: all 0.25s ease;
 }
 
 .ctaBanner::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15), transparent 70%);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03), transparent 70%);
   pointer-events: none;
 }
 
@@ -344,7 +355,7 @@
 /* ── Footer ─────────────────────────────────────────────── */
 .footer {
   border-top: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(10, 10, 18, 0.3);
+  background: rgba(10, 10, 10, 0.3);
   padding: 4rem 1.5rem 2rem;
   margin-top: 4rem;
 }
@@ -367,7 +378,7 @@
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #a78bfa, #818cf8);
+  background: linear-gradient(135deg, #f5f5f5, #b5b5b5);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -402,12 +413,13 @@
   color: rgba(255, 255, 255, 0.5);
   text-decoration: none;
   font-size: 0.95rem;
-  transition: color 0.25s, transform 0.25s;
+  transition: all 0.25s ease;
   display: inline-block;
 }
 
 .footerLinks a:hover {
-  color: #a78bfa;
+  color: #f5f5f5;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   transform: translateX(3px);
 }
 
@@ -428,14 +440,14 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.1rem;
   text-decoration: none;
-  transition: border-color 0.25s, color 0.25s, transform 0.25s;
+  transition: all 0.25s ease;
 }
 
 .socialIcons a:hover {
-  border-color: rgba(139, 92, 246, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
   color: #fff;
   transform: translateY(-3px);
-  background: rgba(139, 92, 246, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .footerBottom {

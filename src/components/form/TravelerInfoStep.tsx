@@ -15,8 +15,8 @@ export default function TravelerInfoStep({ data, onChange }: Props) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-violet-600/20 flex items-center justify-center">
-                    <Users className="w-6 h-6 text-violet-400" />
+                <div className="w-12 h-12 rounded-2xl bg-[#202020] border border-[#2a2a2a] flex items-center justify-center">
+                    <Users className="w-6 h-6 text-blue-500" />
                 </div>
                 <div>
                     <h2 className="text-xl font-bold text-white">Who&apos;s Traveling?</h2>
@@ -49,9 +49,9 @@ export default function TravelerInfoStep({ data, onChange }: Props) {
             </div>
 
             {data.children > 0 && (
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-3">
+                <div className="p-4 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-3">
                     <div className="flex items-center gap-2">
-                        <Baby className="w-4 h-4 text-violet-400" />
+                        <Baby className="w-4 h-4 text-blue-500" />
                         <label className="text-sm font-medium text-white/80">Children Ages</label>
                     </div>
                     <div className="flex flex-wrap gap-3">
@@ -99,8 +99,8 @@ export default function TravelerInfoStep({ data, onChange }: Props) {
                 />
             </div>
 
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
-                <Compass className="w-5 h-5 text-violet-400 flex-shrink-0" />
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-[#202020] border border-[#2a2a2a]">
+                <Compass className="w-5 h-5 text-blue-500 flex-shrink-0" />
                 <Toggle
                     checked={data.accessibility_needs}
                     onChange={checked => update({ accessibility_needs: checked })}

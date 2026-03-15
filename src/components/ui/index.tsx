@@ -10,11 +10,11 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant = 'default', size = 'default', ...props }, ref) => {
         const variants: Record<string, string> = {
-            default: 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-700 hover:to-indigo-700 shadow-lg shadow-violet-500/25',
-            secondary: 'bg-white/10 text-white hover:bg-white/20 border border-white/10',
-            outline: 'border border-white/20 text-white hover:bg-white/5',
-            ghost: 'text-white/70 hover:text-white hover:bg-white/5',
-            destructive: 'bg-red-600 text-white hover:bg-red-700',
+            default: 'bg-[#141414] text-white border border-[#2a2a2a] hover:border-blue-500 hover:shadow-[0_0_15px_rgba(79, 140, 255,0.3)]',
+            secondary: 'bg-[#202020] text-white hover:bg-[#2a2a2a] border border-[#2a2a2a]',
+            outline: 'border border-[#2a2a2a] text-[#b5b5b5] hover:text-white hover:border-[#3a3a3a] hover:bg-[#202020]',
+            ghost: 'text-[#7a7a7a] hover:text-white hover:bg-white/5',
+        destructive: 'bg-pink-900/50 text-pink-200 border border-pink-500/50 hover:bg-pink-900 hover:border-pink-500 hover:shadow-[0_0_15px_rgba(255, 110, 199,0.3)]',
         };
         const sizes: Record<string, string> = {
             default: 'h-11 px-6 py-2.5',
@@ -26,7 +26,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <button
                 ref={ref}
                 className={cn(
-                    'inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]',
+                    'inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-250 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]',
                     variants[variant],
                     sizes[size],
                     className
@@ -47,19 +47,18 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, label, error, ...props }, ref) => (
         <div className="space-y-1.5">
-            {label && <label className="text-sm font-medium text-white/80">{label}</label>}
+            {label && <label className="text-sm font-medium text-[#b5b5b5]">{label}</label>}
             <input
                 ref={ref}
                 className={cn(
-                    'flex h-11 w-full rounded-xl border bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 transition-all duration-200',
-                    'border-white/10 focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 focus:outline-none',
-                    'backdrop-blur-sm',
-                    error && 'border-red-500/50 focus:border-red-500 focus:ring-red-500/20',
+                    'flex h-11 w-full rounded-xl border bg-[#1a1a1a] px-4 py-2.5 text-[#f5f5f5] placeholder:text-[#7a7a7a] transition-all duration-250',
+                    'border-[#2a2a2a] focus:border-[#4f8cff] focus:ring-2 focus:ring-[#4f8cff]/20 focus:outline-none',
+                    error && 'border-pink-500/50 focus:border-pink-500 focus:ring-pink-500/20',
                     className
                 )}
                 {...props}
             />
-            {error && <p className="text-xs text-red-400">{error}</p>}
+            {error && <p className="text-xs text-pink-500">{error}</p>}
         </div>
     )
 );
@@ -75,25 +74,24 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     ({ className, label, error, options, ...props }, ref) => (
         <div className="space-y-1.5">
-            {label && <label className="text-sm font-medium text-white/80">{label}</label>}
+            {label && <label className="text-sm font-medium text-[#b5b5b5]">{label}</label>}
             <select
                 ref={ref}
                 className={cn(
-                    'flex h-11 w-full rounded-xl border bg-white/5 px-4 py-2.5 text-white transition-all duration-200 appearance-none cursor-pointer',
-                    'border-white/10 focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 focus:outline-none',
-                    'backdrop-blur-sm',
-                    error && 'border-red-500/50',
+                    'flex h-11 w-full rounded-xl border bg-[#1a1a1a] px-4 py-2.5 text-[#f5f5f5] transition-all duration-250 appearance-none cursor-pointer',
+                    'border-[#2a2a2a] focus:border-[#4f8cff] focus:ring-2 focus:ring-[#4f8cff]/20 focus:outline-none',
+                    error && 'border-pink-500/50 focus:border-pink-500 focus:ring-pink-500/20',
                     className
                 )}
                 {...props}
             >
                 {options.map(opt => (
-                    <option key={opt.value} value={opt.value} className="bg-slate-900 text-white">
+                    <option key={opt.value} value={opt.value} className="bg-[#141414] text-white">
                         {opt.label}
                     </option>
                 ))}
             </select>
-            {error && <p className="text-xs text-red-400">{error}</p>}
+            {error && <p className="text-xs text-pink-500">{error}</p>}
         </div>
     )
 );
@@ -112,18 +110,18 @@ export function Toggle({ checked, onChange, label, description }: ToggleProps) {
         <button
             type="button"
             onClick={() => onChange(!checked)}
-            className="flex items-center justify-between w-full p-3 rounded-xl border border-white/10 hover:bg-white/5 transition-all cursor-pointer"
+            className="flex items-center justify-between w-full p-3 rounded-xl border border-[#2a2a2a] hover:border-[#3a3a3a] hover:bg-[#202020] transition-all cursor-pointer"
         >
             <div className="text-left">
-                {label && <p className="text-sm font-medium text-white">{label}</p>}
-                {description && <p className="text-xs text-white/50 mt-0.5">{description}</p>}
+                {label && <p className="text-sm font-medium text-[#f5f5f5]">{label}</p>}
+                {description && <p className="text-xs text-[#7a7a7a] mt-0.5">{description}</p>}
             </div>
             <div className={cn(
                 'w-11 h-6 rounded-full transition-all duration-300 relative',
-                checked ? 'bg-violet-600' : 'bg-white/10'
+                checked ? 'bg-blue-600 shadow-[0_0_10px_rgba(79, 140, 255,0.3)] border border-blue-500' : 'bg-[#141414] border border-[#3a3a3a]'
             )}>
                 <div className={cn(
-                    'absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-lg transition-all duration-300',
+                    'absolute top-[1.5px] w-[18px] h-[18px] rounded-full bg-white shadow-md transition-all duration-300',
                     checked ? 'left-[22px]' : 'left-0.5'
                 )} />
             </div>
@@ -136,7 +134,7 @@ export function Card({ className, children, ...props }: React.HTMLAttributes<HTM
     return (
         <div
             className={cn(
-                'rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-xl',
+                'rounded-2xl border border-[#2a2a2a] bg-[#202020] p-6 shadow-md transition-all duration-250 hover:border-[#3a3a3a] hover:shadow-xl hover:-translate-y-0.5',
                 className
             )}
             {...props}
@@ -149,16 +147,17 @@ export function Card({ className, children, ...props }: React.HTMLAttributes<HTM
 // ── Badge ────────────────────────────────────────────────────
 interface BadgeProps {
     children: React.ReactNode;
-    variant?: 'default' | 'success' | 'warning' | 'error';
+    variant?: 'default' | 'success' | 'warning' | 'error' | 'accent';
     className?: string;
 }
 
 export function Badge({ children, variant = 'default', className }: BadgeProps) {
     const variants: Record<string, string> = {
-        default: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
-        success: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-        warning: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-        error: 'bg-red-500/20 text-red-300 border-red-500/30',
+        default: 'bg-[#141414] text-[#b5b5b5] border-[#2a2a2a]',
+        success: 'bg-[#141414] text-blue-500 border-blue-500/30',
+        warning: 'bg-[#141414] text-pink-500 border-pink-500/30',
+        error: 'bg-pink-900/30 text-pink-400 border-pink-500/30',
+        accent: 'bg-blue-900/30 text-blue-400 border-blue-500/50 shadow-[0_0_10px_rgba(79, 140, 255,0.15)]',
     };
     return (
         <span className={cn(
@@ -190,7 +189,7 @@ export function TagSelector({ options, selected, onChange, label }: TagSelectorP
 
     return (
         <div className="space-y-2">
-            {label && <label className="text-sm font-medium text-white/80">{label}</label>}
+            {label && <label className="text-sm font-medium text-[#b5b5b5]">{label}</label>}
             <div className="flex flex-wrap gap-2">
                 {options.map(tag => (
                     <button
@@ -198,10 +197,10 @@ export function TagSelector({ options, selected, onChange, label }: TagSelectorP
                         type="button"
                         onClick={() => toggle(tag)}
                         className={cn(
-                            'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 border cursor-pointer',
+                            'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-250 border cursor-pointer',
                             selected.includes(tag)
-                                ? 'bg-violet-600 text-white border-violet-500 shadow-lg shadow-violet-500/20'
-                                : 'bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:text-white'
+                                ? 'bg-[#202020] text-white border-blue-500 shadow-[0_0_10px_rgba(79, 140, 255,0.3)]'
+                                : 'bg-[#141414] text-[#7a7a7a] border-[#2a2a2a] hover:bg-[#202020] hover:text-[#f5f5f5] hover:border-[#3a3a3a]'
                         )}
                     >
                         {tag}
@@ -225,29 +224,30 @@ export function ProgressSteps({ steps, currentStep }: ProgressStepsProps) {
                 <React.Fragment key={step}>
                     <div className="flex flex-col items-center gap-2">
                         <div className={cn(
-                            'w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 border-2',
+                            'w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 border',
                             index < currentStep
-                                ? 'bg-violet-600 border-violet-600 text-white shadow-lg shadow-violet-500/30'
+                                ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_15px_rgba(79, 140, 255,0.3)]'
                                 : index === currentStep
-                                    ? 'bg-violet-600/20 border-violet-500 text-violet-300 shadow-lg shadow-violet-500/20 scale-110'
-                                    : 'bg-white/5 border-white/10 text-white/30'
+                                    ? 'bg-[#202020] border-blue-500 text-blue-400 shadow-[0_0_10px_rgba(79, 140, 255,0.2)] scale-110'
+                                    : 'bg-[#141414] border-[#2a2a2a] text-[#7a7a7a]'
                         )}>
                             {index < currentStep ? '✓' : index + 1}
                         </div>
                         <span className={cn(
                             'text-xs font-medium transition-colors hidden sm:block',
-                            index <= currentStep ? 'text-violet-300' : 'text-white/30'
+                            index <= currentStep ? 'text-white' : 'text-[#7a7a7a]'
                         )}>
                             {step}
                         </span>
                     </div>
                     {index < steps.length - 1 && (
-                        <div className="flex-1 mx-2 sm:mx-4">
+                        <div className="flex-1 mx-2 sm:mx-4 relative h-[2px]">
+                            <div className="absolute inset-0 bg-[#2a2a2a] rounded-full" />
                             <div className={cn(
-                                'h-0.5 rounded-full transition-all duration-500',
+                                'absolute inset-y-0 left-0 rounded-full transition-all duration-500',
                                 index < currentStep
-                                    ? 'bg-gradient-to-r from-violet-600 to-indigo-600'
-                                    : 'bg-white/10'
+                                    ? 'bg-blue-600 w-full shadow-[0_0_10px_rgba(79, 140, 255,0.3)]'
+                                    : 'w-0'
                             )} />
                         </div>
                     )}
@@ -262,7 +262,7 @@ export function Spinner({ size = 'default', className }: { size?: 'sm' | 'defaul
     const sizes = { sm: 'w-4 h-4', default: 'w-8 h-8', lg: 'w-12 h-12' };
     return (
         <svg
-            className={cn('animate-spin text-violet-500', sizes[size], className)}
+            className={cn('animate-spin text-blue-500', sizes[size], className)}
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
         >
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

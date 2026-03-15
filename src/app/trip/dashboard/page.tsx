@@ -215,7 +215,7 @@ export default function TripDashboardPage() {
     if (!loaded) {
         return (
             <main className="flex-1 min-h-screen flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
             </main>
         );
     }
@@ -226,8 +226,8 @@ export default function TripDashboardPage() {
             <nav className="sticky top-0 z-50 glass">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2 group">
-                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-                            <Globe className="w-5 h-5 text-white" />
+                        <div className="w-9 h-9 rounded-xl bg-[#141414] border border-[#2a2a2a] flex items-center justify-center shadow-[0_0_10px_rgba(79, 140, 255,0.15)] hover:border-blue-500 transition-colors">
+                            <Globe className="w-5 h-5 text-blue-500 group-hover:text-blue-400 transition-colors" />
                         </div>
                         <span className="text-lg font-bold text-white">
                             Icon<span className="gradient-text">éra</span>
@@ -258,21 +258,21 @@ export default function TripDashboardPage() {
                         <p className="text-white/40 text-lg">No trip data found.</p>
                         <Link
                             href="/trip/plan"
-                            className="inline-block mt-4 px-6 py-3 rounded-xl bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 transition-colors"
+                            className="inline-block mt-4 px-6 py-3 rounded-xl bg-[#141414] border border-[#2a2a2a] text-[#f5f5f5] text-sm font-medium hover:bg-[#202020] hover:border-[#3a3a3a] transition-colors"
                         >
                             Start Planning
                         </Link>
                     </div>
                 ) : (
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden">
+                    <div className="rounded-2xl border border-[#2a2a2a] bg-[#202020] overflow-hidden shadow-lg">
                         {rows.map((row, index) => (
                             <div
                                 key={index}
-                                className={`flex items-center justify-between px-5 py-4 ${index !== rows.length - 1 ? 'border-b border-white/[0.06]' : ''
-                                    } hover:bg-white/[0.03] transition-colors`}
+                                className={`flex items-center justify-between px-5 py-4 ${index !== rows.length - 1 ? 'border-b border-[#2a2a2a]' : ''
+                                    } hover:bg-[#2a2a2a] transition-colors`}
                             >
                                 <div className="flex-1 min-w-0">
-                                    <span className="text-sm text-white/50">{row.label}</span>
+                                    <span className="text-sm text-[#7a7a7a]">{row.label}</span>
                                 </div>
                                 <div className="flex-1 min-w-0 text-right pr-4">
                                     <span className="text-sm text-white font-medium truncate block">
@@ -282,7 +282,7 @@ export default function TripDashboardPage() {
                                 <button
                                     type="button"
                                     onClick={() => handleEdit(row.step)}
-                                    className="flex-shrink-0 p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-colors cursor-pointer"
+                                    className="flex-shrink-0 p-2 rounded-lg hover:bg-[#141414] border border-transparent hover:border-blue-500 hover:shadow-[0_0_10px_rgba(79, 140, 255,0.15)] text-[#b5b5b5] hover:text-white transition-all cursor-pointer"
                                     aria-label={`Edit ${row.label}`}
                                 >
                                     <MoreVertical className="w-5 h-5" />

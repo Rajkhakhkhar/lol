@@ -436,7 +436,7 @@ export default function MultiStepForm({ onComplete }: Props) {
         <div className="w-full max-w-3xl mx-auto">
             <ProgressSteps steps={STEPS} currentStep={step} />
 
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 sm:p-8 min-h-[460px]">
+            <div className="relative overflow-hidden rounded-2xl border border-[#2a2a2a] bg-[#202020] shadow-lg p-6 sm:p-8 min-h-[460px]">
                 <AnimatePresence mode="wait" custom={direction}>
                     <motion.div
                         key={step}
@@ -460,12 +460,12 @@ export default function MultiStepForm({ onComplete }: Props) {
                                     onChange={travel_logistics => setFormData({ ...formData, travel_logistics })}
                                 />
                                 {dateError && (
-                                    <div className="mt-3 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                                    <div className="mt-3 p-3 rounded-xl bg-[#141414] border border-pink-500/50 text-pink-500 shadow-[0_0_10px_rgba(255, 110, 199,0.1)] text-sm">
                                         {dateError}
                                     </div>
                                 )}
                                 {tripDays > 0 && !dateError && (
-                                    <div className="mt-3 p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm">
+                                    <div className="mt-3 p-3 rounded-xl bg-[#141414] border border-blue-500/50 text-blue-500 shadow-[0_0_10px_rgba(79, 140, 255,0.1)] text-sm">
                                         📅 Trip duration: <strong>{tripDays} day{tripDays > 1 ? 's' : ''}</strong> — {tripDays} daily planning page{tripDays > 1 ? 's' : ''} will be generated.
                                     </div>
                                 )}
@@ -508,7 +508,7 @@ export default function MultiStepForm({ onComplete }: Props) {
 
             {/* Error */}
             {error && (
-                <div className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                <div className="mt-4 p-4 rounded-xl bg-[#141414] border border-pink-500/50 text-pink-500 shadow-[0_0_15px_rgba(255, 110, 199,0.15)] text-sm">
                     {error}
                 </div>
             )}

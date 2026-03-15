@@ -31,8 +31,8 @@ export default function BudgetStep({ data, onChange }: Props) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-600/20 flex items-center justify-center">
-                    <DollarSign className="w-6 h-6 text-emerald-400" />
+                <div className="w-12 h-12 rounded-2xl bg-[#202020] border border-[#2a2a2a] flex items-center justify-center">
+                    <DollarSign className="w-6 h-6 text-blue-500" />
                 </div>
                 <div>
                     <h2 className="text-xl font-bold text-white">Budget Planning</h2>
@@ -48,9 +48,9 @@ export default function BudgetStep({ data, onChange }: Props) {
             />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-3">
+                <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-3">
                     <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                        <PiggyBank className="w-4 h-4 text-emerald-400" />
+                        <PiggyBank className="w-4 h-4 text-blue-500" />
                         Total Trip Budget
                     </div>
                     <Input
@@ -63,9 +63,9 @@ export default function BudgetStep({ data, onChange }: Props) {
                     />
                 </div>
 
-                <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-3">
+                <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-3">
                     <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                        <TrendingUp className="w-4 h-4 text-amber-400" />
+                        <TrendingUp className="w-4 h-4 text-pink-500" />
                         Daily Spending Cap
                     </div>
                     <Input
@@ -81,14 +81,14 @@ export default function BudgetStep({ data, onChange }: Props) {
 
             {/* Budget Visual */}
             {total > 0 && (
-                <div className="p-5 rounded-xl bg-gradient-to-br from-emerald-900/30 to-teal-900/30 border border-emerald-500/20 space-y-3">
+                <div className="p-5 rounded-xl border border-blue-500/40 bg-[#141414] shadow-[0_0_10px_rgba(79, 140, 255,0.1)] space-y-3">
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-white/60">Daily cap vs total</span>
-                        <span className="text-emerald-400 font-bold">{ratio.toFixed(0)}%</span>
+                        <span className="text-blue-500 font-bold">{ratio.toFixed(0)}%</span>
                     </div>
-                    <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
+                    <div className="w-full h-3 bg-[#2a2a2a] rounded-full overflow-hidden">
                         <div
-                            className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500"
+                            className="h-full bg-blue-600 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(79, 140, 255,0.3)]"
                             style={{ width: `${ratio}%` }}
                         />
                     </div>

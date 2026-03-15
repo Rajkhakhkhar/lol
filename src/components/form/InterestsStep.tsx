@@ -29,8 +29,8 @@ export default function InterestsStep({ data, onChange }: Props) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-pink-600/20 flex items-center justify-center">
-                    <Heart className="w-6 h-6 text-pink-400" />
+                <div className="w-12 h-12 rounded-2xl bg-[#202020] border border-[#2a2a2a] flex items-center justify-center">
+                    <Heart className="w-6 h-6 text-pink-500" />
                 </div>
                 <div>
                     <h2 className="text-xl font-bold text-white">Your Interests</h2>
@@ -47,15 +47,15 @@ export default function InterestsStep({ data, onChange }: Props) {
             />
 
             {data.interests.length > 0 && (
-                <p className="text-sm text-violet-400">
+                <p className="text-sm text-blue-500">
                     ✨ {data.interests.length} interest{data.interests.length > 1 ? 's' : ''} selected
                 </p>
             )}
 
             {/* Must Visit Places */}
-            <div className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4">
+            <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
                 <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Star className="w-4 h-4 text-amber-400" />
+                    <Star className="w-4 h-4 text-pink-500" />
                     Must-Visit Places
                 </div>
                 <div className="flex gap-2">
@@ -69,7 +69,7 @@ export default function InterestsStep({ data, onChange }: Props) {
                     <button
                         type="button"
                         onClick={addMustVisit}
-                        className="h-11 w-11 rounded-xl bg-violet-600 hover:bg-violet-700 flex items-center justify-center transition-colors cursor-pointer"
+                        className="h-11 w-11 rounded-xl border border-[#2a2a2a] hover:border-blue-500 bg-[#141414] flex items-center justify-center transition-colors cursor-pointer"
                     >
                         <Plus className="w-5 h-5 text-white" />
                     </button>
@@ -79,7 +79,7 @@ export default function InterestsStep({ data, onChange }: Props) {
                         {data.must_visit_places.map(place => (
                             <span
                                 key={place}
-                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 text-sm font-medium border border-amber-500/30"
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141414] text-[#b5b5b5] text-sm font-medium border border-[#2a2a2a]"
                             >
                                 <Star className="w-3 h-3" />
                                 {place}
