@@ -7,6 +7,7 @@ import { GridScan } from "@/components/landing/GridScan";
 import ImageTrail from "@/components/landing/ImageTrail";
 import Shuffle from "@/components/landing/Shuffle";
 import Dither from "@/components/Dither";
+import ClientCursor from "@/components/ClientCursor";
 
 const TRAIL_IMAGES = [
   'https://i.pinimg.com/736x/83/2d/ac/832dac09e0d45055beef6e22d6be4a01.jpg',
@@ -30,6 +31,7 @@ export default function LandingPage() {
 
   return (
     <div style={{ scrollBehavior: "smooth" }}>
+      <ClientCursor />
       {/* ── Navbar ──────────────────────────────────────── */}
       <nav className={`${s.navbar} ${scrolled ? s.navbarScrolled : ""}`}>
         <Shuffle

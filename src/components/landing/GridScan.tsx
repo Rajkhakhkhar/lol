@@ -454,8 +454,15 @@ export const GridScan = ({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    
+    // Ensure WebGLRenderer is created only once to avoid context loss
+    if (rendererRef.current) return;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: false, 
+      alpha: true,
+      powerPreference: "low-power"
+    });
     rendererRef.current = renderer;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -600,38 +607,15 @@ export const GridScan = ({
         composerRef.current = null;
       }
       renderer.dispose();
-      renderer.forceContextLoss();
-      container.removeChild(renderer.domElement);
+      
+      if (container && container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+      rendererRef.current = null;
+      materialRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    sensitivity,
-    lineThickness,
-    linesColor,
-    scanColor,
-    scanOpacity,
-    gridScale,
-    lineStyle,
-    lineJitter,
-    scanDirection,
-    enablePost,
-    noiseIntensity,
-    bloomIntensity,
-    scanGlow,
-    scanSoftness,
-    scanPhaseTaper,
-    scanDuration,
-    scanDelay,
-    bloomThreshold,
-    bloomSmoothing,
-    chromaticAberration,
-    smoothTime,
-    maxSpeed,
-    skewScale,
-    yBoost,
-    tiltScale,
-    yawScale
-  ]);
+  }, []); // Run only once to prevent WebGL context recreation
 
   useEffect(() => {
     const m = materialRef.current;

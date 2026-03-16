@@ -436,7 +436,7 @@ export default function MultiStepForm({ onComplete }: Props) {
         <div className="w-full max-w-3xl mx-auto">
             <ProgressSteps steps={STEPS} currentStep={step} />
 
-            <div className="relative overflow-hidden rounded-2xl border border-[#2a2a2a] bg-[#202020] shadow-lg p-6 sm:p-8 min-h-[460px]">
+            <div className="relative overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.05)] backdrop-blur-[12px] shadow-[0_10px_30px_rgba(0,0,0,0.25)] p-6 sm:p-8 min-h-[460px]">
                 <AnimatePresence mode="wait" custom={direction}>
                     <motion.div
                         key={step}

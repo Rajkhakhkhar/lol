@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Globe, ArrowLeft, MoreVertical } from 'lucide-react';
 import type { TripFormData } from '@/types';
+import Grainient from '@/components/Grainient';
 
 interface DashboardRow {
     label: string;
@@ -221,9 +222,38 @@ export default function TripDashboardPage() {
     }
 
     return (
-        <main className="flex-1 min-h-screen">
-            {/* Navigation */}
-            <nav className="sticky top-0 z-50 glass">
+        <main className="flex-1 min-h-screen relative">
+            {/* Background Layer */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <Grainient
+                    color1="#000000"
+                    color2="#8b0f1f"
+                    color3="#d11a35"
+                    timeSpeed={1.7}
+                    colorBalance={-0.02}
+                    warpStrength={1}
+                    warpFrequency={5}
+                    warpSpeed={2}
+                    warpAmplitude={50}
+                    blendAngle={0}
+                    blendSoftness={0.05}
+                    rotationAmount={500}
+                    noiseScale={2}
+                    grainAmount={0.1}
+                    grainScale={2}
+                    grainAnimated={false}
+                    contrast={1.5}
+                    gamma={1}
+                    saturation={1}
+                    centerX={0}
+                    centerY={0}
+                    zoom={0.9}
+                />
+            </div>
+
+            <div className="relative z-10 flex flex-col min-h-screen">
+                {/* Navigation */}
+                <nav className="sticky top-0 z-50 glass">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2 group">
                         <div className="w-9 h-9 rounded-xl bg-[#141414] border border-[#2a2a2a] flex items-center justify-center shadow-[0_0_10px_rgba(79, 140, 255,0.15)] hover:border-blue-500 transition-colors">
@@ -291,6 +321,7 @@ export default function TripDashboardPage() {
                         ))}
                     </div>
                 )}
+                </div>
             </div>
         </main>
     );
