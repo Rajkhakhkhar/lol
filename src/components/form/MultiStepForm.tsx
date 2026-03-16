@@ -433,7 +433,7 @@ export default function MultiStepForm({ onComplete }: Props) {
     const { type: currentStepType, dayIndex: currentDayIndex } = getStepType(step);
 
     return (
-        <div className="w-full max-w-3xl mx-auto">
+        <div className="w-full max-w-[1150px] mx-auto">
             <ProgressSteps steps={STEPS} currentStep={step} />
 
             <div className="relative overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.05)] backdrop-blur-[12px] shadow-[0_10px_30px_rgba(0,0,0,0.25)] p-6 sm:p-8 min-h-[460px]">
