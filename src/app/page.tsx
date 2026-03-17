@@ -65,14 +65,14 @@ export default function LandingPage() {
       {/* ── Hero Section ─────────────────────────── */}
       <section className={s.hero} id="hero">
         {/* GridScan animation background */}
-        <div style={{ width: "100%", height: "600px", position: "absolute", top: 0, left: 0, zIndex: 0, pointerEvents: "none" }}>
+        <div style={{ width: "100%", height: "600px", position: "absolute", top: 0, left: 0, zIndex: 0, pointerEvents: "none", background: "linear-gradient(to right, #000 50%, #ff9e9e 50%)" }}>
           <GridScan
             sensitivity={0.55}
             lineThickness={1}
             linesColor="#2a2a2a"
             gridScale={0.1}
-            scanColor="#ff9e9e"
-            scanOpacity={0.4}
+            scanColor="#ffffff"
+            scanOpacity={0.6}
             enablePost
             bloomIntensity={0.6}
             chromaticAberration={0.002}
@@ -169,7 +169,7 @@ export default function LandingPage() {
         {/* Background Animation */}
         <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, opacity: 0.5, pointerEvents: "none" }}>
           <Dither
-            waveColor={[1,0.6196078431372549,0.6196078431372549]}
+            waveColor={[1, 0.6196078431372549, 0.6196078431372549]}
             disableAnimation={false}
             enableMouseInteraction
             mouseRadius={0.3}
