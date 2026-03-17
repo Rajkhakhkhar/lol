@@ -65,18 +65,23 @@ export default function LandingPage() {
       {/* ── Hero Section ─────────────────────────── */}
       <section className={s.hero} id="hero">
         {/* GridScan animation background */}
-        <div style={{ width: "100%", height: "600px", position: "absolute", top: 0, left: 0, zIndex: 0, pointerEvents: "none", background: "linear-gradient(to right, #000 50%, #ff9e9e 50%)" }}>
+        <div style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: 0, pointerEvents: "none" }}>
           <GridScan
-            sensitivity={0.55}
+            sensitivity={0.6}
             lineThickness={1}
-            linesColor="#2a2a2a"
-            gridScale={0.1}
-            scanColor="#ffffff"
-            scanOpacity={0.6}
-            enablePost
-            bloomIntensity={0.6}
-            chromaticAberration={0.002}
-            noiseIntensity={0.01}
+            linesColor="#2a1a1a"
+            scanColor="#ff9e9e"
+            scanOpacity={0.35}
+            gridScale={0.12}
+            lineStyle="solid"
+            lineJitter={0.05}
+            scanDirection="pingpong"
+            noiseIntensity={0.005}
+            scanGlow={0.7}
+            scanSoftness={3}
+            scanDuration={1.5}
+            scanDelay={1}
+            scanOnClick={false}
           />
         </div>
 
