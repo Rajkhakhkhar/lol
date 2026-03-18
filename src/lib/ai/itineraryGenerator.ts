@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createLogger } from '../logger';
 import { getAttractions, getEstimatedTravelTime } from '../services/attractions';
 import { validateItinerary, autoFixItinerary } from './validator';
@@ -158,37 +157,59 @@ RESPOND WITH ONLY THIS JSON STRUCTURE (no markdown, no explanation):
 }`;
 }
 
-// ── Call Gemini API ──────────────────────────────────────────
-async function callGemini(prompt: string): Promise<GeminiItineraryResponse> {
-    const apiKey = process.env.GEMINI_API_KEY;
+// ── Call OpenAI API ──────────────────────────────────────────
+async function callAI(prompt: string): Promise<GeminiItineraryResponse> {
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
-        logger.warn('Gemini API key not configured, generating fallback itinerary');
-        throw new Error('GEMINI_API_KEY not configured');
+        logger.warn('OpenAI API key not configured, generating fallback itinerary');
+        throw new Error('OPENAI_API_KEY not configured');
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-        model: 'gemini-1.5-flash',
-        generationConfig: {
-            responseMimeType: 'application/json',
-            temperature: 0.7,
-            maxOutputTokens: 8192,
+    logger.info('Sending request to OpenAI (gpt-4o-mini)...');
+    
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
         },
+        body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are a smart travel planner AI. Return ONLY a structured JSON response for a travel itinerary. Do not include any text outside the JSON.'
+                },
+                {
+                    role: 'user',
+                    content: prompt
+                }
+            ],
+            response_format: { type: 'json_object' }
+        }),
     });
 
-    logger.info('Sending request to Gemini...');
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    const text = response.text();
+    const data = await response.json();
+    if (!response.ok) {
+        logger.error('OpenAI API Error', data);
+        throw new Error(data.error?.message || 'API Error');
+    }
 
+    const text = data.choices?.[0]?.message?.content || '{}';
+    
     try {
         const parsed = JSON.parse(text) as GeminiItineraryResponse;
-        logger.info('Gemini response parsed successfully');
+        logger.info('AI response parsed successfully');
         return parsed;
-    } catch {
-        logger.error('Failed to parse Gemini response', { text: text.substring(0, 500) });
-        throw new Error('Gemini returned invalid JSON');
+    } catch (err) {
+        logger.error('Failed to parse AI response', { text: text.substring(0, 500) });
+        throw new Error('AI returned invalid JSON');
     }
+}
+
+// Rename the internal caller to be model-agnostic
+async function callGemini(prompt: string): Promise<GeminiItineraryResponse> {
+    return callAI(prompt);
 }
 
 // ── Generate fallback itinerary ──────────────────────────────

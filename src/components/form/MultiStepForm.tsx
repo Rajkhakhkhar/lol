@@ -254,16 +254,26 @@ export default function MultiStepForm({ onComplete }: Props) {
         }
     }, [step, autoFillSuggestions]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    const cameFromDashboard = searchParams.get('from') === 'dashboard';
+
     const next = () => {
-        // In edit mode, save changes and redirect back to dashboard
-        if (isEditMode) {
+        // Validation check (double safety)
+        if (!validateStep()) return;
+
+        // If editing from dashboard, save and return immediately
+        if (cameFromDashboard) {
             localStorage.setItem('tripData', JSON.stringify(formData));
             router.push('/trip/dashboard');
             return;
         }
+
         if (step < STEPS.length - 1) {
             setDirection(1);
             setStep(s => s + 1);
+        } else {
+            // Normal flow: Last page -> Dashboard
+            localStorage.setItem('tripData', JSON.stringify(formData));
+            router.push('/trip/dashboard');
         }
     };
 
@@ -357,7 +367,7 @@ export default function MultiStepForm({ onComplete }: Props) {
             case 'traveler': return formData.traveler_info.adults >= 1;
             case 'logistics': {
                 const tl = formData.travel_logistics;
-                if (!tl.destination_city || !tl.arrival_datetime || !tl.departure_datetime) return false;
+                if (!tl.destination_country || !tl.destination_city || !tl.arrival_datetime || !tl.departure_datetime) return false;
                 // Validate end date is not before start date
                 const start = new Date(tl.arrival_datetime);
                 const end = new Date(tl.departure_datetime);

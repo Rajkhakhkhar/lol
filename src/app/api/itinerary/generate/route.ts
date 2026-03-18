@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
@@ -29,24 +28,10 @@ export async function POST(req: NextRequest) {
         const country = (body.country || '').trim();
         const days = Math.min(Math.max(parseInt(body.days || '1', 10), 1), 14);
 
-        if (!city) {
-            return NextResponse.json({ itinerary: [] });
-        }
-
-        const apiKey = process.env.GEMINI_API_KEY;
+        const apiKey = process.env.OPENAI_API_KEY;
         if (!apiKey) {
             return NextResponse.json({ itinerary: [] });
         }
-
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({
-            model: 'gemini-2.0-flash',
-            generationConfig: {
-                responseMimeType: 'application/json',
-                temperature: 0.7,
-                maxOutputTokens: 4096,
-            },
-        });
 
         const locationStr = country ? `${city}, ${country}` : city;
 
@@ -66,26 +51,40 @@ Example response format:
       { "name": "Jubilee Garden", "time": "14:00" },
       { "name": "Aji Dam", "time": "16:30" }
     ]
-  },
-  {
-    "day": 2,
-    "places": [
-      { "name": "Ishwariya Temple", "time": "09:00" },
-      { "name": "Lakhota Lake", "time": "11:00" },
-      { "name": "Baps Mandir", "time": "14:30" }
-    ]
   }
-]
+]`;
 
-Return ONLY the JSON array, no other text.`;
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    { role: 'system', content: 'You are a travel assistant. Return ONLY JSON.' },
+                    { role: 'user', content: prompt }
+                ],
+                response_format: { type: 'json_object' }
+            }),
+        });
 
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
+        const data = await response.json();
+        if (!response.ok) {
+            console.error('OpenAI Error:', data);
+            return NextResponse.json({ itinerary: [] });
+        }
+
+        const text = data.choices?.[0]?.message?.content || '[]';
         const parsed = JSON.parse(text);
+        
+        // Handle if OpenAI returns { "itinerary": [...] } or just the array
+        const finalArray = Array.isArray(parsed) ? parsed : (parsed.itinerary || parsed.days || []);
 
-        if (Array.isArray(parsed)) {
+        if (Array.isArray(finalArray)) {
             // Validate and normalize the response
-            const itinerary = parsed.slice(0, days).map((dayData: { day?: number; places?: Array<{ name?: string; time?: string }> }, index: number) => {
+            const itinerary = finalArray.slice(0, days).map((dayData: { day?: number; places?: Array<{ name?: string; time?: string }> }, index: number) => {
                 const places = Array.isArray(dayData.places)
                     ? dayData.places
                         .filter((p: { name?: string; time?: string }) => p && typeof p.name === 'string' && p.name.trim())

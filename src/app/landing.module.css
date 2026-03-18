@@ -3,76 +3,6 @@
    Scoped module so nothing leaks into the existing planner.
    ═══════════════════════════════════════════════════════════ */
 
-/* ── Navbar ─────────────────────────────────────────────── */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 2.5rem;
-  transition: background 0.4s, box-shadow 0.4s, backdrop-filter 0.4s, all 0.25s ease;
-}
-
-.navbarScrolled {
-  background: rgba(10, 10, 10, 0.8);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #f5f5f5, #b5b5b5);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.navLinks {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.navLinks a {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.25s ease;
-}
-
-.navLinks a:hover {
-  color: #f5f5f5;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-.navCta {
-  padding: 0.5rem 1.25rem;
-  border-radius: 0.625rem;
-  background: #141414;
-  color: white;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  border: 1px solid #2a2a2a;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.navCta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 15px rgba(79, 140, 255, 0.3);
-  border-color: #4f8cff;
-}
-
 /* ── Hero ───────────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -270,16 +200,10 @@
 .featureCard {
   position: relative;
   padding: 2rem;
-  border-radius: 1rem;
-  background: #202020;
-  border: 1px solid #2a2a2a;
-  transition: all 0.25s ease;
 }
 
 .featureCard:hover {
-  border-color: #3a3a3a;
   transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .featureIcon {
@@ -319,11 +243,7 @@
   position: relative;
   text-align: center;
   padding: 5rem 1.5rem;
-  border-radius: 1.5rem;
-  background: #141414;
-  border: 1px solid #2a2a2a;
   overflow: hidden;
-  transition: all 0.25s ease;
 }
 
 .ctaBanner::before {

@@ -49,12 +49,12 @@ export default function PlanTripPage() {
                 {/* Navigation */}
                 <nav className="sticky top-0 z-50 glass">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="w-9 h-9 rounded-xl bg-[#141414] border border-[#2a2a2a] flex items-center justify-center shadow-[0_0_10px_rgba(79, 140, 255,0.15)] hover:border-blue-500 transition-colors">
+                    <Link href="/" className="flex items-center gap-[10px] group">
+                        <div className="w-8 h-8 rounded-full bg-[#141414] border border-[#2a2a2a] flex items-center justify-center shadow-[0_0_10px_rgba(79, 140, 255,0.15)] hover:border-blue-500 transition-colors">
                             <Globe className="w-5 h-5 text-blue-500 group-hover:text-blue-400 transition-colors" />
                         </div>
-                        <span className="text-lg font-bold text-white">
-                            Icon<span className="gradient-text">éra</span>
+                        <span className="text-[18px] font-bold text-white tracking-[2px]">
+                            EYEKON
                         </span>
                     </Link>
                     <Link

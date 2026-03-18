@@ -11,6 +11,8 @@ import ImageTrail from "@/components/landing/ImageTrail";
 import Shuffle from "@/components/landing/Shuffle";
 import Dither from "@/components/Dither";
 import ClientCursor from "@/components/ClientCursor";
+import { PillNav } from "@/components/landing/PillNav";
+import { BrandTag } from "@/components/landing/BrandTag";
 
 const TRAIL_IMAGES = [
   'https://i.pinimg.com/736x/83/2d/ac/832dac09e0d45055beef6e22d6be4a01.jpg',
@@ -24,49 +26,14 @@ const TRAIL_IMAGES = [
 ];
 
 export default function LandingPage() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <div style={{ scrollBehavior: "smooth" }}>
       <ClientCursor />
-      {/* ── Navbar ──────────────────────────────────────── */}
-      <nav className={`${s.navbar} ${scrolled ? s.navbarScrolled : ""}`}>
-        <Shuffle
-          text="Iconéra"
-          className={s.logo}
-          tag="span"
-          shuffleDirection="right"
-          duration={0.35}
-          animationMode="evenodd"
-          shuffleTimes={1}
-          ease="power3.out"
-          stagger={0.03}
-          threshold={0.1}
-          triggerOnce={true}
-          triggerOnHover
-          respectReducedMotion={true}
-          loop={false}
-          loopDelay={0}
-        />
-
-        <ul className={s.navLinks}>
-          <li><a href="#features" className="cursor-target">Features</a></li>
-          <li><a href="#cta" className="cursor-target">Get Started</a></li>
-        </ul>
-
-        <Link href="/trip/plan" className={`${s.navCta} cursor-target`}>
-          Start Planning
-        </Link>
-      </nav>
+      <BrandTag />
+      <PillNav />
 
       {/* ── Hero Section ─────────────────────────── */}
-      <section className={s.hero} id="hero">
+      <section className={s.hero} id="home">
         {/* GridScan animation background */}
         <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
           <GridScan
@@ -176,7 +143,7 @@ export default function LandingPage() {
           </section>
 
           {/* ── CTA ─────────────────────────────────────────── */}
-          <section className="relative overflow-hidden w-full min-h-[600px]" id="cta">
+          <section className="relative overflow-hidden w-full min-h-[600px]" id="how">
             {/* Background Animation */}
             <div className="absolute inset-0 z-0">
               <GalaxyShader />
@@ -184,7 +151,7 @@ export default function LandingPage() {
 
             {/* Content */}
             <div className={`relative z-10 w-full ${s.section}`}>
-              <div className={s.ctaBanner}>
+              <div className={`${s.ctaBanner} bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg hover:bg-white/15 transition-all duration-300`}>
                 <h2 className={s.ctaTitle}>
                   Ready to plan your next adventure?
                 </h2>
@@ -278,7 +245,7 @@ function FeatureCard({
   desc: string;
 }) {
   return (
-    <div className={`${s.featureCard} cursor-target`}>
+    <div className={`${s.featureCard} bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg hover:bg-white/15 transition-all duration-300 cursor-target`}>
       <div className={s.featureIcon}>{icon}</div>
       <h3 className={s.featureTitle}>{title}</h3>
       <p className={s.featureDesc}>{desc}</p>
