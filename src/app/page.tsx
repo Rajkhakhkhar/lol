@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import s from "./landing.module.css";
-import { GridScan } from "@/components/landing/GridScan";
+import dynamic from "next/dynamic";
+const GridScan = dynamic(() => import("@/components/landing/GridScan").then(mod => mod.GridScan), { ssr: false });
+const GalaxyShader = dynamic(() => import("@/components/GalaxyShader").then(mod => mod.GalaxyShader), { ssr: false });
+
 import ImageTrail from "@/components/landing/ImageTrail";
 import Shuffle from "@/components/landing/Shuffle";
 import Dither from "@/components/Dither";
@@ -65,8 +68,9 @@ export default function LandingPage() {
       {/* ── Hero Section ─────────────────────────── */}
       <section className={s.hero} id="hero">
         {/* GridScan animation background */}
-        <div style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: 0, pointerEvents: "none" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
           <GridScan
+            style={{ width: "100%", height: "100%" }}
             sensitivity={0.6}
             lineThickness={1}
             linesColor="#2a1a1a"
@@ -123,51 +127,79 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Features ────────────────────────────────────── */}
-      <section className={s.section} id="features">
-        <div className={s.sectionHeader}>
-          <span className={s.sectionLabel}>Why Iconéra?</span>
-          <h2 className={s.sectionTitle}>Smart, Fast, and Personalized</h2>
-          <p className={s.sectionDesc}>
-            Iconéra is your comprehensive travel companion. Experience a clean,
-            intuitive planner designed to take the stress out of travel preparation.
-          </p>
-        </div>
+      {/* ── Features & CTA (Shared Background) ───────────────── */}
+      <div 
+        className="relative w-full min-h-[600px] overflow-hidden" 
+        style={{ background: "transparent" }}
+      >
+        {/* ── CONTENT ── */}
+        <div className="relative z-10 w-full">
+          {/* ── Features ────────────────────────────────────── */}
+          <section className="relative overflow-hidden w-full min-h-screen py-20 flex flex-col justify-center" id="features">
+            {/* Background Animation */}
+            <div className="absolute inset-0 z-0">
+              <GalaxyShader />
+            </div>
 
-        <div className={s.featuresGrid}>
-          <FeatureCard
-            icon="🗺️"
-            title="Smart Destination Picker"
-            desc="Select your city and get top recommendations instantly."
-          />
-          <FeatureCard
-            icon="🤖"
-            title="AI Generated Itineraries"
-            desc="Get a fully structured day-by-day plan in seconds."
-          />
-          <FeatureCard
-            icon="✏️"
-            title="Customisable Plans"
-            desc="Swap places, adjust times, and personalise every detail."
-          />
-        </div>
-      </section>
+            {/* Content */}
+            <div className="relative z-10 w-full">
+              {/* EXISTING CONTENT — DO NOT MODIFY */}
+              <div className="px-6 max-w-7xl mx-auto w-full">
+                <div className={s.sectionHeader}>
+                  <span className={s.sectionLabel}>Why Iconéra?</span>
+                  <h2 className={s.sectionTitle}>Smart, Fast, and Personalized</h2>
+                  <p className={s.sectionDesc}>
+                    Iconéra is your comprehensive travel companion. Experience a clean,
+                    intuitive planner designed to take the stress out of travel preparation.
+                  </p>
+                </div>
 
-      {/* ── CTA ─────────────────────────────────────────── */}
-      <section className={s.section} id="cta">
-        <div className={s.ctaBanner}>
-          <h2 className={s.ctaTitle}>
-            Ready to plan your next adventure?
-          </h2>
-          <p className={s.ctaDesc}>
-            Join travellers who plan smarter. It takes less than
-            two minutes to create your first itinerary.
-          </p>
-          <Link href="/trip/plan" className={`${s.primaryBtn} cursor-target`} id="cta-start-btn">
-            🚀 Start Planning Trip
-          </Link>
+                <div className={s.featuresGrid}>
+                  <FeatureCard
+                    icon="🗺️"
+                    title="Smart Destination Picker"
+                    desc="Select your city and get top recommendations instantly."
+                  />
+                  <FeatureCard
+                    icon="🤖"
+                    title="AI Generated Itineraries"
+                    desc="Get a fully structured day-by-day plan in seconds."
+                  />
+                  <FeatureCard
+                    icon="✏️"
+                    title="Customisable Plans"
+                    desc="Swap places, adjust times, and personalise every detail."
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── CTA ─────────────────────────────────────────── */}
+          <section className="relative overflow-hidden w-full min-h-[600px]" id="cta">
+            {/* Background Animation */}
+            <div className="absolute inset-0 z-0">
+              <GalaxyShader />
+            </div>
+
+            {/* Content */}
+            <div className={`relative z-10 w-full ${s.section}`}>
+              <div className={s.ctaBanner}>
+                <h2 className={s.ctaTitle}>
+                  Ready to plan your next adventure?
+                </h2>
+                <p className={s.ctaDesc}>
+                  Join travellers who plan smarter. It takes less than
+                  two minutes to create your first itinerary.
+                </p>
+                <Link href="/trip/plan" className={`${s.primaryBtn} cursor-target`} id="cta-start-btn">
+                  🚀 Start Planning Trip
+                </Link>
+              </div>
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
 
       {/* ── Footer ──────────────────────────────────────── */}
       <footer className={s.footer} style={{ position: "relative", overflow: "hidden" }}>

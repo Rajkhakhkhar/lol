@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@react-bits/Galaxy-JS-CSS": ["./src/components/Galaxy.jsx"]
     }
   },
   "include": [
