@@ -13,20 +13,26 @@ interface NavItem {
   href: string;
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', href: '#home' },
-  { label: 'How It Works', href: '#how' },
-  { label: 'Features', href: '#features' },
-  { label: 'Start Project', href: '/trip/plan' }
-];
-
 export function PillNav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem('isAuthenticated') === 'true');
+  }, []);
+
+  const navItems: NavItem[] = [
+    { label: 'Home', href: '#home' },
+    { label: 'How It Works', href: '#how' },
+    { label: 'Features', href: '#features' },
+    { label: 'Start Project', href: '/trip/plan' },
+    { label: isLoggedIn ? 'Dashboard' : 'Login', href: isLoggedIn ? '/trip/dashboard' : '/login' }
+  ];
 
   // ── Scroll & Hide Behavior ──────────────────────────────
   useEffect(() => {
@@ -132,7 +138,7 @@ export function PillNav() {
         {/* Animated Background Indicator */}
         <div ref={indicatorRef} className={s.navIndicator} style={{ opacity: 0 }} />
         
-        {NAV_ITEMS.map((item) => (
+        {navItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}

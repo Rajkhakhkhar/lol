@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import MultiStepForm from '@/components/form/MultiStepForm';
@@ -10,10 +11,17 @@ import { Globe, ArrowLeft } from 'lucide-react';
 import Grainient from '@/components/Grainient';
 
 export default function PlanTripPage() {
+    const router = useRouter();
     const [result, setResult] = useState<{
         tripId: string;
         itinerary: GeminiItineraryResponse;
     } | null>(null);
+
+    useEffect(() => {
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            router.push('/login');
+        }
+    }, [router]);
 
     return (
         <main className="flex-1 min-h-screen relative">

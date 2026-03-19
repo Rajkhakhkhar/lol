@@ -1,50 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export async function GET(req: NextRequest) {
-    const query = req.nextUrl.searchParams.get('q')?.trim();
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-    if (!query || query.length < 2) {
-        return NextResponse.json([]);
-    }
+export async function POST(req: Request) {
+  try {
+    const { prompt } = await req.json();
 
-    try {
-        const apiKey = process.env.OPENAI_API_KEY;
-        if (!apiKey) {
-            return NextResponse.json([]);
-        }
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash-latest"
+    });
 
-        const prompt = `Return only a JSON array of country names that start with or closely match: "${query}". No explanation. Only array. Max 8 results. Example: ["India","Indonesia"]`;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
 
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
-            },
-            body: JSON.stringify({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { role: 'system', content: 'You are a geo-data assistant. Return ONLY a JSON array.' },
-                    { role: 'user', content: prompt }
-                ],
-                response_format: { type: 'json_object' }
-            }),
-        });
+    return Response.json({
+      result: response.text()
+    });
 
-        const data = await response.json();
-        if (!response.ok) {
-            console.error('OpenAI Error:', data);
-            return NextResponse.json([]);
-        }
-
-        const text = data.choices?.[0]?.message?.content || '{}';
-        const parsedData = JSON.parse(text);
-        const countries = Array.isArray(parsedData) ? parsedData : (parsedData.countries || parsedData.results || []);
-
-        return NextResponse.json(
-            Array.isArray(countries) ? countries.slice(0, 8) : []
-        );
-    } catch {
-        return NextResponse.json([]);
-    }
+  } catch (error) {
+    console.error(error);
+    return Response.json({ error: "Failed" }, { status: 500 });
+  }
 }

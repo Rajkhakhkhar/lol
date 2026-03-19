@@ -218,13 +218,6 @@ export default function TripDashboardPage() {
                         <p className="text-white/40 max-w-lg mx-auto mb-6">
                             Review your selections below. Click ⋮ to edit any section.
                         </p>
-                        <Link
-                            href="/trip/ai-plan"
-                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-600/20 border border-blue-500/40 text-blue-400 font-bold hover:bg-blue-600/30 transition-all shadow-[0_0_20px_rgba(37,99,235,0.2)]"
-                        >
-                            <Sparkles className="w-5 h-5" />
-                            Generate AI Plan ✨
-                        </Link>
                     </div>
 
                     {rows.length === 0 ? (

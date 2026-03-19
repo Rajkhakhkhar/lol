@@ -1,57 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export async function POST(req: NextRequest) {
-    try {
-        const { destination, days, budget } = await req.json();
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-        if (!destination || !days || !budget) {
-            return NextResponse.json(
-                { error: 'Missing required fields: destination, days, budget' },
-                { status: 400 }
-            );
-        }
+export async function POST(req: Request) {
+  try {
+    const { prompt } = await req.json();
 
-        // Pool of sample activities to pick from
-        const activityPool = [
-            'Visit main attraction',
-            'Local food tour',
-            'Museum visit',
-            'Evening city walk',
-            'Historical landmark tour',
-            'Shopping at local markets',
-            'Scenic viewpoint hike',
-            'Boat ride or water activity',
-            'Cultural show or performance',
-            'Try street food specialties',
-            'Visit a local park or garden',
-            'Photography walk',
-            'Cooking class',
-            'Temple or monument visit',
-            'Sunset viewing spot',
-        ];
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash-latest"
+    });
 
-        // Generate a plan for each day
-        const plan = Array.from({ length: Number(days) }, (_, i) => {
-            const startIdx = (i * 2) % activityPool.length;
-            const activities = [
-                activityPool[startIdx],
-                activityPool[(startIdx + 1) % activityPool.length],
-            ];
-            return { day: i + 1, activities };
-        });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
 
-        const itinerary = {
-            destination,
-            days: Number(days),
-            budget: Number(budget),
-            plan,
-        };
+    return Response.json({
+      result: response.text()
+    });
 
-        return NextResponse.json(itinerary);
-    } catch {
-        return NextResponse.json(
-            { error: 'Invalid request body' },
-            { status: 400 }
-        );
-    }
+  } catch (error) {
+    console.error(error);
+    return Response.json({ error: "Failed" }, { status: 500 });
+  }
 }

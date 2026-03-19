@@ -26,6 +26,14 @@ const TRAIL_IMAGES = [
 ];
 
 export default function LandingPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(localStorage.getItem('isAuthenticated') === 'true');
+  }, []);
+
+  const startUrl = isAuthenticated ? "/trip/plan" : "/login";
+
   return (
     <div style={{ scrollBehavior: "smooth" }}>
       <ClientCursor />
@@ -70,7 +78,7 @@ export default function LandingPage() {
         </p>
 
         <div className={s.heroActions} style={{ position: "relative", zIndex: 1 }}>
-          <Link href="/trip/plan" className={`${s.primaryBtn} cursor-target`} id="hero-start-btn">
+          <Link href={startUrl} className={`${s.primaryBtn} cursor-target`} id="hero-start-btn">
             🚀 Start Planning Trip
           </Link>
           <a href="#features" className={`${s.secondaryBtn} cursor-target`}>
@@ -159,7 +167,7 @@ export default function LandingPage() {
                   Join travellers who plan smarter. It takes less than
                   two minutes to create your first itinerary.
                 </p>
-                <Link href="/trip/plan" className={`${s.primaryBtn} cursor-target`} id="cta-start-btn">
+                <Link href={startUrl} className={`${s.primaryBtn} cursor-target`} id="cta-start-btn">
                   🚀 Start Planning Trip
                 </Link>
               </div>
@@ -197,7 +205,7 @@ export default function LandingPage() {
             <div className={s.footerLinks}>
               <h4 className={s.footerLinksTitle}>Quick Links</h4>
               <ul>
-                <li><Link href="/trip/plan" className="cursor-target">Start Planning</Link></li>
+                <li><Link href={startUrl} className="cursor-target">Start Planning</Link></li>
                 <li><a href="#features" className="cursor-target">Features</a></li>
                 <li><a href="#how-it-works" className="cursor-target">How It Works</a></li>
                 <li><a href="#cta" className="cursor-target">Get Started</a></li>
