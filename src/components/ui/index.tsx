@@ -233,10 +233,7 @@ export function ProgressSteps({ steps, currentStep }: ProgressStepsProps) {
         <div className="w-full overflow-x-auto no-scrollbar mb-6 sm:mb-10 pb-2">
             <div 
                 ref={scrollRef}
-                className={cn(
-                    "flex items-center min-w-max mx-auto px-4 sm:px-10",
-                    steps.length <= 4 ? "justify-center" : "justify-start"
-                )}
+                className="flex items-center justify-center min-w-max mx-auto px-4 sm:px-10 gap-0"
             >
                 {steps.map((step, index) => {
                     const isActive = index === currentStep;
@@ -246,14 +243,14 @@ export function ProgressSteps({ steps, currentStep }: ProgressStepsProps) {
                         <React.Fragment key={index}>
                             <div className="flex flex-col items-center gap-1.5 shrink-0">
                                 <div className={cn(
-                                    'w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-500 border',
+                                    'w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-500 border leading-none shrink-0',
                                     isCompleted
                                         ? 'bg-black border-black text-white shadow-[0_0_15px_rgba(0,0,0,0.3)]'
                                         : isActive
                                             ? 'bg-black border-black text-white shadow-[0_0_10px_rgba(0,0,0,0.2)] scale-110'
                                             : 'bg-[#2a2a2a] border-[#3a3a3a] text-white'
                                 )}>
-                                    {isCompleted ? '✓' : index + 1}
+                                    <span className="flex items-center justify-center w-full h-full text-center">{isCompleted ? '✓' : index + 1}</span>
                                 </div>
                                 <span className={cn(
                                     'text-[9px] sm:text-[10px] font-medium transition-colors w-16 sm:w-20 text-center truncate px-1',

@@ -168,12 +168,19 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
         <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <ProgressSteps steps={STEPS} currentStep={step} />
             <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-8 min-h-[460px]">
-                <AnimatePresence mode="wait" custom={direction}>
+                <AnimatePresence mode="wait">
                     <motion.div
                         key={step}
-                        custom={direction}
-                        variants={{ enter: d => ({ x: d > 0 ? 300 : -300, opacity: 0 }), center: { x: 0, opacity: 1 }, exit: d => ({ x: d > 0 ? -300 : 300, opacity: 0 }) }}
-                        initial="enter" animate="center" exit="exit"
+                        // We use a simple fade-in transition here to avoid jank from sliding
+                        variants={{ 
+                            enter: { opacity: 0 }, 
+                            center: { opacity: 1 }, 
+                            exit: { opacity: 0 } 
+                        }}
+                        initial="enter" 
+                        animate="center" 
+                        exit="exit"
+                        transition={{ duration: 0.2 }} // Fast, clean transition
                     >
                         {step === 0 && <TravelerInfoStep data={formData.traveler_info} onChange={traveler_info => setFormData({ ...formData, traveler_info })} />}
                         {step === 1 && <TravelLogisticsStep data={formData.travel_logistics} onChange={travel_logistics => setFormData({ ...formData, travel_logistics })} />}

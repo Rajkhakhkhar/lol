@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, ArrowRight, Mail, Phone, Lock, AlertCircle, Key, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import PrismaticBurst from '@/components/animations/PrismaticBurst';
+import PasswordStrength from '@/components/ui/PasswordStrength';
 
 type RecoveryMethod = 'email' | 'phone' | 'pin';
 
@@ -281,6 +282,7 @@ export default function ForgotPasswordPage() {
                                                     className="w-full h-16 pl-14 pr-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-blue-500 transition-all text-lg"
                                                 />
                                             </div>
+                                            {newPassword.length > 0 && <PasswordStrength password={newPassword} />}
                                         </div>
                                         <div className="space-y-3">
                                             <label className="text-[10px] sm:text-xs font-bold text-white/60 ml-1 uppercase tracking-wider">Confirm New Password</label>

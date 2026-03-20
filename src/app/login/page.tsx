@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Globe, ArrowRight, Mail, Lock, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import PrismaticBurst from '@/components/animations/PrismaticBurst';
+import PasswordStrength from '@/components/ui/PasswordStrength';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -116,6 +117,7 @@ export default function LoginPage() {
                                 className="w-full h-14 sm:h-16 pl-12 sm:pl-14 pr-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-pink-500 transition-all text-base sm:text-lg"
                             />
                         </div>
+                        {password.length > 0 && <PasswordStrength password={password} />}
                         <div className="flex justify-end mt-1.5">
                             <Link 
                                 href="/forgot-password" 
