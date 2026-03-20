@@ -16,7 +16,7 @@ export interface User {
 export type TripStatus = 'draft' | 'planning' | 'generating' | 'ready' | 'error';
 export type TravelPace = 'relaxed' | 'moderate' | 'intensive';
 export type TravelType = 'solo' | 'couple' | 'family' | 'friends' | 'business';
-export type TransportMode = 'walking' | 'public_transport' | 'car' | 'taxi' | 'mixed';
+export type TransportMode = 'walking' | 'public_transport' | 'car' | 'taxi' | 'mixed' | 'airplane' | 'bus' | 'two-wheeler';
 export type TimePreference = 'morning' | 'afternoon' | 'evening' | 'flexible';
 export type EnvironmentPreference = 'indoor' | 'outdoor' | 'mixed';
 
@@ -197,6 +197,8 @@ export interface DayPlanForm {
   date: string;        // ISO date string (YYYY-MM-DD)
   dayNumber: number;
   hotel: string;
+  checkin_time?: string;
+  checkout_time?: string;
   places: DayPlanPlace[];
 }
 

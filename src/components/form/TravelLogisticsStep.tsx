@@ -1,8 +1,11 @@
 'use client';
 
-import { Input, Select } from '@/components/ui';
+import { Input, Select, Badge } from '@/components/ui';
 import type { TravelLogisticsForm } from '@/types';
-import { MapPin, Plane, Hotel, Car } from 'lucide-react';
+import { MapPin, Plane, Car, AlertTriangle, CheckCircle2, Bike, Bus } from 'lucide-react';
+import { TRANSPORT_ACCESSIBILITY, getTransportAccessibilityAdvice } from '@/lib/accessibility';
+import { cn } from '@/lib/utils';
+import { Train } from 'lucide-react';
 
 const citiesByCountry: Record<string, string[]> = {
     India: ['Delhi', 'Mumbai', 'Bangalore', 'Chennai', 'Hyderabad', 'Kolkata', 'Pune', 'Jaipur', 'Ahmedabad', 'Goa'],
@@ -30,10 +33,20 @@ const citiesByCountry: Record<string, string[]> = {
 interface Props {
     data: TravelLogisticsForm;
     onChange: (data: TravelLogisticsForm) => void;
+    accessibilityNeeds?: boolean;
 }
 
-export default function TravelLogisticsStep({ data, onChange }: Props) {
+export default function TravelLogisticsStep({ data, onChange, accessibilityNeeds }: Props) {
     const update = (field: Partial<TravelLogisticsForm>) => onChange({ ...data, ...field });
+
+    const getRecommendationStatus = (mode: string) => {
+        if (!accessibilityNeeds) return null;
+        
+        // Match specialized modes first
+        if (mode === 'airplane' || mode === 'car' || mode === 'taxi' || mode === 'train') return 'recommended';
+        if (mode === 'bus' || mode === 'two-wheeler') return 'not_recommended';
+        return 'neutral';
+    };
 
     return (
         <div className="space-y-6">
@@ -117,52 +130,58 @@ export default function TravelLogisticsStep({ data, onChange }: Props) {
                 </div>
             </div>
 
-            {/* Hotel */}
-            <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
-                <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Hotel className="w-4 h-4 text-blue-500" />
-                    Hotel
-                </div>
-                <Input
-                    label="Hotel Location / Name"
-                    placeholder="e.g., Shinjuku Granbell Hotel, Tokyo"
-                    value={data.hotel_location}
-                    onChange={e => update({ hotel_location: e.target.value })}
-                />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Input
-                        label="Check-in Time"
-                        type="time"
-                        value={data.hotel_checkin_time}
-                        onChange={e => update({ hotel_checkin_time: e.target.value })}
-                    />
-                    <Input
-                        label="Check-out Time"
-                        type="time"
-                        value={data.hotel_checkout_time}
-                        onChange={e => update({ hotel_checkout_time: e.target.value })}
-                    />
-                </div>
-            </div>
+
 
             {/* Transport */}
             <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
-                <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Car className="w-4 h-4 text-pink-500" />
-                    Transport
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm font-medium text-white/80">
+                        <Car className="w-4 h-4 text-pink-500" />
+                        Transport Mode
+                    </div>
                 </div>
+
                 <Select
-                    label="Primary Transport Mode"
                     value={data.transport_mode}
-                    onChange={e => update({ transport_mode: e.target.value as TravelLogisticsForm['transport_mode'] })}
+                    onChange={e => update({ transport_mode: e.target.value as any })}
                     options={[
-                        { value: 'walking', label: '🚶 Walking' },
-                        { value: 'public_transport', label: '🚇 Public Transport' },
-                        { value: 'car', label: '🚗 Rental Car' },
-                        { value: 'taxi', label: '🚕 Taxi / Rideshare' },
-                        { value: 'mixed', label: '🔀 Mixed' },
+                        { value: '', label: 'Select transport mode' },
+                        { value: 'airplane', label: '✈️ Airplane' },
+                        { value: 'car', label: '🚗 Car' },
+                        { value: 'bus', label: '🚌 Bus' },
+                        { value: 'train', label: '🚆 Train' },
+                        { value: 'two-wheeler', label: '🛵 Two-wheeler' },
                     ]}
                 />
+
+                {accessibilityNeeds && data.transport_mode && (
+                    <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 animate-in fade-in slide-in-from-top-1 duration-300">
+                        <div className="flex items-start gap-3">
+                            {getRecommendationStatus(data.transport_mode) === 'recommended' ? (
+                                <CheckCircle2 className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                            ) : (
+                                <AlertTriangle className="w-4 h-4 text-pink-500 mt-0.5 flex-shrink-0" />
+                            )}
+                            <div>
+                                <p className={cn(
+                                    "text-xs font-medium",
+                                    getRecommendationStatus(data.transport_mode) === 'recommended' ? "text-blue-400" : "text-pink-400"
+                                )}>
+                                    {getRecommendationStatus(data.transport_mode) === 'recommended' ? 'Recommended' : 'Accessibility Note'}
+                                </p>
+                                <p className="text-[11px] text-white/50 mt-0.5">
+                                    {getTransportAccessibilityAdvice(data.transport_mode)?.message}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {accessibilityNeeds && !data.transport_mode && (
+                    <p className="text-[11px] text-white/30 italic px-1">
+                        Select a mode to see accessibility recommendations.
+                    </p>
+                )}
             </div>
         </div>
     );

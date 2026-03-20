@@ -103,8 +103,8 @@ export default function LandingPage() {
       </section>
 
       {/* ── Features & CTA (Shared Background) ───────────────── */}
-      <div 
-        className="relative w-full min-h-[600px] overflow-hidden" 
+      <div
+        className="relative w-full min-h-[600px] overflow-hidden"
         style={{ background: "transparent" }}
       >
         {/* ── CONTENT ── */}

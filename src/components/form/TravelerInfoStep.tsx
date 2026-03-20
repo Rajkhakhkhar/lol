@@ -2,7 +2,8 @@
 
 import { Input, Select, Toggle } from '@/components/ui';
 import type { TravelerInfoForm } from '@/types';
-import { Users, Baby, Compass } from 'lucide-react';
+import { Users, Baby, Compass, CheckCircle2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface Props {
     data: TravelerInfoForm;
@@ -99,14 +100,30 @@ export default function TravelerInfoStep({ data, onChange }: Props) {
                 />
             </div>
 
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-[#202020] border border-[#2a2a2a]">
-                <Compass className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                <Toggle
-                    checked={data.accessibility_needs}
-                    onChange={checked => update({ accessibility_needs: checked })}
-                    label="Accessibility Requirements"
-                    description="Wheelchair access, limited mobility, or special needs"
-                />
+            <div className={cn(
+                "p-4 rounded-xl transition-all duration-300 border flex flex-col gap-3",
+                data.accessibility_needs 
+                    ? "bg-blue-500/5 border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.1)]" 
+                    : "bg-[#202020] border-[#2a2a2a]"
+            )}>
+                <div className="flex items-center gap-3">
+                    <Compass className={cn("w-5 h-5 flex-shrink-0 transition-colors", data.accessibility_needs ? "text-blue-500" : "text-[#7a7a7a]")} />
+                    <Toggle
+                        checked={data.accessibility_needs}
+                        onChange={checked => update({ accessibility_needs: checked })}
+                        label="Accessibility Requirements"
+                        description="Wheelchair access, limited mobility, or special needs"
+                    />
+                </div>
+                
+                {data.accessibility_needs && (
+                    <div className="flex items-center gap-2 pl-8 pr-2 py-1 select-none animate-in fade-in slide-in-from-top-1 duration-300">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-blue-500" />
+                        <p className="text-xs text-blue-100/60 italic font-medium">
+                            Setting priority: We will highlight accessible transport and recommend optimized routes.
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     );

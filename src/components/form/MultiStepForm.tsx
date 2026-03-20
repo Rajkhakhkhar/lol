@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button, ProgressSteps, Spinner } from '@/components/ui';
+import { Button, ProgressSteps, Spinner, Toggle } from '@/components/ui';
 import TravelerInfoStep from './TravelerInfoStep';
 import TravelLogisticsStep from './TravelLogisticsStep';
 import DayPlanStep from './DayPlanStep';
@@ -13,8 +13,8 @@ import ConstraintsStep from './ConstraintsStep';
 import type { TripFormData, GeminiItineraryResponse, DayPlanForm } from '@/types';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 
-const BASE_STEPS_BEFORE_DAYS = ['Travelers', 'Logistics'];
-const BASE_STEPS_AFTER_DAYS = ['Budget', 'Interests', 'Constraints'];
+const INITIAL_STEPS = ['Travelers', 'Trip Setup'];
+const FINAL_STEPS = ['Budget', 'Interests', 'Constraints'];
 
 const DEFAULT_FORM: TripFormData = {
     traveler_info: { adults: 2, children: 0, children_ages: [], travel_type: 'couple', travel_pace: 'moderate', accessibility_needs: false },
@@ -63,18 +63,20 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState<TripFormData>(DEFAULT_FORM);
     const [loading, setLoading] = useState(false);
-    const [callingAI, setCallingAI] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [direction, setDirection] = useState(1);
-    const autofillTriggeredRef = useRef(false);
 
-    const tripDays = useMemo(() => calculateTripDays(formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime), [formData.travel_logistics]);
-    const STEPS = useMemo(() => [...BASE_STEPS_BEFORE_DAYS, ...Array.from({ length: tripDays }, (_, i) => `Day ${i + 1}`), ...BASE_STEPS_AFTER_DAYS], [tripDays]);
+    const tripDays = useMemo(() => calculateTripDays(formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime), [formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime]);
+
+    const steps = useMemo(() => {
+        const daySteps = Array.from({ length: tripDays }, (_, i) => `Day ${i + 1}`);
+        return [...INITIAL_STEPS, ...daySteps, ...FINAL_STEPS];
+    }, [tripDays]);
 
     useEffect(() => {
         const s = parseInt(searchParams.get('step') || '', 10);
-        if (s >= 1 && s <= STEPS.length) setStep(s - 1);
-    }, [searchParams, STEPS]);
+        if (s >= 1 && s <= steps.length) setStep(s - 1);
+    }, [searchParams, steps.length]);
 
     useEffect(() => {
         if (isEditMode) {
@@ -93,21 +95,11 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
         }
     }, [formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime]);
 
-    const autoFillSuggestions = async () => {
-        return; // do nothing
-    };
-
-    // AI Autofill disabled:
-    // useEffect(() => {
-    //     if (step > 1 && step < 2 + tripDays) autoFillSuggestions();
-    // }, [step, tripDays, autoFillSuggestions]);
-
     const handleSubmit = async () => {
         setLoading(true);
         setError(null);
 
         try {
-            // Requirement #7: Display dashboard immediately after completion without any AI calls
             localStorage.setItem('tripData', JSON.stringify(formData));
             router.push('/trip/dashboard');
         } catch (err: any) {
@@ -117,9 +109,19 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
         }
     };
 
+    const validateStep = (): boolean => {
+        const s = step;
+        if (s === 0) return formData.traveler_info.adults >= 1;
+        if (s === 1) {
+            const tl = formData.travel_logistics;
+            return !!(tl.destination_country && tl.destination_city && tl.arrival_datetime && tl.departure_datetime && new Date(tl.departure_datetime) > new Date(tl.arrival_datetime));
+        }
+        return true;
+    };
+
     const next = () => {
         if (!validateStep()) return;
-        if (step < STEPS.length - 1) {
+        if (step < steps.length - 1) {
             setDirection(1);
             setStep(s => s + 1);
         } else {
@@ -132,16 +134,6 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
             setDirection(-1);
             setStep(s => s - 1);
         }
-    };
-
-    const validateStep = (): boolean => {
-        const s = step;
-        if (s === 0) return formData.traveler_info.adults >= 1;
-        if (s === 1) {
-            const tl = formData.travel_logistics;
-            return !!(tl.destination_country && tl.destination_city && tl.arrival_datetime && tl.departure_datetime && new Date(tl.departure_datetime) > new Date(tl.arrival_datetime));
-        }
-        return true;
     };
 
     const handleSameHotelToggle = (checked: boolean) => {
@@ -162,16 +154,22 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
         }));
     };
 
-    const isLastStep = step === STEPS.length - 1;
+    const isLastStep = step === steps.length - 1;
+    
+    // Logic for rendering steps based on the new dynamic flow
+    const isDayStep = step >= INITIAL_STEPS.length && step < INITIAL_STEPS.length + tripDays;
+    const dayIndex = isDayStep ? step - INITIAL_STEPS.length : -1;
+    
+    // Find index for FINAL_STEPS
+    const finalStepRelativeIndex = step - (INITIAL_STEPS.length + tripDays);
 
     return (
         <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ProgressSteps steps={STEPS} currentStep={step} />
+            <ProgressSteps steps={steps} currentStep={step} />
             <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-8 min-h-[460px]">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={step}
-                        // We use a simple fade-in transition here to avoid jank from sliding
                         variants={{ 
                             enter: { opacity: 0 }, 
                             center: { opacity: 1 }, 
@@ -180,16 +178,19 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
                         initial="enter" 
                         animate="center" 
                         exit="exit"
-                        transition={{ duration: 0.2 }} // Fast, clean transition
+                        transition={{ duration: 0.2 }}
                     >
+                        {/* INITIAL STEPS */}
                         {step === 0 && <TravelerInfoStep data={formData.traveler_info} onChange={traveler_info => setFormData({ ...formData, traveler_info })} />}
-                        {step === 1 && <TravelLogisticsStep data={formData.travel_logistics} onChange={travel_logistics => setFormData({ ...formData, travel_logistics })} />}
-                        {step >= 2 && step < 2 + tripDays && formData.day_plans[step - 2] && (
+                        {step === 1 && <TravelLogisticsStep data={formData.travel_logistics} onChange={travel_logistics => setFormData({ ...formData, travel_logistics })} accessibilityNeeds={formData.traveler_info.accessibility_needs} />}
+                        
+                        {/* DYNAMIC DAY STEPS */}
+                        {isDayStep && dayIndex !== -1 && (
                             <DayPlanStep
-                                data={formData.day_plans[step - 2]}
-                                onChange={dp => setFormData(prev => { 
+                                data={formData.day_plans[dayIndex]}
+                                onChange={updatedDay => setFormData(prev => { 
                                     const next = [...prev.day_plans]; 
-                                    next[step - 2] = dp; 
+                                    next[dayIndex] = updatedDay; 
                                     return { ...prev, day_plans: next }; 
                                 })}
                                 city={formData.travel_logistics.destination_city}
@@ -198,12 +199,17 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
                                 onSameHotelToggle={handleSameHotelToggle}
                                 globalHotel={formData.day_plans.length > 0 ? formData.day_plans[0].hotel : ''}
                                 onGlobalHotelChange={handleGlobalHotelChange}
-                                isFirstDay={step === 2}
+                                isFirstDay={dayIndex === 0}
+                                isLastDay={dayIndex === tripDays - 1}
+                                allDays={formData.day_plans}
+                                accessibilityNeeds={formData.traveler_info.accessibility_needs}
                             />
                         )}
-                        {step === 2 + tripDays && <BudgetStep data={formData.budget} onChange={budget => setFormData({ ...formData, budget })} />}
-                        {step === 3 + tripDays && <InterestsStep data={formData.interests} onChange={interests => setFormData({ ...formData, interests })} />}
-                        {step === 4 + tripDays && <ConstraintsStep data={formData.constraints} onChange={constraints => setFormData({ ...formData, constraints })} />}
+
+                        {/* FINAL PREFERENCE STEPS */}
+                        {finalStepRelativeIndex === 0 && <BudgetStep data={formData.budget} onChange={budget => setFormData({ ...formData, budget })} />}
+                        {finalStepRelativeIndex === 1 && <InterestsStep data={formData.interests} onChange={interests => setFormData({ ...formData, interests })} />}
+                        {finalStepRelativeIndex === 2 && <ConstraintsStep data={formData.constraints} onChange={constraints => setFormData({ ...formData, constraints })} />}
                     </motion.div>
                 </AnimatePresence>
             </div>

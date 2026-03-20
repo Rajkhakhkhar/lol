@@ -1,9 +1,12 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Input, Toggle } from '@/components/ui';
+import { Input, Toggle, Badge } from '@/components/ui';
 import type { DayPlanForm, DayPlanPlace } from '@/types';
-import { Calendar, Hotel, MapPin, Plus, Trash2, Clock, Sparkles, Loader2 } from 'lucide-react';
+import { Calendar, Hotel, MapPin, Plus, Trash2, Clock, Sparkles, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import PlaceSuggestions from '@/components/common/PlaceSuggestions';
+import { getActivityAccessibilityAdvice, getHotelAccessibilityAdvice } from '@/lib/accessibility';
+import { cn } from '@/lib/utils';
 
 interface Props {
     data: DayPlanForm;
@@ -15,6 +18,9 @@ interface Props {
     globalHotel: string;
     onGlobalHotelChange: (hotel: string) => void;
     isFirstDay: boolean;
+    isLastDay: boolean;
+    allDays: DayPlanForm[];
+    accessibilityNeeds?: boolean;
 }
 
 export default function DayPlanStep({
@@ -27,12 +33,12 @@ export default function DayPlanStep({
     globalHotel,
     onGlobalHotelChange,
     isFirstDay,
+    isLastDay,
+    allDays,
+    accessibilityNeeds,
 }: Props) {
     const [placeInput, setPlaceInput] = useState('');
     const [timeInput, setTimeInput] = useState('10:00');
-    const [suggestions, setSuggestions] = useState<string[]>([]);
-    const [loadingSuggestions, setLoadingSuggestions] = useState(false);
-    const [suggestionsLoaded, setSuggestionsLoaded] = useState(false);
 
     const formatDate = (dateStr: string) => {
         if (!dateStr) return '';
@@ -40,14 +46,6 @@ export default function DayPlanStep({
         return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
     };
 
-    // Place suggestions disabled:
-    const fetchSuggestions = useCallback(async () => {
-        return; // do nothing
-    }, []);
-
-    // useEffect(() => {
-    //     fetchSuggestions();
-    // }, [fetchSuggestions]);
 
     const addPlace = (name?: string) => {
         const placeName = name || placeInput.trim();
@@ -83,11 +81,19 @@ export default function DayPlanStep({
     };
 
     const currentHotel = sameHotelForAllDays ? globalHotel : data.hotel;
+    const hotelAdvice = accessibilityNeeds ? getHotelAccessibilityAdvice(currentHotel) : null;
 
-    // Filter out already-added places from suggestions
-    const filteredSuggestions = suggestions.filter(
-        s => !data.places.some(p => p.name.toLowerCase() === s.toLowerCase())
-    );
+    // Logic for showing hotel fields
+    const prevDayHotel = data.dayNumber > 1 ? allDays[data.dayNumber - 2]?.hotel : null;
+    const nextDayHotel = data.dayNumber < allDays.length ? allDays[data.dayNumber]?.hotel : null;
+
+    const isFirstDayOfThisHotel = sameHotelForAllDays ? isFirstDay : (data.hotel !== prevDayHotel);
+    const isLastDayOfThisHotel = sameHotelForAllDays ? isLastDay : (data.hotel !== nextDayHotel);
+
+    const showHotelNameInput = !sameHotelForAllDays || isFirstDay;
+    const showCheckIn = isFirstDayOfThisHotel;
+    const showCheckOut = isLastDayOfThisHotel;
+
 
     return (
         <div className="space-y-6">
@@ -106,33 +112,81 @@ export default function DayPlanStep({
 
             {/* Hotel Toggle + Selection (show toggle only on first day) */}
             <div className="p-5 rounded-xl bg-[#202020] border border-[#2a2a2a] space-y-4">
-                <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Hotel className="w-4 h-4 text-blue-500" />
-                    Hotel
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm font-medium text-white/80">
+                        <Hotel className="w-4 h-4 text-blue-500" />
+                        Hotel Assignment
+                    </div>
+                    {isFirstDay && (
+                        <Toggle
+                            checked={sameHotelForAllDays}
+                            onChange={onSameHotelToggle}
+                            label="Same hotel for all days"
+                        />
+                    )}
                 </div>
 
-                {isFirstDay && (
-                    <Toggle
-                        checked={sameHotelForAllDays}
-                        onChange={onSameHotelToggle}
-                        label="Use same hotel for all days"
-                        description="Selected hotel will apply to every day automatically"
-                    />
+                {accessibilityNeeds && currentHotel && (
+                    <div className="flex items-center gap-2 p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
+                        <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                        <span className="text-xs text-blue-100/70">
+                            {hotelAdvice?.message || 'We recommend ensuring this hotel provides wheelchair access.'}
+                        </span>
+                        <Badge variant="accent" className="ml-auto text-[10px]">♿ Preferred</Badge>
+                    </div>
                 )}
 
-                {(!sameHotelForAllDays || isFirstDay) && (
-                    <Input
-                        label={sameHotelForAllDays ? 'Hotel for all days' : `Hotel for Day ${data.dayNumber}`}
-                        placeholder="e.g., Grand Hyatt, City Center"
-                        value={currentHotel}
-                        onChange={e => updateHotel(e.target.value)}
-                    />
+                {/* Hotel Selection Logic */}
+                {showHotelNameInput && (
+                    <div className="space-y-4 pt-2">
+                        <Input
+                            label={sameHotelForAllDays ? 'Hotel for all days' : `Hotel for Day ${data.dayNumber}`}
+                            placeholder="e.g., Grand Hyatt, City Center"
+                            value={currentHotel}
+                            onChange={e => updateHotel(e.target.value)}
+                            className={cn(accessibilityNeeds && 'focus:border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.1)]')}
+                        />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {showCheckIn && (
+                                <Input
+                                    label="Check-in Time"
+                                    type="time"
+                                    value={data.checkin_time || '14:00'}
+                                    onChange={e => onChange({ ...data, checkin_time: e.target.value })}
+                                />
+                            )}
+                            {showCheckOut && (
+                                <Input
+                                    label="Check-out Time"
+                                    type="time"
+                                    value={data.checkout_time || '11:00'}
+                                    onChange={e => onChange({ ...data, checkout_time: e.target.value })}
+                                />
+                            )}
+                        </div>
+                        <div className="flex flex-wrap gap-2 text-[10px] text-white/30 uppercase tracking-wider font-semibold">
+                            {showCheckIn && <span>• Check-in only required on first day</span>}
+                            {showCheckOut && <span>• Check-out only required on last day</span>}
+                        </div>
+                    </div>
                 )}
 
-                {sameHotelForAllDays && !isFirstDay && (
-                    <p className="text-sm text-white/50">
-                        🏨 Using: <span className="text-white font-medium">{globalHotel || 'Not set yet'}</span>
-                    </p>
+                {!showHotelNameInput && (
+                    <div className="space-y-3 pt-2">
+                        <p className="text-sm text-white/50 flex items-center gap-2">
+                            🏨 Staying at: <span className="text-white font-medium">{globalHotel || 'Not set yet'}</span>
+                        </p>
+                        {showCheckOut && (
+                            <div className="w-full sm:w-1/2">
+                                <Input
+                                    label="Check-out Time (Final Day)"
+                                    type="time"
+                                    value={data.checkout_time || '11:00'}
+                                    onChange={e => onChange({ ...data, checkout_time: e.target.value })}
+                                />
+                            </div>
+                        )}
+                    </div>
                 )}
             </div>
 
@@ -186,35 +240,52 @@ export default function DayPlanStep({
                 {/* Added Places List */}
                 {data.places.length > 0 && (
                     <div className="space-y-2">
-                        {data.places.map((place, index) => (
-                            <div
-                                key={index}
-                                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg bg-[#141414] border border-[#2a2a2a] gap-3"
-                            >
-                                <div className="flex items-center gap-3 flex-1 min-w-0">
-                                    <MapPin className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                    <span className="text-sm font-medium text-white truncate">{place.name}</span>
-                                </div>
-                                <div className="flex items-center justify-between sm:justify-end gap-3 flex-shrink-0">
-                                    <div className="flex items-center gap-2">
-                                        <Clock className="w-3.5 h-3.5 text-white/40" />
-                                        <Input
-                                            type="time"
-                                            value={place.time}
-                                            onChange={e => updatePlaceTime(index, e.target.value)}
-                                            className="w-28 !h-8 text-xs sm:text-xs"
-                                        />
+                        {data.places.map((place, index) => {
+                            const activityAdvice = accessibilityNeeds ? getActivityAccessibilityAdvice(place.name) : null;
+                            const isNotRecommended = activityAdvice?.level === 'not_recommended';
+
+                            return (
+                                <div
+                                    key={index}
+                                    className={cn(
+                                        "flex flex-col p-3 rounded-lg bg-[#141414] border transition-all",
+                                        isNotRecommended ? "border-pink-500/30 shadow-[0_0_10px_rgba(255,110,199,0.1)]" : "border-[#2a2a2a]"
+                                    )}
+                                >
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                                            <MapPin className={cn("w-4 h-4 flex-shrink-0", isNotRecommended ? "text-pink-500" : "text-blue-500")} />
+                                            <div className="flex flex-col min-w-0">
+                                                <span className="text-sm font-medium text-white truncate">{place.name}</span>
+                                                {isNotRecommended && activityAdvice && (
+                                                    <span className="text-[10px] text-pink-500/80 font-medium">
+                                                        ⚠️ {activityAdvice.badge}: {activityAdvice.message}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center justify-between sm:justify-end gap-3 flex-shrink-0">
+                                            <div className="flex items-center gap-2">
+                                                <Clock className="w-3.5 h-3.5 text-white/40" />
+                                                <Input
+                                                    type="time"
+                                                    value={place.time}
+                                                    onChange={e => updatePlaceTime(index, e.target.value)}
+                                                    className="w-28 !h-8 text-xs sm:text-xs"
+                                                />
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => removePlace(index)}
+                                                className="p-1.5 rounded-lg hover:bg-pink-500/20 text-[#7a7a7a] hover:text-pink-500 transition-colors cursor-pointer"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
                                     </div>
-                                    <button
-                                        type="button"
-                                        onClick={() => removePlace(index)}
-                                        className="p-1.5 rounded-lg hover:bg-pink-500/20 text-[#7a7a7a] hover:text-pink-500 transition-colors cursor-pointer"
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
 
@@ -225,39 +296,13 @@ export default function DayPlanStep({
                 )}
             </div>
 
-            {/* Popular Places Suggestions */}
-            <div className="p-5 rounded-xl border border-blue-500/20 bg-blue-900/10 space-y-3">
-                <div className="flex items-center gap-2 text-sm font-medium text-white/80">
-                    <Sparkles className="w-4 h-4 text-blue-500" />
-                    Popular places in {city || 'your city'}
-                </div>
-
-                {loadingSuggestions ? (
-                    <div className="flex items-center gap-2 py-3">
-                        <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
-                        <span className="text-sm text-white/40">Loading suggestions...</span>
-                    </div>
-                ) : filteredSuggestions.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                        {filteredSuggestions.map(place => (
-                            <button
-                                key={place}
-                                type="button"
-                                onClick={() => addPlace(place)}
-                                className="px-3 py-1.5 rounded-lg bg-[#141414] hover:bg-[#202020] text-[#b5b5b5] hover:text-[#f5f5f5] text-sm font-medium border border-[#2a2a2a] hover:border-[#3a3a3a] transition-all cursor-pointer"
-                            >
-                                + {place}
-                            </button>
-                        ))}
-                    </div>
-                ) : suggestionsLoaded ? (
-                    <p className="text-sm text-white/30 py-2">
-                        {suggestions.length > 0
-                            ? 'All suggested places have been added!'
-                            : 'No suggestions available for this city.'}
-                    </p>
-                ) : null}
-            </div>
+            {/* AI Place Suggestions */}
+            <PlaceSuggestions 
+                city={city} 
+                country={country} 
+                onSelect={(placeName) => addPlace(placeName)}
+                className="mt-8 pt-8 border-t border-white/5"
+            />
         </div>
     );
 }

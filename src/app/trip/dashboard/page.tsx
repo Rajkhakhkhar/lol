@@ -77,7 +77,7 @@ export default function TripDashboardPage() {
                     built.push({ label: 'Children', value: ti.children?.toString() ?? 'Not selected', step: s, fieldName: 'travelers' });
                     built.push({ label: 'Travel Type', value: ti.travel_type ? ti.travel_type.charAt(0).toUpperCase() + ti.travel_type.slice(1) : 'Not selected', step: s, fieldName: 'travelers' });
                     built.push({ label: 'Travel Pace', value: ti.travel_pace ? ti.travel_pace.charAt(0).toUpperCase() + ti.travel_pace.slice(1) : 'Not selected', step: s, fieldName: 'travelers' });
-                    built.push({ label: 'Accessibility Needs', value: ti.accessibility_needs ? 'Yes' : 'No', step: s, fieldName: 'travelers' });
+                    built.push({ label: 'Accessibility Needs', value: ti.accessibility_needs ? '♿ Enabled — High Priority' : 'Off', step: s, fieldName: 'travelers' });
                 }
             }
 
