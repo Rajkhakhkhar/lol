@@ -26,13 +26,13 @@ const TRAIL_IMAGES = [
 ];
 
 export default function LandingPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    setIsAuthenticated(localStorage.getItem('isAuthenticated') === 'true');
+    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
   }, []);
 
-  const startUrl = isAuthenticated ? "/trip/plan" : "/login";
+  const startUrl = isLoggedIn ? "/trip/plan" : "/login";
 
   return (
     <div style={{ scrollBehavior: "smooth" }}>
@@ -72,7 +72,7 @@ export default function LandingPage() {
         </h1>
 
         <p className={s.heroSubtitle} style={{ position: "relative", zIndex: 1 }}>
-          Iconéra uses AI to create optimised, day-by-day itineraries tailored
+          EYEKON uses AI to create optimised, day-by-day itineraries tailored
           to your preferences — so you spend less time planning and more time
           exploring.
         </p>
@@ -121,10 +121,10 @@ export default function LandingPage() {
               {/* EXISTING CONTENT — DO NOT MODIFY */}
               <div className="px-6 max-w-7xl mx-auto w-full">
                 <div className={s.sectionHeader}>
-                  <span className={s.sectionLabel}>Why Iconéra?</span>
+                  <span className={s.sectionLabel}>Why EYEKON?</span>
                   <h2 className={s.sectionTitle}>Smart, Fast, and Personalized</h2>
                   <p className={s.sectionDesc}>
-                    Iconéra is your comprehensive travel companion. Experience a clean,
+                    EYEKON is your comprehensive travel companion. Experience a clean,
                     intuitive planner designed to take the stress out of travel preparation.
                   </p>
                 </div>
@@ -196,7 +196,7 @@ export default function LandingPage() {
         <div style={{ position: "relative", zIndex: 1, width: "100%" }}>
           <div className={s.footerContainer}>
             <div className={s.footerBrand}>
-              <span className={s.footerLogo}>Iconéra</span>
+              <span className={s.footerLogo}>EYEKON</span>
               <p className={s.footerDesc}>
                 AI-powered travel planning platform that helps you create smart itineraries in seconds.
               </p>
@@ -233,7 +233,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className={s.footerBottom}>
-            <p>© 2026 Iconéra. All rights reserved.</p>
+            <p>© 2026 EYEKON. All rights reserved.</p>
           </div>
         </div>
       </footer>

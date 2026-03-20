@@ -18,8 +18,8 @@ export default function PlanTripPage() {
     } | null>(null);
 
     useEffect(() => {
-        if (localStorage.getItem('isAuthenticated') !== 'true') {
-            router.push('/login');
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            router.push('/');
         }
     }, [router]);
 
@@ -65,13 +65,24 @@ export default function PlanTripPage() {
                             EYEKON
                         </span>
                     </Link>
-                    <Link
-                        href="/"
-                        className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        Back to Home
-                    </Link>
+                    <div className="flex items-center gap-6">
+                        <Link
+                            href="/"
+                            className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Back to Home
+                        </Link>
+                        <button
+                            onClick={() => {
+                                localStorage.removeItem("isLoggedIn");
+                                window.location.href = "/";
+                            }}
+                            className="text-sm text-white/60 hover:text-white transition"
+                        >
+                            Logout
+                        </button>
+                    </div>
                 </div>
             </nav>
 

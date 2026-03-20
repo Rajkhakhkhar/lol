@@ -93,48 +93,14 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
         }
     }, [formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime]);
 
-    const autoFillSuggestions = useCallback(async () => {
-        if (autofillTriggeredRef.current || callingAI) return;
-        const { destination_city, destination_country } = formData.travel_logistics;
-        if (!destination_city || tripDays <= 0 || formData.day_plans.length === 0) return;
-        if (!formData.day_plans.every(dp => dp.places.length === 0)) {
-            autofillTriggeredRef.current = true;
-            return;
-        }
+    const autoFillSuggestions = async () => {
+        return; // do nothing
+    };
 
-        autofillTriggeredRef.current = true;
-        setCallingAI(true);
-        setLoading(true);
-
-        try {
-            const prompt = `Create a travel itinerary for ${destination_city}, ${destination_country} for ${tripDays} days. Suggest 3-4 places per day with HH:MM times. Return ONLY JSON array: [ { "day": number, "places": [ { "name": "string", "time": "HH:MM" } ] } ]`;
-            const res = await fetch('/api/itinerary/generate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt }),
-            });
-            const payload = await res.json();
-            if (payload.error) throw new Error(payload.error);
-
-            const jsonMatch = (payload.result || "").match(/\[[\s\S]*\]/);
-            if (!jsonMatch) throw new Error("Invalid AI response");
-            const itinerary = JSON.parse(jsonMatch[0]);
-
-            setFormData(prev => ({
-                ...prev,
-                day_plans: prev.day_plans.map((dp, i) => ({ ...dp, places: itinerary[i]?.places || [] }))
-            }));
-        } catch (err: any) {
-            console.error("Autofill Error:", err);
-        } finally {
-            setLoading(false);
-            setCallingAI(false);
-        }
-    }, [formData, tripDays, callingAI]);
-
-    useEffect(() => {
-        if (step > 1 && step < 2 + tripDays) autoFillSuggestions();
-    }, [step, tripDays, autoFillSuggestions]);
+    // AI Autofill disabled:
+    // useEffect(() => {
+    //     if (step > 1 && step < 2 + tripDays) autoFillSuggestions();
+    // }, [step, tripDays, autoFillSuggestions]);
 
     const handleSubmit = async () => {
         setLoading(true);

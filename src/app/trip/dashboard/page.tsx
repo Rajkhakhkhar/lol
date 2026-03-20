@@ -53,6 +53,11 @@ export default function TripDashboardPage() {
     };
 
     useEffect(() => {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            router.push('/');
+            return;
+        }
+
         try {
             const raw = localStorage.getItem('tripData');
             if (!raw) {
@@ -194,7 +199,7 @@ export default function TripDashboardPage() {
 
             <div className="relative z-10 flex flex-col min-h-screen">
                 <nav className="sticky top-0 z-50 glass">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
                         <Link href="/" className="flex items-center gap-[10px] group">
                             <div className="w-8 h-8 rounded-full bg-[#141414] border border-[#2a2a2a] flex items-center justify-center shadow-[0_0_10px_rgba(79, 140, 255,0.15)] hover:border-blue-500 transition-colors">
                                 <Globe className="w-5 h-5 text-blue-500 group-hover:text-blue-400 transition-colors" />
@@ -203,10 +208,21 @@ export default function TripDashboardPage() {
                                 EYEKON
                             </span>
                         </Link>
-                        <Link href="/trip/plan" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
-                            <ArrowLeft className="w-4 h-4" />
-                            Back to Planner
-                        </Link>
+                        <div className="flex items-center gap-6">
+                            <Link href="/trip/plan" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
+                                <ArrowLeft className="w-4 h-4" />
+                                Back to Planner
+                            </Link>
+                            <button
+                                onClick={() => {
+                                    localStorage.removeItem("isLoggedIn");
+                                    window.location.href = "/";
+                                }}
+                                className="text-sm text-white/60 hover:text-white transition"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     </div>
                 </nav>
 

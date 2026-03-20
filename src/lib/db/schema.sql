@@ -1,5 +1,5 @@
 -- ============================================================
--- Iconéra – Database Schema (Supabase / PostgreSQL)
+-- Eyekon – Database Schema (Supabase / PostgreSQL)
 -- ============================================================
 
 -- Enable UUID extension

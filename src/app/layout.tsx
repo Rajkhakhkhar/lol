@@ -8,9 +8,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
-  title: "Iconéra — AI-Powered Travel Planner",
+  title: "EYEKON — AI-Powered Travel Planner",
   description:
-    "Plan your dream trip in minutes with Iconéra. Our AI builds optimised, day-by-day itineraries tailored to your preferences.",
+    "Plan your dream trip in minutes with EYEKON. Our AI builds optimised, day-by-day itineraries tailored to your preferences.",
 };
 
 export default function RootLayout({

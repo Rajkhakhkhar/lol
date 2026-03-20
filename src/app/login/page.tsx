@@ -41,7 +41,7 @@ export default function LoginPage() {
         
         // Mock authentication
         setTimeout(() => {
-            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('isLoggedIn', 'true');
             setLoading(false);
             router.push('/trip/plan');
         }, 1000);
@@ -115,6 +115,14 @@ export default function LoginPage() {
                                 placeholder="••••••••"
                                 className="w-full h-14 sm:h-16 pl-12 sm:pl-14 pr-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-pink-500 transition-all text-base sm:text-lg"
                             />
+                        </div>
+                        <div className="flex justify-end mt-1.5">
+                            <Link 
+                                href="/forgot-password" 
+                                className="text-sm sm:text-base text-white/40 hover:text-white transition-colors"
+                            >
+                                Forgot password?
+                            </Link>
                         </div>
                     </div>
 

@@ -23,7 +23,7 @@ export function PillNav() {
   const pathname = usePathname();
 
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem('isAuthenticated') === 'true');
+    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
   }, []);
 
   const navItems: NavItem[] = [
@@ -154,6 +154,18 @@ export function PillNav() {
             {item.label}
           </Link>
         ))}
+
+        {isLoggedIn && (
+          <button
+            onClick={() => {
+              localStorage.removeItem("isLoggedIn");
+              window.location.href = "/";
+            }}
+            className={cn(s.navItem, "text-sm text-white/60 hover:text-white transition cursor-target")}
+          >
+            Logout
+          </button>
+        )}
       </nav>
     </div>
   );

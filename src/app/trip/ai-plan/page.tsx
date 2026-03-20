@@ -9,7 +9,7 @@ import Link from 'next/link';
 import type { TripFormData } from '@/types';
 
 /**
- * AIPlanPage - Iconéra/EYEKON
+ * AIPlanPage - Eyekon
  * This page was previously used for AI optimization.
  * Per user requirements, optimization has been removed and the page now
  * handles safe redirection to the dashboard while preserving trip data.
@@ -20,6 +20,11 @@ export default function AIPlanPage() {
     const [formData, setFormData] = useState<TripFormData | null>(null);
 
     useEffect(() => {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            router.push('/');
+            return;
+        }
+
         // Load existing trip data from localStorage
         const raw = localStorage.getItem('tripData');
         if (!raw) {
@@ -36,7 +41,7 @@ export default function AIPlanPage() {
             const timer = setTimeout(() => {
                 router.push('/trip/dashboard');
             }, 800);
-
+            
             return () => clearTimeout(timer);
         } catch (err) {
             console.error("Error loading trip data:", err);
@@ -68,13 +73,22 @@ export default function AIPlanPage() {
                             </div>
                             <span className="text-[18px] font-bold text-white tracking-[2px]">EYEKON</span>
                         </Link>
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-6">
                             <button 
                                 onClick={() => router.push('/trip/dashboard')}
                                 className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-all px-3 py-1.5 rounded-lg hover:bg-white/5"
                             >
                                 <ArrowLeft className="w-4 h-4" />
                                 Back to Dashboard
+                            </button>
+                            <button
+                                onClick={() => {
+                                    localStorage.removeItem("isLoggedIn");
+                                    window.location.href = "/";
+                                }}
+                                className="text-sm text-white/60 hover:text-white transition"
+                            >
+                                Logout
                             </button>
                         </div>
                     </div>

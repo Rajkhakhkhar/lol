@@ -40,31 +40,14 @@ export default function DayPlanStep({
         return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
     };
 
-    // Fetch popular places suggestions
+    // Place suggestions disabled:
     const fetchSuggestions = useCallback(async () => {
-        if (!city || suggestionsLoaded) return;
-        setLoadingSuggestions(true);
-        try {
-            const params = new URLSearchParams({ city });
-            if (country) params.set('country', country);
-            const res = await fetch(`/api/places?${params.toString()}`);
-            if (res.ok) {
-                const places = await res.json();
-                if (Array.isArray(places)) {
-                    setSuggestions(places);
-                }
-            }
-        } catch {
-            // ignore
-        } finally {
-            setLoadingSuggestions(false);
-            setSuggestionsLoaded(true);
-        }
-    }, [city, country, suggestionsLoaded]);
+        return; // do nothing
+    }, []);
 
-    useEffect(() => {
-        fetchSuggestions();
-    }, [fetchSuggestions]);
+    // useEffect(() => {
+    //     fetchSuggestions();
+    // }, [fetchSuggestions]);
 
     const addPlace = (name?: string) => {
         const placeName = name || placeInput.trim();
