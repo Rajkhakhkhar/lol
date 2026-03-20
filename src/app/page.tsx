@@ -94,7 +94,7 @@ export default function LandingPage() {
 
       {/* ── Secondary Section ─────────────────────────── */}
       <section>
-        <div style={{ height: "500px", position: "relative", overflow: "hidden" }}>
+        <div style={{ height: "clamp(300px, 60vh, 600px)", position: "relative", overflow: "hidden" }}>
           <ImageTrail
             items={TRAIL_IMAGES}
             variant={1}

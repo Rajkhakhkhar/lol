@@ -32,3 +32,15 @@
   color: white;
   text-transform: uppercase;
 }
+@media (max-width: 1024px) {
+  .brandText {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .brandTag {
+    top: 15px;
+    left: 15px;
+  }
+}

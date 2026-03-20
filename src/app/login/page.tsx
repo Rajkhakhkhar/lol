@@ -71,49 +71,49 @@ export default function LoginPage() {
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative z-10 w-full max-w-[720px] p-16 sm:p-24 rounded-[48px] border border-white/10 bg-white/5 backdrop-blur-3xl shadow-4xl"
+                className="relative z-10 w-full max-w-[720px] p-8 sm:p-16 md:p-24 rounded-[32px] sm:rounded-[48px] border border-white/10 bg-white/5 backdrop-blur-3xl shadow-4xl my-8"
             >
-                <div className="flex justify-center mb-12">
-                    <div className="flex flex-col items-center gap-6">
-                        <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shadow-lg">
-                            <Globe className="w-9 h-9 text-blue-500" />
+                <div className="flex justify-center mb-8 sm:mb-12">
+                    <div className="flex flex-col items-center gap-4 sm:gap-6">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shadow-lg">
+                            <Globe className="w-6 h-6 sm:w-9 sm:h-9 text-blue-500" />
                         </div>
-                        <span className="text-3xl font-bold text-white tracking-[8px]">EYEKON</span>
+                        <span className="text-xl sm:text-3xl font-bold text-white tracking-[4px] sm:tracking-[8px]">EYEKON</span>
                     </div>
                 </div>
 
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-white mb-4">Secure Access</h1>
-                    <p className="text-white/40 text-lg">Login with your Google account credentials</p>
+                <div className="text-center mb-8 sm:mb-12">
+                    <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-4">Secure Access</h1>
+                    <p className="text-white/40 text-base sm:text-lg">Login with your Google account credentials</p>
                 </div>
 
-                <form onSubmit={handleLogin} className="space-y-8">
+                <form onSubmit={handleLogin} className="space-y-6 sm:space-y-8">
                     <div className="space-y-3">
-                        <label className="text-xs font-bold text-white/60 ml-1 uppercase tracking-wider">Email Address</label>
+                        <label className="text-[10px] sm:text-xs font-bold text-white/60 ml-1 uppercase tracking-wider">Email Address</label>
                         <div className="relative">
-                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-white/30" />
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 text-white/30" />
                             <input
                                 type="email"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="name@gmail.com"
-                                className="w-full h-16 pl-14 pr-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-blue-500 transition-all text-lg"
+                                className="w-full h-14 sm:h-16 pl-12 sm:pl-14 pr-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-blue-500 transition-all text-base sm:text-lg"
                             />
                         </div>
                     </div>
 
                     <div className="space-y-3">
-                        <label className="text-xs font-bold text-white/60 ml-1 uppercase tracking-wider">Password</label>
+                        <label className="text-[10px] sm:text-xs font-bold text-white/60 ml-1 uppercase tracking-wider">Password</label>
                         <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-white/30" />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 text-white/30" />
                             <input
                                 type="password"
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className="w-full h-16 pl-14 pr-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-pink-500 transition-all text-lg"
+                                className="w-full h-14 sm:h-16 pl-12 sm:pl-14 pr-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-pink-500 transition-all text-base sm:text-lg"
                             />
                         </div>
                     </div>
@@ -122,9 +122,9 @@ export default function LoginPage() {
                         <motion.div 
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="flex items-start gap-4 p-5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-base"
+                            className="flex items-start gap-3 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm sm:text-base"
                         >
-                            <AlertCircle className="w-6 h-6 shrink-0" />
+                            <AlertCircle className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
                             <span>{error}</span>
                         </motion.div>
                     )}
@@ -132,18 +132,18 @@ export default function LoginPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full h-16 rounded-xl bg-white text-black font-bold flex items-center justify-center gap-2 hover:bg-blue-50 active:scale-[0.98] transition-all disabled:opacity-50 mt-8 shadow-2xl text-xl"
+                        className="w-full h-14 sm:h-16 rounded-xl bg-white text-black font-bold flex items-center justify-center gap-2 hover:bg-blue-50 active:scale-[0.98] transition-all disabled:opacity-50 mt-4 sm:mt-8 shadow-2xl text-lg sm:text-xl"
                     >
                         {loading ? (
-                            <div className="w-8 h-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                            <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
                         ) : (
-                            <>Sign In <ArrowRight className="w-6 h-6" /></>
+                            <>Sign In <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" /></>
                         )}
                     </button>
                 </form>
 
-                <div className="mt-12 pt-10 border-t border-white/5 text-center">
-                    <p className="text-base text-white/30">
+                <div className="mt-8 sm:mt-12 pt-8 sm:pt-10 border-t border-white/5 text-center">
+                    <p className="text-sm sm:text-base text-white/30">
                         Don't have an account? {' '}
                         <button className="text-white font-bold hover:text-blue-400 transition-colors">Contact Admin</button>
                     </p>

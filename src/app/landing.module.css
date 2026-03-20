@@ -12,8 +12,9 @@
   justify-content: center;
   min-height: 100vh;
   text-align: center;
-  padding: 8rem 1.5rem 4rem;
+  padding: clamp(6rem, 15vh, 10rem) 1.5rem 4rem;
   overflow: hidden;
+  width: 100%;
 }
 
 /* Decorative orbs */
@@ -26,16 +27,16 @@
 }
 
 .heroOrb1 {
-  width: 600px;
-  height: 600px;
+  width: min(600px, 80vw);
+  height: min(600px, 80vw);
   top: -10%;
   left: -10%;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.05), transparent 70%);
 }
 
 .heroOrb2 {
-  width: 500px;
-  height: 500px;
+  width: min(500px, 70vw);
+  height: min(500px, 70vw);
   bottom: -5%;
   right: -8%;
   background: radial-gradient(circle, rgba(79, 140, 255, 0.08), transparent 70%);
@@ -50,7 +51,7 @@
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #b5b5b5;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -59,11 +60,11 @@
 }
 
 .heroTitle {
-  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-size: clamp(2.2rem, 8vw, 5rem);
   font-weight: 900;
-  line-height: 1.08;
+  line-height: 1.1;
   letter-spacing: -0.03em;
-  max-width: 800px;
+  max-width: min(800px, 95vw);
   margin: 0 auto 1.5rem;
   animation: fadeSlideUp 0.8s 0.15s ease-out both;
   color: #f5f5f5;
@@ -79,9 +80,9 @@
 }
 
 .heroSubtitle {
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 3vw, 1.15rem);
   color: rgba(255, 255, 255, 0.5);
-  max-width: 560px;
+  max-width: min(560px, 90vw);
   line-height: 1.7;
   margin: 0 auto 2.5rem;
   animation: fadeSlideUp 0.8s 0.3s ease-out both;
@@ -94,11 +95,13 @@
   flex-wrap: wrap;
   justify-content: center;
   animation: fadeSlideUp 0.8s 0.45s ease-out both;
+  width: 100%;
 }
 
 .primaryBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.9rem 2rem;
   border-radius: 0.75rem;
@@ -111,6 +114,7 @@
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  min-width: 200px;
 }
 
 .primaryBtn:hover {
@@ -122,6 +126,7 @@
 .secondaryBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.9rem 2rem;
   border-radius: 0.75rem;
@@ -133,6 +138,7 @@
   text-decoration: none;
   cursor: pointer;
   transition: all 0.25s ease;
+  min-width: 200px;
 }
 
 .secondaryBtn:hover {
@@ -142,7 +148,7 @@
 
 .heroScrollHint {
   position: absolute;
-  bottom: 2.5rem;
+  bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -154,14 +160,16 @@
 
 /* ── Section shared ─────────────────────────────────────── */
 .section {
-  padding: 7rem 1.5rem;
-  max-width: 1100px;
+  padding: clamp(4rem, 10vh, 7rem) 1.5rem;
+  max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .sectionHeader {
   text-align: center;
-  margin-bottom: 3.5rem;
+  margin-bottom: clamp(2.5rem, 8vh, 3.5rem);
+  padding: 0 1rem;
 }
 
 .sectionLabel {
@@ -175,16 +183,17 @@
 }
 
 .sectionTitle {
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
   margin-bottom: 1rem;
+  color: #f5f5f5;
 }
 
 .sectionDesc {
   color: rgba(255, 255, 255, 0.45);
-  font-size: 1.05rem;
+  font-size: clamp(0.95rem, 2.5vw, 1.05rem);
   line-height: 1.7;
   max-width: 600px;
   margin: 0 auto;
@@ -195,11 +204,13 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  width: 100%;
 }
 
 .featureCard {
   position: relative;
   padding: 2rem;
+  width: 100%;
 }
 
 .featureCard:hover {
@@ -229,6 +240,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  color: #f5f5f5;
 }
 
 .featureDesc {
@@ -242,8 +254,10 @@
 .ctaBanner {
   position: relative;
   text-align: center;
-  padding: 5rem 1.5rem;
+  padding: clamp(3.5rem, 10vh, 5rem) 1.5rem;
   overflow: hidden;
+  width: min(1000px, 95vw);
+  margin: 0 auto;
 }
 
 .ctaBanner::before {
@@ -256,9 +270,10 @@
 
 .ctaTitle {
   position: relative;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
   font-weight: 800;
   margin-bottom: 1rem;
+  color: #f5f5f5;
 }
 
 .ctaDesc {
@@ -278,13 +293,14 @@
   background: rgba(10, 10, 10, 0.3);
   padding: 4rem 1.5rem 2rem;
   margin-top: 4rem;
+  width: 100%;
 }
 
 .footerContainer {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 3rem;
   margin-bottom: 3rem;
   text-align: left;
@@ -371,7 +387,7 @@
 }
 
 .footerBottom {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   text-align: center;
   padding-top: 2rem;
@@ -401,33 +417,47 @@
   }
 }
 
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .featuresGrid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 
   .footerContainer {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 3rem;
   }
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    padding: 1rem 1.25rem;
-  }
-
-  .navLinks {
-    display: none;
-  }
-
   .hero {
     padding: 7rem 1.25rem 3rem;
   }
 
+  .heroTitle {
+    margin-bottom: 1rem;
+  }
+
+  .heroSubtitle {
+    margin-bottom: 2rem;
+  }
+
   .heroActions {
     flex-direction: column;
+    gap: 0.75rem;
+    padding: 0 1rem;
+  }
+
+  .primaryBtn, .secondaryBtn {
+    width: 100%;
+    min-width: 0;
   }
 
   .section {
@@ -451,5 +481,20 @@
 
   .socialIcons {
     justify-content: center;
+  }
+
+  .footerLinks ul {
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroBadge {
+    font-size: 0.7rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .featureCard {
+    padding: 1.5rem;
   }
 }

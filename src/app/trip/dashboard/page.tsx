@@ -210,12 +210,12 @@ export default function TripDashboardPage() {
                     </div>
                 </nav>
 
-                <div className="w-full max-w-[1150px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-                    <div className="text-center mb-10">
-                        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+                <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <div className="text-center mb-10 px-4">
+                        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3">
                             Trip Summary 📋
                         </h1>
-                        <p className="text-white/40 max-w-lg mx-auto mb-6">
+                        <p className="text-white/40 max-w-lg mx-auto mb-6 text-sm sm:text-base">
                             Review your selections below. Click ⋮ to edit any section.
                         </p>
                     </div>
@@ -230,16 +230,21 @@ export default function TripDashboardPage() {
                     ) : (
                         <div className="rounded-2xl border border-[#2a2a2a] bg-[#202020] overflow-hidden shadow-lg">
                             {rows.map((row, index) => (
-                                <div key={index} className={`flex items-center justify-between px-5 py-4 ${index !== rows.length - 1 ? 'border-b border-[#2a2a2a]' : ''} hover:bg-[#2a2a2a] transition-colors`}>
+                                <div key={index} className={`flex flex-col sm:flex-row sm:items-center justify-between px-4 sm:px-5 py-4 ${index !== rows.length - 1 ? 'border-b border-[#2a2a2a]' : ''} hover:bg-[#2a2a2a] transition-colors gap-3 sm:gap-4`}>
                                     <div className="flex-1 min-w-0">
-                                        <span className="text-sm text-[#7a7a7a]">{row.label}</span>
+                                        <span className="text-xs sm:text-sm text-[#7a7a7a] block mb-0.5 sm:mb-0">{row.label}</span>
                                     </div>
-                                    <div className="flex-1 min-w-0 text-right pr-4">
-                                        <span className="text-sm text-white font-medium truncate block">
+                                    <div className="flex-1 min-w-0 sm:text-right pr-2 sm:pr-4">
+                                        <span className="text-sm sm:text-sm text-white font-medium break-words sm:truncate block">
                                             {row.value}
                                         </span>
                                     </div>
-                                    <button type="button" onClick={() => handleEdit(row.step, row.fieldName)} className="flex-shrink-0 p-2 rounded-lg hover:bg-[#141414] border border-transparent hover:border-blue-500 hover:shadow-[0_0_10px_rgba(79, 140, 255,0.15)] text-[#b5b5b5] hover:text-white transition-all cursor-pointer">
+                                    <button 
+                                        type="button" 
+                                        onClick={() => handleEdit(row.step, row.fieldName)} 
+                                        className="self-end sm:self-center flex-shrink-0 p-3 sm:p-2 rounded-lg bg-[#141414] sm:bg-transparent hover:bg-[#141414] border border-[#2a2a2a] sm:border-transparent hover:border-blue-500 hover:shadow-[0_0_10px_rgba(79, 140, 255,0.15)] text-[#b5b5b5] hover:text-white transition-all cursor-pointer"
+                                        aria-label={`Edit ${row.label}`}
+                                    >
                                         <MoreVertical className="w-5 h-5" />
                                     </button>
                                 </div>

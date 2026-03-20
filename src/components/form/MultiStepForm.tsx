@@ -199,9 +199,9 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
     const isLastStep = step === STEPS.length - 1;
 
     return (
-        <div className="w-full max-w-[1150px] mx-auto">
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <ProgressSteps steps={STEPS} currentStep={step} />
-            <div className="relative overflow-hidden rounded-[18px] border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 min-h-[460px]">
+            <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-8 min-h-[460px]">
                 <AnimatePresence mode="wait" custom={direction}>
                     <motion.div
                         key={step}

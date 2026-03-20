@@ -161,32 +161,43 @@ export default function DayPlanStep({
                 </div>
 
                 {/* Add Place Input */}
-                <div className="flex gap-2">
-                    <Input
-                        placeholder="Enter a place name..."
-                        value={placeInput}
-                        onChange={e => setPlaceInput(e.target.value)}
-                        onKeyDown={e => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault();
-                                addPlace();
-                            }
-                        }}
-                        className="flex-1"
-                    />
-                    <Input
-                        type="time"
-                        value={timeInput}
-                        onChange={e => setTimeInput(e.target.value)}
-                        className="w-32"
-                    />
-                    <button
-                        type="button"
-                        onClick={() => addPlace()}
-                        className="h-11 w-11 rounded-xl border border-[#2a2a2a] hover:border-blue-500 bg-[#141414] flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
-                    >
-                        <Plus className="w-5 h-5 text-white" />
-                    </button>
+                <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="flex-1 flex gap-2">
+                        <Input
+                            placeholder="Enter a place name..."
+                            value={placeInput}
+                            onChange={e => setPlaceInput(e.target.value)}
+                            onKeyDown={e => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    addPlace();
+                                }
+                            }}
+                            className="flex-1"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => addPlace()}
+                            className="h-11 w-11 rounded-xl border border-[#2a2a2a] hover:border-blue-500 bg-[#141414] flex items-center justify-center transition-colors cursor-pointer flex-shrink-0 sm:hidden"
+                        >
+                            <Plus className="w-5 h-5 text-white" />
+                        </button>
+                    </div>
+                    <div className="flex gap-2">
+                        <Input
+                            type="time"
+                            value={timeInput}
+                            onChange={e => setTimeInput(e.target.value)}
+                            className="flex-1 sm:w-32"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => addPlace()}
+                            className="h-11 w-11 rounded-xl border border-[#2a2a2a] hover:border-blue-500 bg-[#141414] hidden sm:flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
+                        >
+                            <Plus className="w-5 h-5 text-white" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Added Places List */}
@@ -195,26 +206,28 @@ export default function DayPlanStep({
                         {data.places.map((place, index) => (
                             <div
                                 key={index}
-                                className="flex items-center justify-between p-3 rounded-lg bg-[#141414] border border-[#2a2a2a]"
+                                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg bg-[#141414] border border-[#2a2a2a] gap-3"
                             >
                                 <div className="flex items-center gap-3 flex-1 min-w-0">
                                     <MapPin className="w-4 h-4 text-blue-500 flex-shrink-0" />
                                     <span className="text-sm font-medium text-white truncate">{place.name}</span>
                                 </div>
-                                <div className="flex items-center gap-2 flex-shrink-0">
-                                    <Clock className="w-3.5 h-3.5 text-white/40" />
-                                    <Input
-                                        type="time"
-                                        value={place.time}
-                                        onChange={e => updatePlaceTime(index, e.target.value)}
-                                        className="w-28 !h-8 text-xs"
-                                    />
+                                <div className="flex items-center justify-between sm:justify-end gap-3 flex-shrink-0">
+                                    <div className="flex items-center gap-2">
+                                        <Clock className="w-3.5 h-3.5 text-white/40" />
+                                        <Input
+                                            type="time"
+                                            value={place.time}
+                                            onChange={e => updatePlaceTime(index, e.target.value)}
+                                            className="w-28 !h-8 text-xs sm:text-xs"
+                                        />
+                                    </div>
                                     <button
                                         type="button"
                                         onClick={() => removePlace(index)}
                                         className="p-1.5 rounded-lg hover:bg-pink-500/20 text-[#7a7a7a] hover:text-pink-500 transition-colors cursor-pointer"
                                     >
-                                        <Trash2 className="w-3.5 h-3.5" />
+                                        <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>

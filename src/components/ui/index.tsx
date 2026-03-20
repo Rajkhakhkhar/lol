@@ -230,47 +230,52 @@ export function ProgressSteps({ steps, currentStep }: ProgressStepsProps) {
     }, [currentStep]);
 
     return (
-        <div className="w-full overflow-x-auto no-scrollbar mb-10 pb-4">
+        <div className="w-full overflow-x-auto no-scrollbar mb-6 sm:mb-10 pb-2">
             <div 
                 ref={scrollRef}
                 className={cn(
-                    "flex items-center min-w-max mx-auto px-10",
-                    steps.length <= 5 ? "justify-center max-w-2xl" : "justify-start"
+                    "flex items-center min-w-max mx-auto px-4 sm:px-10",
+                    steps.length <= 4 ? "justify-center" : "justify-start"
                 )}
             >
-                {steps.map((step, index) => (
-                    <React.Fragment key={index}>
-                        <div className="flex flex-col items-center gap-2 shrink-0">
-                            <div className={cn(
-                                'w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 border',
-                                index < currentStep
-                                    ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_15px_rgba(79, 140, 255,0.3)]'
-                                    : index === currentStep
-                                        ? 'bg-[#202020] border-blue-500 text-blue-400 shadow-[0_0_10px_rgba(79, 140, 255,0.2)] scale-110'
-                                        : 'bg-[#141414] border-[#2a2a2a] text-[#7a7a7a]'
-                            )}>
-                                {index < currentStep ? '✓' : index + 1}
-                            </div>
-                            <span className={cn(
-                                'text-[10px] font-medium transition-colors hidden sm:block w-20 text-center truncate',
-                                index <= currentStep ? 'text-white' : 'text-[#7a7a7a]'
-                            )}>
-                                {step}
-                            </span>
-                        </div>
-                        {index < steps.length - 1 && (
-                            <div className="w-10 sm:w-16 h-[2px] relative shrink-0">
-                                <div className="absolute inset-0 bg-[#2a2a2a] rounded-full" />
+                {steps.map((step, index) => {
+                    const isActive = index === currentStep;
+                    const isCompleted = index < currentStep;
+
+                    return (
+                        <React.Fragment key={index}>
+                            <div className="flex flex-col items-center gap-1.5 shrink-0">
                                 <div className={cn(
-                                    'absolute inset-y-0 left-0 rounded-full transition-all duration-500',
-                                    index < currentStep
-                                        ? 'bg-blue-600 w-full shadow-[0_0_10px_rgba(79, 140, 255,0.3)]'
-                                        : 'w-0'
-                                )} />
+                                    'w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-500 border',
+                                    isCompleted
+                                        ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_15px_rgba(79, 140, 255,0.3)]'
+                                        : isActive
+                                            ? 'bg-[#202020] border-blue-500 text-blue-400 shadow-[0_0_10px_rgba(79, 140, 255,0.2)] scale-110'
+                                            : 'bg-[#141414] border-[#2a2a2a] text-[#7a7a7a]'
+                                )}>
+                                    {isCompleted ? '✓' : index + 1}
+                                </div>
+                                <span className={cn(
+                                    'text-[9px] sm:text-[10px] font-medium transition-colors w-16 sm:w-20 text-center truncate px-1',
+                                    index <= currentStep ? 'text-white' : 'text-[#7a7a7a]'
+                                )}>
+                                    {step}
+                                </span>
                             </div>
-                        )}
-                    </React.Fragment>
-                ))}
+                            {index < steps.length - 1 && (
+                                <div className="w-8 sm:w-16 h-[2px] mb-4 sm:mb-5 relative shrink-0">
+                                    <div className="absolute inset-0 bg-[#2a2a2a] rounded-full" />
+                                    <div className={cn(
+                                        'absolute inset-y-0 left-0 rounded-full transition-all duration-500',
+                                        index < currentStep
+                                            ? 'bg-blue-600 w-full shadow-[0_0_10px_rgba(79, 140, 255,0.3)]'
+                                            : 'w-0'
+                                    )} />
+                                </div>
+                            )}
+                        </React.Fragment>
+                    );
+                })}
             </div>
         </div>
     );
