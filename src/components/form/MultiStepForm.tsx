@@ -208,7 +208,28 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
 
                         {/* FINAL PREFERENCE STEPS */}
                         {finalStepRelativeIndex === 0 && <BudgetStep data={formData.budget} onChange={budget => setFormData({ ...formData, budget })} />}
-                        {finalStepRelativeIndex === 1 && <InterestsStep data={formData.interests} onChange={interests => setFormData({ ...formData, interests })} />}
+                        {finalStepRelativeIndex === 1 && (
+                            <InterestsStep 
+                                data={formData.interests} 
+                                onChange={interests => setFormData({ ...formData, interests })}
+                                city={formData.travel_logistics.destination_city}
+                                country={formData.travel_logistics.destination_country}
+                                dayPlans={formData.day_plans}
+                                onAddToDay={(dayNumber: number, placeName: string) => {
+                                    setFormData(prev => {
+                                        const newDayPlans = [...prev.day_plans];
+                                        const dayIdx = dayNumber - 1;
+                                        if (newDayPlans[dayIdx] && !newDayPlans[dayIdx].places.some(p => p.name === placeName)) {
+                                            newDayPlans[dayIdx] = {
+                                                ...newDayPlans[dayIdx],
+                                                places: [...newDayPlans[dayIdx].places, { name: placeName, time: '10:00' }]
+                                            };
+                                        }
+                                        return { ...prev, day_plans: newDayPlans };
+                                    });
+                                }}
+                            />
+                        )}
                         {finalStepRelativeIndex === 2 && <ConstraintsStep data={formData.constraints} onChange={constraints => setFormData({ ...formData, constraints })} />}
                     </motion.div>
                 </AnimatePresence>

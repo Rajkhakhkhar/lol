@@ -8,22 +8,28 @@ export async function POST(req: Request) {
 
     let city = "";
     let country = "";
+    let interests: string[] = [];
 
     try {
         const body = await req.json().catch(() => ({}));
         city = body.city || "";
         country = body.country || "";
+        interests = body.interests || [];
 
         if (!city || !country) {
             console.error("AI Suggestions Error: Missing city or country");
             return Response.json({ success: false, message: "Missing city or country", places: [] }, { status: 400 });
         }
 
-        // Use ONLY gemini-1.5-flash-latest for stability as requested
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+        // Use 'gemini-flash-latest' - diagnostic tests confirm 1.5-flash returns 404 while this works
+        const modelName = "gemini-flash-latest";
+        console.log("Using Gemini model:", modelName);
+        const model = genAI.getGenerativeModel({ model: modelName });
+
+        const interestsText = interests.length > 0 ? ` that match these categories: ${interests.join(", ")}` : "";
 
         const prompt = `
-            Suggest 8 to 10 popular tourist places in ${city}, ${country}.
+            Suggest 8 to 10 popular tourist places in ${city}, ${country}${interestsText}.
             Return ONLY a valid JSON array of objects in this exact schema, with no markdown code blocks or extra text:
             [
               {
@@ -36,6 +42,7 @@ export async function POST(req: Request) {
             - Minimum 8 places, Maximum 10 places.
             - Valid JSON format only.
             - No markdown blocks like \`\`\`json.
+            - If interests are provided, PRIORITIZE those categories.
         `;
 
         const result = await model.generateContent(prompt);
