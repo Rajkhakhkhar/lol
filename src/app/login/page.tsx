@@ -76,8 +76,8 @@ export default function LoginPage() {
             >
                 <div className="flex justify-center mb-8 sm:mb-12">
                     <div className="flex flex-col items-center gap-4 sm:gap-6">
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shadow-lg">
-                            <Globe className="w-6 h-6 sm:w-9 sm:h-9 text-blue-500" />
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shadow-lg overflow-hidden">
+                            <img src="/logo.png" alt="Eyekon Logo" className="w-full h-full object-cover filter brightness-0 invert" />
                         </div>
                         <span className="text-xl sm:text-3xl font-bold text-white tracking-[4px] sm:tracking-[8px]">EYEKON</span>
                     </div>
