@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Card, Badge } from '@/components/ui';
+import { Card, Badge, Button } from '@/components/ui';
 import type { GeminiItineraryResponse, ItineraryDay, ItineraryActivity, ActivityType } from '@/types';
 import { formatTime, formatCurrency } from '@/lib/utils';
 import {
@@ -244,12 +244,13 @@ export default function ItineraryDisplay({ itinerary, onReset }: Props) {
 
             {/* Actions */}
             <div className="flex justify-center pt-4">
-                <button
+                <Button
                     onClick={onReset}
-                    className="px-6 py-3 rounded-xl bg-[#141414] border border-[#2a2a2a] text-[#b5b5b5] hover:text-[#f5f5f5] hover:border-[#3a3a3a] transition-all text-sm font-medium cursor-pointer"
+                    variant="outline"
+                    className="w-full sm:w-auto"
                 >
                     Plan Another Trip
-                </button>
+                </Button>
             </div>
         </div>
     );

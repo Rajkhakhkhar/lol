@@ -203,13 +203,13 @@
 .featuresGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: clamp(1rem, 3vw, 2rem);
   width: 100%;
 }
 
 .featureCard {
   position: relative;
-  padding: 2rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
   width: 100%;
 }
 

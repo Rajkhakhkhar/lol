@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Globe, ArrowLeft, MoreVertical, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui';
 import type { TripFormData } from '@/types';
 import Grainient from '@/components/Grainient';
 
@@ -269,13 +270,12 @@ export default function TripDashboardPage() {
                             </div>
                             
                             <div className="mt-10 mb-10 text-center">
-                                <Link href="/trip/summary">
-                                    <button
-                                        type="button"
-                                        className="px-8 py-3.5 rounded-2xl bg-black text-white text-sm font-bold border border-white/20 hover:bg-neutral-900 transition-all cursor-pointer shadow-lg active:scale-95"
+                                <Link href="/trip/summary" className="inline-block w-full sm:w-auto">
+                                    <Button
+                                        className="w-full h-[52px] font-bold shadow-lg"
                                     >
                                         View Full Day-by-Day Summary
-                                    </button>
+                                    </Button>
                                 </Link>
                             </div>
                         </>

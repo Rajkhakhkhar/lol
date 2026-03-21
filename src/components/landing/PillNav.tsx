@@ -142,7 +142,7 @@ export function PillNav() {
             <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden">
                 <img src="/logo.png" alt="Logo" className="w-full h-full object-cover filter brightness-0 invert" />
             </div>
-            <span className="text-white font-bold tracking-[1px] text-sm md:text-base uppercase">EYEKON</span>
+            <span className="text-white font-bold tracking-[2px] md:tracking-[6px] text-sm md:text-base uppercase">EYEKON</span>
         </Link>
 
         {/* Animated Background Indicator (Desktop only) */}

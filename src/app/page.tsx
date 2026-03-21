@@ -199,7 +199,7 @@ export default function LandingPage() {
         <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-10 py-4 md:py-6">
           <div className={cn(s.footerContainer, "flex flex-wrap md:flex-nowrap justify-center md:justify-between gap-6 md:gap-12 text-center md:text-left")}>
             <div className={cn(s.footerBrand, "w-full md:w-auto mb-8 md:mb-0")}>
-              <span className={s.footerLogo}>EYEKON</span>
+              <span className={cn(s.footerLogo, "tracking-[2px] md:tracking-[6px]")}>EYEKON</span>
               <p className={cn(s.footerDesc, "mx-auto md:mx-0 max-w-sm")}>
                 AI-powered travel planning platform that helps you create smart itineraries in seconds.
               </p>

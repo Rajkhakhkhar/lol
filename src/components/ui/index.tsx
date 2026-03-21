@@ -27,6 +27,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 ref={ref}
                 className={cn(
                     'inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-250 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]',
+                    'w-full sm:w-auto',
                     variants[variant],
                     sizes[size],
                     className
@@ -134,7 +135,7 @@ export function Card({ className, children, ...props }: React.HTMLAttributes<HTM
     return (
         <div
             className={cn(
-                'rounded-2xl border border-[#2a2a2a] bg-[#202020] p-6 shadow-md transition-all duration-250 hover:border-[#3a3a3a] hover:shadow-xl hover:-translate-y-0.5',
+                'rounded-2xl border border-[#2a2a2a] bg-[#202020] p-4 sm:p-6 shadow-md transition-all duration-250 hover:border-[#3a3a3a] hover:shadow-xl hover:-translate-y-0.5',
                 className
             )}
             {...props}
@@ -253,7 +254,7 @@ export function ProgressSteps({ steps, currentStep }: ProgressStepsProps) {
                                     <span className="flex items-center justify-center w-full h-full text-center">{isCompleted ? '✓' : index + 1}</span>
                                 </div>
                                 <span className={cn(
-                                    'text-[9px] sm:text-[10px] font-medium transition-colors w-16 sm:w-20 text-center truncate px-1',
+                                    'text-[10px] sm:text-[11px] font-medium transition-colors w-16 sm:w-24 text-center truncate px-1',
                                     index <= currentStep ? 'text-white' : 'text-[#7a7a7a]'
                                 )}>
                                     {step}
