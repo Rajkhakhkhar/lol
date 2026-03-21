@@ -141,7 +141,7 @@ export function PillNav() {
         <div className="flex items-center gap-2 z-20">
             <Link href="/" className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center overflow-hidden">
-                    <img src="/logo.png" alt="Logo" className="w-full h-full object-cover filter brightness-0 invert" />
+                    <img src="/logo.png" alt="Logo" className="w-full h-full object-cover filter brightness-0 invert logo-blink" />
                 </div>
                 <span className="text-white font-bold tracking-[2px] md:tracking-[6px] text-sm md:text-base uppercase">EYEKON</span>
             </Link>

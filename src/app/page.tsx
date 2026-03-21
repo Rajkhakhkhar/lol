@@ -12,7 +12,6 @@ import Shuffle from "@/components/landing/Shuffle";
 import Dither from "@/components/Dither";
 import ClientCursor from "@/components/ClientCursor";
 import { PillNav } from "@/components/landing/PillNav";
-import { BrandTag } from "@/components/landing/BrandTag";
 import { cn } from "@/lib/utils";
 
 const TRAIL_IMAGES = [
@@ -38,9 +37,6 @@ export default function LandingPage() {
   return (
     <div style={{ scrollBehavior: "smooth" }}>
       <ClientCursor />
-      <div className="hidden md:block">
-        <BrandTag />
-      </div>
       <PillNav />
 
       {/* ── Hero Section ─────────────────────────── */}
