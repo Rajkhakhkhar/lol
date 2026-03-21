@@ -147,7 +147,7 @@ export function PillNav() {
             </Link>
         </div>
 
-        {/* Center Nav Items (Desktop only) */}
+        {/* Center Nav Items (Desktop only: md and above) */}
         <div className={cn(s.navGlass, "hidden md:flex items-center absolute left-1/2 transform -translate-x-1/2 z-10")}>
             {/* Animated Background Indicator */}
             <div ref={indicatorRef} className={s.navIndicator} style={{ opacity: 0 }} />
