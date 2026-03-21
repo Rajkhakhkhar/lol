@@ -13,6 +13,7 @@ import Dither from "@/components/Dither";
 import ClientCursor from "@/components/ClientCursor";
 import { PillNav } from "@/components/landing/PillNav";
 import { BrandTag } from "@/components/landing/BrandTag";
+import { cn } from "@/lib/utils";
 
 const TRAIL_IMAGES = [
   'https://i.pinimg.com/736x/83/2d/ac/832dac09e0d45055beef6e22d6be4a01.jpg',
@@ -37,13 +38,15 @@ export default function LandingPage() {
   return (
     <div style={{ scrollBehavior: "smooth" }}>
       <ClientCursor />
-      <BrandTag />
+      <div className="hidden md:block">
+        <BrandTag />
+      </div>
       <PillNav />
 
       {/* ── Hero Section ─────────────────────────── */}
-      <section className={s.hero} id="home">
+      <section className={cn(s.hero, "relative w-full min-h-screen flex items-center justify-center overflow-hidden max-w-full")} id="home">
         {/* GridScan animation background */}
-        <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+        <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
           <GridScan
             style={{ width: "100%", height: "100%" }}
             sensitivity={0.6}
@@ -66,12 +69,12 @@ export default function LandingPage() {
 
         <div className={s.heroBadge} style={{ position: "relative", zIndex: 1 }}>✨ AI-Powered Travel Planning</div>
 
-        <h1 className={s.heroTitle} style={{ position: "relative", zIndex: 1 }}>
+        <h1 className={cn(s.heroTitle, "text-3xl sm:text-4xl md:text-6xl")} style={{ position: "relative", zIndex: 1 }}>
           Plan Your Dream Trip{" "}
           <span className={s.heroTitleGradient}>In Minutes</span>
         </h1>
 
-        <p className={s.heroSubtitle} style={{ position: "relative", zIndex: 1 }}>
+        <p className={cn(s.heroSubtitle, "text-sm sm:text-base md:text-lg")} style={{ position: "relative", zIndex: 1 }}>
           EYEKON uses AI to create optimised, day-by-day itineraries tailored
           to your preferences — so you spend less time planning and more time
           exploring.
