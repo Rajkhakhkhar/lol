@@ -148,7 +148,7 @@ export function PillNav() {
         </div>
 
         {/* Center Nav Items (Desktop only) */}
-        <div className={cn("hidden md:flex items-center gap-1 absolute left-1/2 transform -translate-x-1/2 z-10")}>
+        <div className={cn(s.navGlass, "hidden md:flex items-center absolute left-1/2 transform -translate-x-1/2 z-10")}>
             {/* Animated Background Indicator */}
             <div ref={indicatorRef} className={s.navIndicator} style={{ opacity: 0 }} />
             
@@ -195,7 +195,7 @@ export function PillNav() {
         
         {/* Mobile Dropdown */}
         {isMenuOpen && (
-            <div className="absolute top-full left-0 right-0 mt-2 p-4 bg-black/95 backdrop-blur-3xl border border-white/10 rounded-2xl md:hidden z-[2000] flex flex-col gap-2">
+            <div className={cn(s.mobileDropdown, "absolute top-full left-0 right-0 mt-2 p-4 rounded-2xl md:hidden z-[2000] flex flex-col gap-2 mx-4")}>
                 {navItems.map((item) => (
                     <Link
                         key={item.href}
