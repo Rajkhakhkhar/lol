@@ -32,7 +32,7 @@ function ActivityCard({ activity, index }: { activity: ItineraryActivity; index:
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="relative pl-8"
+            className="relative pl-4 md:pl-8"
         >
             {/* Timeline dot */}
             <div className={`absolute left-0 top-3 w-4 h-4 rounded-full border-2 ${config.bg} z-10`} />

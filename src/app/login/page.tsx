@@ -72,14 +72,14 @@ export default function LoginPage() {
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative z-10 w-full max-w-[720px] p-8 sm:p-16 md:p-24 rounded-[32px] sm:rounded-[48px] border border-white/10 bg-white/5 backdrop-blur-3xl shadow-4xl my-8"
+                className="relative z-10 w-full max-w-[720px] p-4 sm:p-6 md:p-10 rounded-[32px] sm:rounded-[48px] border border-white/10 bg-white/5 backdrop-blur-3xl shadow-4xl my-8"
             >
                 <div className="flex justify-center mb-8 sm:mb-12">
                     <div className="flex flex-col items-center gap-4 sm:gap-6">
                         <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shadow-lg overflow-hidden">
                             <img src="/logo.png" alt="Eyekon Logo" className="w-full h-full object-cover filter brightness-0 invert logo-blink" />
                         </div>
-                        <span className="text-xl sm:text-3xl font-bold text-white tracking-[4px] sm:tracking-[8px]">EYEKON</span>
+                        <span className="text-xl sm:text-3xl font-bold text-white tracking-[2px] md:tracking-[6px]">EYEKON</span>
                     </div>
                 </div>
 
@@ -160,7 +160,7 @@ export default function LoginPage() {
                 </div>
             </motion.div>
             
-            <p className="text-[10px] text-white/10 uppercase tracking-[4px] absolute bottom-8">EYEKON Security Systems © 2026</p>
+            <p className="text-[10px] text-white/10 uppercase tracking-[1px] sm:tracking-[4px] absolute bottom-8">EYEKON Security Systems © 2026</p>
         </main>
     );
 }

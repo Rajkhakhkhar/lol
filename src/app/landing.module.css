@@ -114,7 +114,7 @@
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  min-width: 200px;
+  min-width: 140px;
 }
 
 .primaryBtn:hover {
@@ -492,6 +492,10 @@
   .heroBadge {
     font-size: 0.7rem;
     margin-bottom: 1.5rem;
+  }
+
+  .primaryBtn, .secondaryBtn {
+    min-width: 100%;
   }
 
   .featureCard {

@@ -233,7 +233,7 @@ export function ProgressSteps({ steps, currentStep }: ProgressStepsProps) {
         <div className="w-full overflow-x-auto no-scrollbar mb-6 sm:mb-10 pb-2">
             <div 
                 ref={scrollRef}
-                className="flex items-center justify-center min-w-max mx-auto px-4 sm:px-10 gap-0"
+                className="flex items-center justify-start min-w-max mx-auto px-4 sm:px-10 gap-0"
             >
                 {steps.map((step, index) => {
                     const isActive = index === currentStep;
