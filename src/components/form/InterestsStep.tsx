@@ -117,67 +117,54 @@ export default function InterestsStep({ data, onChange, city, country, dayPlans,
                     </div>
 
                     {suggestions.length > 0 ? (
-                        <div className="flex flex-wrap gap-3">
+                        <div className="flex flex-wrap gap-2 sm:gap-3">
                             {suggestions.map((suggestion, i) => {
                                 const added = isPlaceAdded(suggestion.placeName);
                                 return (
-                                    <div 
-                                        key={suggestion.placeName + i}
-                                        className={cn(
-                                            "group relative flex flex-col p-4 rounded-2xl border border-white/10 bg-[#1a1a1a] transition-all duration-300 min-w-[200px] flex-1 sm:flex-none",
-                                            added ? "opacity-60 grayscale-[0.5]" : "hover:border-blue-500/50 hover:bg-[#202020] hover:translate-y-[-2px]"
-                                        )}
-                                    >
-                                        <div className="flex items-start justify-between gap-2 mb-2">
-                                            <div className="flex items-center gap-2">
-                                                <MapPin className="w-3.5 h-3.5 text-blue-500" />
-                                                <span className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">
-                                                    {suggestion.placeName}
-                                                </span>
-                                            </div>
-                                            <Badge variant="default" className="text-[9px] uppercase tracking-tighter opacity-40">
-                                                {suggestion.category}
-                                            </Badge>
-                                        </div>
-                                        
-                                        <p className="text-xs text-white/40 mb-4 line-clamp-2 leading-relaxed">
-                                            {suggestion.shortDescription}
-                                        </p>
-
-                                        {added ? (
-                                            <div className="flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-blue-500/10 border border-blue-500/20 mt-auto">
+                                    <div key={suggestion.placeName + i} className="relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => !added && setAddingToDay(addingToDay === suggestion.placeName ? null : suggestion.placeName)}
+                                            className={cn(
+                                                "group flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300",
+                                                added 
+                                                    ? "bg-blue-500/10 border-blue-500/30 cursor-default opacity-80" 
+                                                    : "bg-neutral-800 border-white/10 hover:border-blue-500/50 hover:bg-neutral-700 cursor-pointer hover:scale-105 active:scale-95"
+                                            )}
+                                        >
+                                            {added ? (
                                                 <CheckCircle2 className="w-3.5 h-3.5 text-blue-500" />
-                                                <span className="text-[10px] font-bold text-blue-500/90 tracking-wide uppercase">Already planned</span>
-                                            </div>
-                                        ) : (
-                                            <div className="relative mt-auto">
-                                                <button
-                                                    onClick={() => setAddingToDay(addingToDay === suggestion.placeName ? null : suggestion.placeName)}
-                                                    className="w-full flex items-center justify-center gap-2 py-1.5 px-3 rounded-xl bg-[#222] border border-white/5 text-[10px] font-bold text-white/70 hover:bg-white/5 hover:text-white transition-all uppercase tracking-widest"
-                                                >
-                                                    {addingToDay === suggestion.placeName ? "Cancel" : "Add to Plan"}
-                                                    <ChevronDown className={cn("w-3 h-3 transition-transform", addingToDay === suggestion.placeName && "rotate-180")} />
-                                                </button>
-                                                
-                                                {addingToDay === suggestion.placeName && (
-                                                    <div className="absolute top-full left-0 right-0 mt-2 p-2 rounded-xl bg-[#141414] border border-[#2a2a2a] shadow-xl z-50 animate-in fade-in slide-in-from-top-1">
-                                                        <div className="text-[9px] text-white/30 uppercase font-bold px-2 py-1 mb-1">Select Day</div>
-                                                        <div className="grid grid-cols-2 gap-1">
-                                                            {dayPlans.map((day) => (
-                                                                <button
-                                                                    key={day.dayNumber}
-                                                                    onClick={() => {
-                                                                        onAddToDay(day.dayNumber, suggestion.placeName);
-                                                                        setAddingToDay(null);
-                                                                    }}
-                                                                    className="py-1.5 px-2 rounded-lg bg-[#202020] text-[10px] text-white/80 hover:bg-blue-600 hover:text-white transition-colors text-center font-bold"
-                                                                >
-                                                                    Day {day.dayNumber}
-                                                                </button>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                )}
+                                            ) : (
+                                                <MapPin className="w-3.5 h-3.5 text-blue-500 group-hover:text-blue-400 transition-colors" />
+                                            )}
+                                            <span className={cn(
+                                                "text-xs font-medium transition-colors",
+                                                added ? "text-blue-500" : "text-white/90 group-hover:text-white"
+                                            )}>
+                                                {suggestion.placeName}
+                                            </span>
+                                            {!added && (
+                                                <ChevronDown className={cn("w-3 h-3 text-white/40 transition-transform duration-300", addingToDay === suggestion.placeName && "rotate-180")} />
+                                            )}
+                                        </button>
+                                        
+                                        {addingToDay === suggestion.placeName && (
+                                            <div className="absolute top-full left-0 mt-2 p-2 rounded-xl bg-[#141414] border border-[#2a2a2a] shadow-2xl z-50 animate-in fade-in slide-in-from-top-1 min-w-[160px]">
+                                                <div className="text-[9px] text-white/30 uppercase font-bold px-2 py-1 mb-1">Select Day</div>
+                                                <div className="grid grid-cols-2 gap-1">
+                                                    {dayPlans.map((day) => (
+                                                        <button
+                                                            key={day.dayNumber}
+                                                            onClick={() => {
+                                                                onAddToDay(day.dayNumber, suggestion.placeName);
+                                                                setAddingToDay(null);
+                                                            }}
+                                                            className="py-1.5 px-2 rounded-lg bg-[#202020] text-[10px] text-white/80 hover:bg-blue-600 hover:text-white transition-colors text-center font-bold"
+                                                        >
+                                                            Day {day.dayNumber}
+                                                        </button>
+                                                    ))}
+                                                </div>
                                             </div>
                                         )}
                                     </div>

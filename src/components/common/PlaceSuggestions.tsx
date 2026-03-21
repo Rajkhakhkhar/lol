@@ -102,7 +102,7 @@ export default function PlaceSuggestions({ city, country, onSelect, className }:
                     ))}
                 </div>
             ) : (
-                <div className="flex flex-wrap gap-2 sm:gap-3">
+                <div className="flex flex-wrap gap-2">
                     {places.map((place, i) => {
                         const Icon = CATEGORY_ICONS[place.category?.toLowerCase()] || MapPin;
                         return (
@@ -111,14 +111,14 @@ export default function PlaceSuggestions({ city, country, onSelect, className }:
                                 type="button"
                                 onClick={() => onSelect?.(place.placeName)}
                                 className={cn(
-                                    "group flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-[#1a1a1a] transition-all duration-300",
-                                    "hover:border-blue-500/50 hover:bg-[#202020] hover:scale-105 active:scale-95 shadow-sm",
+                                    "group flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-neutral-800 transition-all duration-300",
+                                    "hover:border-blue-500/50 hover:bg-neutral-700 hover:scale-105 active:scale-95 shadow-sm",
                                     "animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-backwards"
                                 )}
                                 style={{ animationDelay: `${i * 50}ms` }}
                             >
-                                <Icon className="w-3.5 h-3.5 text-blue-500 group-hover:text-blue-400 transition-colors" />
-                                <span className="text-sm font-medium text-white/90 group-hover:text-white truncate max-w-[150px]">
+                                <Icon className="w-3 h-3 text-blue-500 group-hover:text-blue-400 transition-colors" />
+                                <span className="text-xs font-medium text-white/90 group-hover:text-white">
                                     {place.placeName}
                                 </span>
                             </button>
