@@ -196,18 +196,18 @@ export default function LandingPage() {
           />
         </div>
 
-        <div style={{ position: "relative", zIndex: 1, width: "100%" }}>
-          <div className={s.footerContainer}>
-            <div className={s.footerBrand}>
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-10 py-4 md:py-6">
+          <div className={cn(s.footerContainer, "flex flex-wrap md:flex-nowrap justify-center md:justify-between gap-6 md:gap-12 text-center md:text-left")}>
+            <div className={cn(s.footerBrand, "w-full md:w-auto mb-8 md:mb-0")}>
               <span className={s.footerLogo}>EYEKON</span>
-              <p className={s.footerDesc}>
+              <p className={cn(s.footerDesc, "mx-auto md:mx-0 max-w-sm")}>
                 AI-powered travel planning platform that helps you create smart itineraries in seconds.
               </p>
             </div>
 
-            <div className={s.footerLinks}>
+            <div className={cn(s.footerLinks, "flex-1 min-w-[150px] mb-8 md:mb-0")}>
               <h4 className={s.footerLinksTitle}>Quick Links</h4>
-              <ul>
+              <ul className="flex flex-col gap-2 break-words">
                 <li><Link href={startUrl} className="cursor-target">Start Planning</Link></li>
                 <li><a href="#features" className="cursor-target">Features</a></li>
                 <li><a href="#how-it-works" className="cursor-target">How It Works</a></li>
@@ -215,9 +215,9 @@ export default function LandingPage() {
               </ul>
             </div>
 
-            <div className={s.footerLinks}>
+            <div className={cn(s.footerLinks, "flex-1 min-w-[150px] mb-8 md:mb-0")}>
               <h4 className={s.footerLinksTitle}>Resources</h4>
-              <ul>
+              <ul className="flex flex-col gap-2 break-words">
                 <li><a href="#" className="cursor-target">Help Center</a></li>
                 <li><a href="#" className="cursor-target">Documentation</a></li>
                 <li><a href="#" className="cursor-target">Privacy Policy</a></li>
@@ -225,9 +225,9 @@ export default function LandingPage() {
               </ul>
             </div>
 
-            <div className={s.footerLinks}>
+            <div className={cn(s.footerLinks, "flex-1 min-w-[150px]")}>
               <h4 className={s.footerLinksTitle}>Connect</h4>
-              <div className={s.socialIcons}>
+              <div className={cn(s.socialIcons, "flex justify-center md:justify-start gap-4")}>
                 <a href="#" aria-label="Twitter" className="cursor-target">𝕏</a>
                 <a href="#" aria-label="Instagram" className="cursor-target">📸</a>
                 <a href="#" aria-label="LinkedIn" className="cursor-target">💼</a>
