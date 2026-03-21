@@ -145,7 +145,7 @@ export default function ForgotPasswordPage() {
                 <div className="flex justify-center mb-10">
                     <Link href="/login" className="flex flex-col items-center gap-4 group">
                         <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shadow-lg group-hover:border-blue-500 transition-colors overflow-hidden">
-                            <img src="/logo.png" alt="Eyekon Logo" className="w-full h-full object-cover filter brightness-0 invert" />
+                            <img src="/logo.png" alt="Eyekon Logo" className="w-full h-full object-cover filter brightness-0 invert logo-blink" />
                         </div>
                         <span className="text-xl font-bold text-white tracking-[4px]">PASSWORD RECOVERY</span>
                     </Link>

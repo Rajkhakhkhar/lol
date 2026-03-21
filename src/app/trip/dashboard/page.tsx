@@ -202,7 +202,7 @@ export default function TripDashboardPage() {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
                         <Link href="/" className="flex items-center gap-[10px] group">
                             <div className="w-8 h-8 rounded-full bg-[#141414] border border-[#2a2a2a] flex items-center justify-center shadow-[0_0_10px_rgba(79, 140, 255,0.15)] hover:border-blue-500 transition-colors overflow-hidden">
-                                <img src="/logo.png" alt="Eyekon Logo" className="w-full h-full object-cover filter brightness-0 invert" />
+                                <img src="/logo.png" alt="Eyekon Logo" className="w-full h-full object-cover filter brightness-0 invert logo-blink" />
                             </div>
                             <span className="text-[18px] font-bold text-white tracking-[2px]">
                                 EYEKON
@@ -272,7 +272,7 @@ export default function TripDashboardPage() {
                                 <Link href="/trip/summary">
                                     <button
                                         type="button"
-                                        className="px-8 py-3.5 rounded-2xl bg-blue-600 text-white text-sm font-bold border border-blue-500 hover:bg-blue-700 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all cursor-pointer shadow-lg active:scale-95"
+                                        className="px-8 py-3.5 rounded-2xl bg-black text-white text-sm font-bold border border-white/20 hover:bg-neutral-900 transition-all cursor-pointer shadow-lg active:scale-95"
                                     >
                                         View Full Day-by-Day Summary
                                     </button>

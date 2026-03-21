@@ -9,7 +9,7 @@ export function BrandTag() {
   return (
     <Link href="#home" className={s.brandTag}>
       <div className={s.brandLogoPlaceholder}>
-        <img src="/logo.png" alt="Eyekon Logo" className={s.brandLogo} />
+        <img src="/logo.png" alt="Eyekon Logo" className={cn(s.brandLogo, 'logo-blink')} />
       </div>
       <span className={s.brandText}>EYEKON</span>
     </Link>
