@@ -116,6 +116,15 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
             const tl = formData.travel_logistics;
             return !!(tl.destination_country && tl.destination_city && tl.arrival_datetime && tl.departure_datetime && new Date(tl.departure_datetime) > new Date(tl.arrival_datetime));
         }
+        
+        // Day Plan Validation
+        const isDayStep = s >= INITIAL_STEPS.length && s < INITIAL_STEPS.length + tripDays;
+        if (isDayStep) {
+            const dayIdx = s - INITIAL_STEPS.length;
+            const dayPlan = formData.day_plans[dayIdx];
+            return !!(dayPlan && (dayPlan.places.length > 0 || dayPlan.nothingPlanned));
+        }
+
         return true;
     };
 

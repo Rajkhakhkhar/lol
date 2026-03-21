@@ -200,6 +200,7 @@ export interface DayPlanForm {
   checkin_time?: string;
   checkout_time?: string;
   places: DayPlanPlace[];
+  nothingPlanned?: boolean;
 }
 
 export interface TripFormData {

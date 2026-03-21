@@ -211,11 +211,13 @@ export default function DayPlanStep({
                                 }
                             }}
                             className="flex-1"
+                            disabled={data.nothingPlanned}
                         />
                         <button
                             type="button"
                             onClick={() => addPlace()}
-                            className="h-11 w-11 rounded-xl border border-[#2a2a2a] hover:border-blue-500 bg-[#141414] flex items-center justify-center transition-colors cursor-pointer flex-shrink-0 sm:hidden"
+                            disabled={data.nothingPlanned}
+                            className="h-11 w-11 rounded-xl border border-[#2a2a2a] hover:border-blue-500 bg-[#141414] flex items-center justify-center transition-colors cursor-pointer flex-shrink-0 sm:hidden disabled:opacity-30 disabled:cursor-not-allowed"
                         >
                             <Plus className="w-5 h-5 text-white" />
                         </button>
@@ -226,15 +228,33 @@ export default function DayPlanStep({
                             value={timeInput}
                             onChange={e => setTimeInput(e.target.value)}
                             className="flex-1 sm:w-32"
+                            disabled={data.nothingPlanned}
                         />
                         <button
                             type="button"
                             onClick={() => addPlace()}
-                            className="h-11 w-11 rounded-xl border border-[#2a2a2a] hover:border-blue-500 bg-[#141414] hidden sm:flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
+                            disabled={data.nothingPlanned}
+                            className="h-11 w-11 rounded-xl border border-[#2a2a2a] hover:border-blue-500 bg-[#141414] hidden sm:flex items-center justify-center transition-colors cursor-pointer flex-shrink-0 disabled:opacity-30 disabled:cursor-not-allowed"
                         >
                             <Plus className="w-5 h-5 text-white" />
                         </button>
                     </div>
+                </div>
+
+                {/* Nothing Planned Toggle */}
+                <div className="pt-2">
+                    <Toggle
+                        checked={!!data.nothingPlanned}
+                        onChange={checked => {
+                            onChange({ 
+                                ...data, 
+                                nothingPlanned: checked,
+                                places: checked ? [] : data.places 
+                            });
+                        }}
+                        label="Nothing planned for this day"
+                        description="Select this if you want to keep this day free or for resting"
+                    />
                 </div>
 
                 {/* Added Places List */}

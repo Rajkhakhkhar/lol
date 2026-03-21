@@ -244,28 +244,41 @@ export default function TripDashboardPage() {
                             </Link>
                         </div>
                     ) : (
-                        <div className="rounded-2xl border border-[#2a2a2a] bg-[#202020] overflow-hidden shadow-lg">
-                            {rows.map((row, index) => (
-                                <div key={index} className={`flex flex-col sm:flex-row sm:items-center justify-between px-4 sm:px-5 py-4 ${index !== rows.length - 1 ? 'border-b border-[#2a2a2a]' : ''} hover:bg-[#2a2a2a] transition-colors gap-3 sm:gap-4`}>
-                                    <div className="flex-1 min-w-0">
-                                        <span className="text-xs sm:text-sm text-[#7a7a7a] block mb-0.5 sm:mb-0">{row.label}</span>
+                        <>
+                            <div className="rounded-2xl border border-[#2a2a2a] bg-[#202020] overflow-hidden shadow-lg">
+                                {rows.map((row, index) => (
+                                    <div key={index} className={`flex flex-col sm:flex-row sm:items-center justify-between px-4 sm:px-5 py-4 ${index !== rows.length - 1 ? 'border-b border-[#2a2a2a]' : ''} hover:bg-[#2a2a2a] transition-colors gap-3 sm:gap-4`}>
+                                        <div className="flex-1 min-w-0">
+                                            <span className="text-xs sm:text-sm text-[#7a7a7a] block mb-0.5 sm:mb-0">{row.label}</span>
+                                        </div>
+                                        <div className="flex-1 min-w-0 sm:text-right pr-2 sm:pr-4">
+                                            <span className="text-sm sm:text-sm text-white font-medium break-words sm:truncate block">
+                                                {row.value}
+                                            </span>
+                                        </div>
+                                        <button 
+                                            type="button" 
+                                            onClick={() => handleEdit(row.step, row.fieldName)} 
+                                            className="self-end sm:self-center flex-shrink-0 p-3 sm:p-2 rounded-lg bg-[#141414] sm:bg-transparent hover:bg-[#141414] border border-[#2a2a2a] sm:border-transparent hover:border-blue-500 hover:shadow-[0_0_10px_rgba(79, 140, 255,0.15)] text-[#b5b5b5] hover:text-white transition-all cursor-pointer"
+                                            aria-label={`Edit ${row.label}`}
+                                        >
+                                            <MoreVertical className="w-5 h-5" />
+                                        </button>
                                     </div>
-                                    <div className="flex-1 min-w-0 sm:text-right pr-2 sm:pr-4">
-                                        <span className="text-sm sm:text-sm text-white font-medium break-words sm:truncate block">
-                                            {row.value}
-                                        </span>
-                                    </div>
-                                    <button 
-                                        type="button" 
-                                        onClick={() => handleEdit(row.step, row.fieldName)} 
-                                        className="self-end sm:self-center flex-shrink-0 p-3 sm:p-2 rounded-lg bg-[#141414] sm:bg-transparent hover:bg-[#141414] border border-[#2a2a2a] sm:border-transparent hover:border-blue-500 hover:shadow-[0_0_10px_rgba(79, 140, 255,0.15)] text-[#b5b5b5] hover:text-white transition-all cursor-pointer"
-                                        aria-label={`Edit ${row.label}`}
+                                ))}
+                            </div>
+                            
+                            <div className="mt-10 mb-10 text-center">
+                                <Link href="/trip/summary">
+                                    <button
+                                        type="button"
+                                        className="px-8 py-3.5 rounded-2xl bg-blue-600 text-white text-sm font-bold border border-blue-500 hover:bg-blue-700 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all cursor-pointer shadow-lg active:scale-95"
                                     >
-                                        <MoreVertical className="w-5 h-5" />
+                                        View Full Day-by-Day Summary
                                     </button>
-                                </div>
-                            ))}
-                        </div>
+                                </Link>
+                            </div>
+                        </>
                     )}
                 </div>
             </div>
