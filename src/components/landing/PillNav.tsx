@@ -95,7 +95,7 @@ export function PillNav() {
     navItems.forEach((item) => {
       item.addEventListener('mouseenter', () => {
         const bounds = item.getBoundingClientRect();
-        const containerBounds = containerRef.current!.querySelector(`.${s.pillNav}`)!.getBoundingClientRect();
+        const containerBounds = item.parentElement!.getBoundingClientRect();
         
         const relativeLeft = bounds.left - containerBounds.left;
         
@@ -129,27 +129,29 @@ export function PillNav() {
         s.pillNavContainer,
         isScrolled && s.scrolled,
         isHidden && !isMenuOpen && s.hiddenNav,
-        "w-full max-w-full px-4"
+        "w-full py-4"
       )}
       onMouseEnter={() => {
         if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
         setIsHidden(false);
       }}
     >
-      <nav className={cn(s.pillNav, "flex items-center justify-between w-full px-4 md:px-0")}>
+      <nav className={cn(s.pillNav, "flex items-center justify-between w-full px-6 md:px-12 relative")}>
         {/* Logo (left) */}
-        <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden">
-                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover filter brightness-0 invert" />
-            </div>
-            <span className="text-white font-bold tracking-[2px] md:tracking-[6px] text-sm md:text-base uppercase">EYEKON</span>
-        </Link>
+        <div className="flex items-center gap-2 z-20">
+            <Link href="/" className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center overflow-hidden">
+                    <img src="/logo.png" alt="Logo" className="w-full h-full object-cover filter brightness-0 invert" />
+                </div>
+                <span className="text-white font-bold tracking-[2px] md:tracking-[6px] text-sm md:text-base uppercase">EYEKON</span>
+            </Link>
+        </div>
 
-        {/* Animated Background Indicator (Desktop only) */}
-        <div ref={indicatorRef} className={cn(s.navIndicator, "hidden md:block")} style={{ opacity: 0 }} />
-        
-        {/* Menu Items (hidden on mobile, flex on desktop) */}
-        <div className={cn("hidden md:flex items-center gap-1")}>
+        {/* Center Nav Items (Desktop only) */}
+        <div className={cn("hidden md:flex items-center gap-1 absolute left-1/2 transform -translate-x-1/2 z-10")}>
+            {/* Animated Background Indicator */}
+            <div ref={indicatorRef} className={s.navIndicator} style={{ opacity: 0 }} />
+            
             {navItems.map((item) => (
             <Link
                 key={item.href}
@@ -176,17 +178,20 @@ export function PillNav() {
             )}
         </div>
 
-        {/* Hamburger Menu (Mobile only) */}
-        <button 
-            className="md:hidden text-white p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-            <div className="w-6 h-5 flex flex-col justify-between">
-                <span className={cn("w-full h-0.5 bg-white transition-all", isMenuOpen && "rotate-45 translate-y-2")} />
-                <span className={cn("w-full h-0.5 bg-white transition-all", isMenuOpen && "opacity-0")} />
-                <span className={cn("w-full h-0.5 bg-white transition-all", isMenuOpen && "-rotate-45 -translate-y-2")} />
-            </div>
-        </button>
+        {/* Right side (Empty or Logout for mobile) */}
+        <div className="flex items-center gap-4 z-20">
+            {/* Hamburger Menu (Mobile only) */}
+            <button 
+                className="md:hidden text-white p-2"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+                <div className="w-6 h-5 flex flex-col justify-between">
+                    <span className={cn("w-full h-0.5 bg-white transition-all", isMenuOpen && "rotate-45 translate-y-2")} />
+                    <span className={cn("w-full h-0.5 bg-white transition-all", isMenuOpen && "opacity-0")} />
+                    <span className={cn("w-full h-0.5 bg-white transition-all", isMenuOpen && "-rotate-45 -translate-y-2")} />
+                </div>
+            </button>
+        </div>
         
         {/* Mobile Dropdown */}
         {isMenuOpen && (

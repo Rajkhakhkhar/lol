@@ -1,36 +1,36 @@
 /* PillNav.module.css */
 .pillNavContainer {
   position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
 }
 
 .pillNav {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 9999px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   position: relative;
+  height: 72px;
+  transition: all 0.3s ease;
+}
+
+.scrolled {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Translucency when scrolled */
 .scrolled .pillNav {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
 }
 
 /* Hide navigation */
 .hiddenNav {
-  transform: translate(-50%, -120%);
+  transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
 }
@@ -73,15 +73,11 @@
 
 @media (max-width: 768px) {
   .pillNavContainer {
-    top: 0;
-    width: 100%;
-    transform: none;
-    left: 0;
-    padding: 10px;
+    padding: 0;
   }
 
   .pillNav {
-    border-radius: 1.25rem;
+    height: 64px;
   }
 }
 
