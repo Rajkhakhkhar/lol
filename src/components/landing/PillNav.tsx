@@ -36,7 +36,7 @@ export function PillNav() {
       <nav className={cn(s.pillNav, "w-full")}>
         
         {/* 1) DESKTOP HEADER (md and above) */}
-        <div className="hidden md:flex items-center justify-between w-full px-6">
+        <div className="hidden md:flex items-center justify-between w-full max-w-7xl mx-auto px-6">
           {/* LEFT */}
           <div className="flex items-center">
             <Logo />
