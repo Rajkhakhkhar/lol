@@ -130,6 +130,12 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
 
     const next = () => {
         if (!validateStep()) return;
+        
+        if (isEditMode) {
+            handleSubmit();
+            return;
+        }
+
         if (step < steps.length - 1) {
             setDirection(1);
             setStep(s => s + 1);
@@ -139,6 +145,11 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
     };
 
     const prev = () => {
+        if (isEditMode) {
+            router.push('/trip/dashboard');
+            return;
+        }
+
         if (step > 0) {
             setDirection(-1);
             setStep(s => s - 1);
@@ -245,12 +256,12 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
             </div>
             {error && <div className="mt-4 p-4 rounded-xl bg-black border border-pink-500/50 text-pink-500 text-sm">{error}</div>}
             <div className="flex items-center justify-between mt-6">
-                <Button variant="outline" onClick={prev} disabled={step === 0 || loading} className={step === 0 ? 'invisible' : ''}>
-                    <ChevronLeft className="w-4 h-4" /> Back
+                <Button variant="outline" onClick={prev} disabled={loading} className={(step === 0 && !isEditMode) ? 'invisible' : ''}>
+                    <ChevronLeft className="w-4 h-4" /> {isEditMode ? 'Cancel' : 'Back'}
                 </Button>
                 <Button onClick={next} disabled={loading || !validateStep()}>
-                    {loading ? <Spinner size="sm" /> : (isLastStep ? 'Generate Itinerary' : 'Next')}
-                    {!loading && !isLastStep && <ChevronRight className="w-4 h-4" />}
+                    {loading ? <Spinner size="sm" /> : (isEditMode ? 'Save & Return' : (isLastStep ? 'Generate Itinerary' : 'Next'))}
+                    {!loading && !isLastStep && !isEditMode && <ChevronRight className="w-4 h-4" />}
                 </Button>
             </div>
         </div>
