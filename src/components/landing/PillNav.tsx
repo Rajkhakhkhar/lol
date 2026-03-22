@@ -35,40 +35,41 @@ export function PillNav() {
     <header className={cn(s.pillNavContainer, "w-full py-4")}>
       
       {/* 1) DESKTOP HEADER (md and above) */}
-      <div className="hidden md:flex items-center justify-between max-w-7xl mx-auto px-6">
-        
-        {/* LEFT - LOGO */}
-        <div className="flex items-center">
-          <Logo />
+      <div className="hidden md:flex w-full justify-center">
+        <div className="flex items-center justify-between w-full max-w-5xl px-6">
+          
+          {/* LEFT - LOGO */}
+          <div className="flex items-center">
+            <Logo />
+          </div>
+
+          {/* RIGHT - NAV */}
+          <nav className={s.navGlass}>
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  s.navItem,
+                  pathname === item.href && s.navItemActive
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+            {isLoggedIn && (
+              <button
+                onClick={() => {
+                  localStorage.removeItem("isLoggedIn");
+                  window.location.href = "/";
+                }}
+                className={s.navItem}
+              >
+                Logout
+              </button>
+            )}
+          </nav>
         </div>
-
-        {/* RIGHT - NAV */}
-        <nav className={s.navGlass}>
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                s.navItem,
-                pathname === item.href && s.navItemActive
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-          {isLoggedIn && (
-            <button
-              onClick={() => {
-                localStorage.removeItem("isLoggedIn");
-                window.location.href = "/";
-              }}
-              className={s.navItem}
-            >
-              Logout
-            </button>
-          )}
-        </nav>
-
       </div>
 
       {/* 2) MOBILE HEADER (below md) - Kept separate as requested */}
