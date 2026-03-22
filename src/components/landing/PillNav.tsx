@@ -35,15 +35,15 @@ export function PillNav() {
     <header className={cn(s.pillNavContainer, "w-full py-4")}>
       
       {/* 1) DESKTOP HEADER (md and above) */}
-      <div className="hidden md:flex w-full justify-center">
-        <div className="flex items-center justify-between w-full max-w-5xl px-6">
-          
-          {/* LEFT - LOGO */}
-          <div className="flex items-center">
-            <Logo />
-          </div>
+      <div className="hidden md:flex items-center w-full px-6 relative">
+        
+        {/* LEFT - LOGO */}
+        <div className="flex items-center z-10">
+          <Logo />
+        </div>
 
-          {/* RIGHT - NAV */}
+        {/* CENTER - NAV */}
+        <div className="absolute left-1/2 -translate-x-1/2">
           <nav className={s.navGlass}>
             {navItems.map((item) => (
               <Link
@@ -70,6 +70,7 @@ export function PillNav() {
             )}
           </nav>
         </div>
+
       </div>
 
       {/* 2) MOBILE HEADER (below md) - Kept separate as requested */}
