@@ -10,7 +10,7 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 export const metadata: Metadata = {
   title: "EYEKON — AI-Powered Travel Planner",
   description:
-    "Plan your dream trip in minutes with EYEKON. Our AI builds optimised, day-by-day itineraries tailored to your preferences.",
+    "Customize your dream trip in minutes with EYEKON. Our AI builds optimised, day-by-day itineraries tailored to your preferences.",
 };
 
 export default function RootLayout({

@@ -66,7 +66,7 @@ export default function LandingPage() {
         <div className={s.heroBadge} style={{ position: "relative", zIndex: 1 }}>✨ AI-Powered Travel Planning</div>
 
         <h1 className={cn(s.heroTitle, "text-3xl sm:text-4xl md:text-6xl")} style={{ position: "relative", zIndex: 1 }}>
-          Plan Your Dream Trip{" "}
+          Customize Your Dream Trip{" "}
           <span className={s.heroTitleGradient}>In Minutes</span>
         </h1>
 
