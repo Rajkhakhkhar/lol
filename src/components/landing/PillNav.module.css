@@ -5,7 +5,6 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   background: transparent;
 }
 
@@ -13,61 +12,8 @@
   display: flex;
   align-items: center;
   position: relative;
-  height: 72px;
-  transition: all 0.3s ease;
-}
-
-.scrolled {
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Translucency when scrolled */
-.scrolled .pillNav {
-  background: transparent;
-}
-
-/* Hide navigation */
-.hiddenNav {
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.navItem {
-  position: relative;
-  z-index: 2;
-  padding: 0.5rem 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
-  border-radius: 9999px;
-  transition: color 0.3s ease;
-  white-space: nowrap;
-}
-
-.navItem:hover {
-  color: #fff;
-}
-
-.navItemActive {
-  color: #fff;
-}
-
-/* Indicator Pill (Follower) */
-.navIndicator {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  height: 70%;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 9999px;
-  z-index: 1;
-  pointer-events: none;
-  transform: translateY(-50%);
-  width: 0;
+  height: 80px;
+  width: 100%;
 }
 
 .navGlass {
@@ -80,24 +26,46 @@
   display: flex;
   align-items: center;
   gap: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.navItem {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.navItem:hover {
+  color: #fff;
+}
+
+.navItemActive {
+  color: #fff;
 }
 
 .mobileDropdown {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
 }
 
-@media (max-width: 768px) {
-  .pillNavContainer {
-    padding: 0;
-  }
-
-  .pillNav {
-    height: 64px;
-  }
+.mobileNavItem {
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 500;
+  padding: 12px 16px;
+  text-decoration: none;
+  transition: background 0.2s ease;
 }
+
+.mobileNavItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 
 

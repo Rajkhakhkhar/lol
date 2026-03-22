@@ -7,6 +7,7 @@ import { Globe, ArrowLeft, MoreVertical, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui';
 import type { TripFormData } from '@/types';
 import Grainient from '@/components/Grainient';
+import { Logo } from '@/components/common/Logo';
 
 interface DashboardRow {
     label: string;
@@ -201,14 +202,7 @@ export default function TripDashboardPage() {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <nav className="sticky top-0 z-50 glass">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[72px] h-auto py-3 flex items-center justify-between">
-                        <Link href="/" className="flex items-center gap-[10px] group">
-                            <div className="w-8 h-8 rounded-full bg-[#141414] border border-[#2a2a2a] flex items-center justify-center shadow-[0_0_10px_rgba(79, 140, 255,0.15)] hover:border-blue-500 transition-colors overflow-hidden">
-                                <img src="/logo.png" alt="Eyekon Logo" className="w-full h-full object-cover filter brightness-0 invert logo-blink" />
-                            </div>
-                            <span className="text-[18px] font-bold text-white tracking-[2px] md:tracking-[6px]">
-                                EYEKON
-                            </span>
-                        </Link>
+                        <Logo size="sm" />
                         <div className="flex items-center gap-6">
                             <Link href="/trip/plan" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
                                 <ArrowLeft className="w-4 h-4" />

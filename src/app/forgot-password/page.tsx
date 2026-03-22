@@ -7,6 +7,7 @@ import { Globe, ArrowRight, Mail, Phone, Lock, AlertCircle, Key, CheckCircle2 } 
 import Link from 'next/link';
 import PrismaticBurst from '@/components/animations/PrismaticBurst';
 import PasswordStrength from '@/components/ui/PasswordStrength';
+import { Logo } from '@/components/common/Logo';
 
 type RecoveryMethod = 'email' | 'phone' | 'pin';
 
@@ -143,12 +144,8 @@ export default function ForgotPasswordPage() {
                 className="relative z-10 w-full max-w-[600px] p-8 sm:p-12 md:p-16 rounded-[48px] border border-white/10 bg-white/5 backdrop-blur-3xl shadow-4xl my-8"
             >
                 <div className="flex justify-center mb-10">
-                    <Link href="/login" className="flex flex-col items-center gap-4 group">
-                        <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shadow-lg group-hover:border-blue-500 transition-colors overflow-hidden">
-                            <img src="/logo.png" alt="Eyekon Logo" className="w-full h-full object-cover filter brightness-0 invert logo-blink" />
-                        </div>
-                        <span className="text-xl font-bold text-white tracking-[4px]">PASSWORD RECOVERY</span>
-                    </Link>
+                    <Logo size="md" showText={false} />
+                    <span className="text-xl font-bold text-white tracking-[4px] ml-4 self-center">PASSWORD RECOVERY</span>
                 </div>
 
                 <AnimatePresence mode="wait">

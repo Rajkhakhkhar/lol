@@ -1,17 +1,11 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import s from './BrandTag.module.css';
+import { Logo } from '@/components/common/Logo';
 import { cn } from '@/lib/utils';
+import s from './BrandTag.module.css';
 
 export function BrandTag() {
   return (
-    <Link href="#home" className={s.brandTag}>
-      <div className={s.brandLogoPlaceholder}>
-        <img src="/logo.png" alt="Eyekon Logo" className={cn(s.brandLogo, 'logo-blink')} />
-      </div>
-      <span className={s.brandText}>EYEKON</span>
-    </Link>
+    <Logo className={cn(s.brandTag, "fixed top-5 left-5")} size="sm" />
   );
 }

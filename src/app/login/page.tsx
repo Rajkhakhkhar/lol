@@ -7,6 +7,7 @@ import { Globe, ArrowRight, Mail, Lock, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import PrismaticBurst from '@/components/animations/PrismaticBurst';
 import PasswordStrength from '@/components/ui/PasswordStrength';
+import { Logo } from '@/components/common/Logo';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -75,12 +76,7 @@ export default function LoginPage() {
                 className="relative z-10 w-full max-w-[720px] p-4 sm:p-6 md:p-10 rounded-[32px] sm:rounded-[48px] border border-white/10 bg-white/5 backdrop-blur-3xl shadow-4xl my-8"
             >
                 <div className="flex justify-center mb-8 sm:mb-12">
-                    <div className="flex flex-col items-center gap-4 sm:gap-6">
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shadow-lg overflow-hidden">
-                            <img src="/logo.png" alt="Eyekon Logo" className="w-full h-full object-cover filter brightness-0 invert logo-blink" />
-                        </div>
-                        <span className="text-xl sm:text-3xl font-bold text-white tracking-[2px] md:tracking-[6px]">EYEKON</span>
-                    </div>
+                    <Logo size="lg" />
                 </div>
 
                 <div className="text-center mb-8 sm:mb-12">
