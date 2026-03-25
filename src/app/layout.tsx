@@ -1,35 +1,41 @@
-import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-import "./globals.css";
-import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider";
+import type { Metadata } from 'next';
+import './globals.css';
+import { Geist } from 'next/font/google';
+import { AuthProvider } from '@/components/auth/AuthProvider';
+import { ThemeProvider } from '@/components/theme-provider';
+import { cn } from '@/lib/utils';
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: "EYEKON — AI-Powered Travel Planner",
-  description:
-    "Customize your dream trip in minutes with EYEKON. Our AI builds optimised, day-by-day itineraries tailored to your preferences.",
+    title: 'EYEKON - AI-Powered Travel Planner',
+    description:
+        'Customize your dream trip in minutes with EYEKON. Our AI builds optimised, day-by-day itineraries tailored to your preferences.',
 };
 
 export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
-      <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
+    return (
+        <html
+            lang="en"
+            className={cn('font-sans', geist.variable)}
+            suppressHydrationWarning
         >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+            <body>
+                <AuthProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="dark"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        {children}
+                    </ThemeProvider>
+                </AuthProvider>
+            </body>
+        </html>
+    );
 }

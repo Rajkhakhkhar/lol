@@ -1,7 +1,10 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
+const supabasePublishableKey =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+    '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 function isValidUrl(url: string): boolean {
@@ -13,40 +16,58 @@ function isValidUrl(url: string): boolean {
     }
 }
 
-let _supabase: SupabaseClient | null = null;
-let _supabaseAdmin: SupabaseClient | null = null;
-
-function getClient(): SupabaseClient {
-    if (!_supabase) {
-        if (!isValidUrl(supabaseUrl) || !supabaseAnonKey) {
-            throw new Error('Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.');
-        }
-        _supabase = createClient(supabaseUrl, supabaseAnonKey);
+function assertPublicConfig() {
+    if (!isValidUrl(supabaseUrl) || !supabasePublishableKey) {
+        throw new Error(
+            'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
+        );
     }
-    return _supabase;
 }
 
-function getAdminClient(): SupabaseClient {
-    if (!_supabaseAdmin) {
+let browserClient: SupabaseClient | null = null;
+let serviceClient: SupabaseClient | null = null;
+
+export function createBrowserSupabaseClient() {
+    assertPublicConfig();
+
+    return createClient(supabaseUrl, supabasePublishableKey, {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true,
+        },
+    });
+}
+
+export function getSupabaseBrowserClient() {
+    if (!browserClient) {
+        browserClient = createBrowserSupabaseClient();
+    }
+
+    return browserClient;
+}
+
+function getServiceClient() {
+    if (!serviceClient) {
         if (supabaseServiceKey && isValidUrl(supabaseUrl)) {
-            _supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+            serviceClient = createClient(supabaseUrl, supabaseServiceKey);
         } else {
-            _supabaseAdmin = getClient();
+            serviceClient = getSupabaseBrowserClient();
         }
     }
-    return _supabaseAdmin;
+
+    return serviceClient;
 }
 
-// Lazy-initialized Supabase instances — won't crash at import if env vars are missing
 export const supabase = new Proxy({} as SupabaseClient, {
     get(_target, prop) {
-        return Reflect.get(getClient(), prop);
+        return Reflect.get(getSupabaseBrowserClient(), prop);
     },
 });
 
 export const supabaseAdmin = new Proxy({} as SupabaseClient, {
     get(_target, prop) {
-        return Reflect.get(getAdminClient(), prop);
+        return Reflect.get(getServiceClient(), prop);
     },
 });
 

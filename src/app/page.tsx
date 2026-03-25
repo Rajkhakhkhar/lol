@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import s from "./landing.module.css";
 import dynamic from "next/dynamic";
@@ -8,11 +7,11 @@ const GridScan = dynamic(() => import("@/components/landing/GridScan").then(mod 
 const GalaxyShader = dynamic(() => import("@/components/GalaxyShader").then(mod => mod.GalaxyShader), { ssr: false });
 
 import ImageTrail from "@/components/landing/ImageTrail";
-import Shuffle from "@/components/landing/Shuffle";
 import Dither from "@/components/Dither";
 import ClientCursor from "@/components/ClientCursor";
 import { PillNav } from "@/components/landing/PillNav";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 const TRAIL_IMAGES = [
   'https://i.pinimg.com/736x/83/2d/ac/832dac09e0d45055beef6e22d6be4a01.jpg',
@@ -26,22 +25,15 @@ const TRAIL_IMAGES = [
 ];
 
 export default function LandingPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
-  }, []);
-
-  const startUrl = isLoggedIn ? "/trip/plan" : "/login";
+  const { user } = useAuth();
+  const startUrl = user ? "/trip/plan" : "/login";
 
   return (
     <div style={{ scrollBehavior: "smooth" }}>
       <ClientCursor />
       <PillNav />
 
-      {/* ── Hero Section ─────────────────────────── */}
       <section className={cn(s.hero, "relative w-full min-h-screen flex items-center justify-center overflow-hidden max-w-full")} id="home">
-        {/* GridScan animation background */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
           <GridScan
             style={{ width: "100%", height: "100%" }}
@@ -63,7 +55,7 @@ export default function LandingPage() {
           />
         </div>
 
-        <div className={s.heroBadge} style={{ position: "relative", zIndex: 1 }}>✨ AI-Powered Travel Planning</div>
+        <div className={s.heroBadge} style={{ position: "relative", zIndex: 1 }}>AI-Powered Travel Planning</div>
 
         <h1 className={cn(s.heroTitle, "text-3xl sm:text-4xl md:text-6xl")} style={{ position: "relative", zIndex: 1 }}>
           Customize Your Dream Trip{" "}
@@ -72,16 +64,16 @@ export default function LandingPage() {
 
         <p className={cn(s.heroSubtitle, "text-sm sm:text-base md:text-lg")} style={{ position: "relative", zIndex: 1 }}>
           EYEKON uses AI to create optimised, day-by-day itineraries tailored
-          to your preferences — so you spend less time planning and more time
+          to your preferences, so you spend less time planning and more time
           exploring.
         </p>
 
         <div className={s.heroActions} style={{ position: "relative", zIndex: 1 }}>
           <Link href={startUrl} className={`${s.primaryBtn} cursor-target`} id="hero-start-btn">
-            🚀 Start Planning Trip
+            Start Planning Trip
           </Link>
           <a href="#features" className={`${s.secondaryBtn} cursor-target`}>
-            Learn More ↓
+            Learn More
           </a>
         </div>
 
@@ -91,7 +83,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Secondary Section ─────────────────────────── */}
       <section>
         <div style={{ height: "clamp(300px, 60vh, 600px)", position: "relative", overflow: "hidden" }}>
           <ImageTrail
@@ -101,23 +92,17 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Features & CTA (Shared Background) ───────────────── */}
       <div
         className="relative w-full min-h-[600px] overflow-hidden"
         style={{ background: "transparent" }}
       >
-        {/* ── CONTENT ── */}
         <div className="relative z-10 w-full">
-          {/* ── Features ────────────────────────────────────── */}
           <section className="relative overflow-hidden w-full min-h-screen py-20 flex flex-col justify-center" id="features">
-            {/* Background Animation */}
             <div className="absolute inset-0 z-0">
               <GalaxyShader />
             </div>
 
-            {/* Content */}
             <div className="relative z-10 w-full">
-              {/* EXISTING CONTENT — DO NOT MODIFY */}
               <div className="px-6 max-w-7xl mx-auto w-full">
                 <div className={s.sectionHeader}>
                   <span className={s.sectionLabel}>Why EYEKON?</span>
@@ -130,17 +115,17 @@ export default function LandingPage() {
 
                 <div className={s.featuresGrid}>
                   <FeatureCard
-                    icon="🗺️"
+                    icon="Map"
                     title="Smart Destination Picker"
                     desc="Select your city and get top recommendations instantly."
                   />
                   <FeatureCard
-                    icon="🤖"
+                    icon="AI"
                     title="AI Generated Itineraries"
                     desc="Get a fully structured day-by-day plan in seconds."
                   />
                   <FeatureCard
-                    icon="✏️"
+                    icon="Edit"
                     title="Customisable Plans"
                     desc="Swap places, adjust times, and personalise every detail."
                   />
@@ -149,14 +134,11 @@ export default function LandingPage() {
             </div>
           </section>
 
-          {/* ── CTA ─────────────────────────────────────────── */}
           <section className="relative overflow-hidden w-full min-h-[600px]" id="how">
-            {/* Background Animation */}
             <div className="absolute inset-0 z-0">
               <GalaxyShader />
             </div>
 
-            {/* Content */}
             <div className={`relative z-10 w-full ${s.section}`}>
               <div className={`${s.ctaBanner} bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg hover:bg-white/15 transition-all duration-300`}>
                 <h2 className={s.ctaTitle}>
@@ -167,7 +149,7 @@ export default function LandingPage() {
                   two minutes to create your first itinerary.
                 </p>
                 <Link href={startUrl} className={`${s.primaryBtn} cursor-target`} id="cta-start-btn">
-                  🚀 Start Planning Trip
+                  Start Planning Trip
                 </Link>
               </div>
             </div>
@@ -175,9 +157,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ── Footer ──────────────────────────────────────── */}
       <footer className={s.footer} style={{ position: "relative", overflow: "hidden" }}>
-        {/* Background Animation */}
         <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, opacity: 0.5, pointerEvents: "none" }}>
           <Dither
             waveColor={[1, 0.6196078431372549, 0.6196078431372549]}
@@ -224,10 +204,10 @@ export default function LandingPage() {
             <div className={cn(s.footerLinks, "flex-1 min-w-[150px]")}>
               <h4 className={s.footerLinksTitle}>Connect</h4>
               <div className={cn(s.socialIcons, "flex justify-center md:justify-start gap-4")}>
-                <a href="#" aria-label="Twitter" className="cursor-target">𝕏</a>
-                <a href="#" aria-label="Instagram" className="cursor-target">📸</a>
-                <a href="#" aria-label="LinkedIn" className="cursor-target">💼</a>
-                <a href="#" aria-label="GitHub" className="cursor-target">💻</a>
+                <a href="#" aria-label="Twitter" className="cursor-target">X</a>
+                <a href="#" aria-label="Instagram" className="cursor-target">IG</a>
+                <a href="#" aria-label="LinkedIn" className="cursor-target">IN</a>
+                <a href="#" aria-label="GitHub" className="cursor-target">GH</a>
               </div>
             </div>
           </div>
@@ -239,8 +219,6 @@ export default function LandingPage() {
     </div>
   );
 }
-
-/* ── Tiny sub-components ──────── */
 
 function FeatureCard({
   icon,
