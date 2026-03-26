@@ -23,7 +23,7 @@ export function PillNav() {
   const isLoggedIn = Boolean(user);
 
   const navItems: NavItem[] = [
-    { label: 'Home', href: '#home' },
+    { label: 'Home', href: '/' },
     { label: 'Features', href: '#features' },
     { label: 'How It Works', href: '#how' },
     { label: 'Planner', href: '/trip/plan' },
@@ -31,7 +31,9 @@ export function PillNav() {
   ];
 
   const showAnchorLinks = pathname === '/';
-  const visibleNavItems = navItems.filter((item) => showAnchorLinks || !item.href.startsWith('#'));
+  const visibleNavItems = navItems.filter(
+    (item) => item.href === '/' || showAnchorLinks || !item.href.startsWith('#')
+  );
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

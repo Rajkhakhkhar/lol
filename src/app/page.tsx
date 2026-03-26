@@ -32,21 +32,6 @@ const TRAIL_IMAGES = [
   "https://i.pinimg.com/1200x/16/f9/05/16f9050e154bb6c3f7ebc4a8aae26619.jpg",
 ];
 
-const HERO_META = [
-  {
-    label: "Planning",
-    value: "Day-by-day trip structure",
-  },
-  {
-    label: "Editing",
-    value: "Flexible updates without clutter",
-  },
-  {
-    label: "Flow",
-    value: "Clean dashboard and trip review",
-  },
-];
-
 export default function LandingPage() {
   const { user } = useAuth();
   const startUrl = user ? "/trip/plan" : "/login";
@@ -106,15 +91,6 @@ export default function LandingPage() {
               <a href="#features" className={`${s.secondaryBtn} cursor-target`}>
                 View Features
               </a>
-            </div>
-
-            <div className={s.heroMeta}>
-              {HERO_META.map((item) => (
-                <div className={s.heroMetaItem} key={item.label}>
-                  <span className={s.heroMetaLabel}>{item.label}</span>
-                  <span className={s.heroMetaValue}>{item.value}</span>
-                </div>
-              ))}
             </div>
           </div>
         </div>

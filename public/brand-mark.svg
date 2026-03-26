@@ -1,0 +1,28 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
+  <g filter="url(#texture)">
+    <rect width="512" height="512" rx="120" fill="#000000" fill-opacity="0.02"/>
+  </g>
+  <g transform="translate(30 20)">
+    <ellipse cx="226" cy="236" rx="148" ry="194" stroke="#FFFDFC" stroke-width="18"/>
+    <path d="M226 42V430" stroke="#FFFDFC" stroke-width="16" stroke-linecap="round"/>
+    <path d="M142 150C186 186 228 232 262 297C287 345 321 388 364 416" stroke="#FFFDFC" stroke-width="16" stroke-linecap="round"/>
+    <path d="M348 110C310 136 280 172 247 234C218 290 185 336 141 365" stroke="#FFFDFC" stroke-width="16" stroke-linecap="round"/>
+    <path d="M128 300L191 224L164 168L219 203L299 137L259 223L340 191L283 255L326 342L246 286L185 365L207 276L128 300Z" fill="#FFFDFC"/>
+  </g>
+  <defs>
+    <linearGradient id="bg" x1="18" y1="12" x2="496" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7A0910"/>
+      <stop offset="0.54" stop-color="#32070B"/>
+      <stop offset="1" stop-color="#4F0B10"/>
+    </linearGradient>
+    <filter id="texture" x="-8" y="-8" width="528" height="528" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="1.15" numOctaves="2" seed="7" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.05"/>
+      </feComponentTransfer>
+      <feBlend mode="soft-light" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+</svg>
