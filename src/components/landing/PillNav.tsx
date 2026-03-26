@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import s from './PillNav.module.css';
 import { Logo } from '@/components/common/Logo';
@@ -23,11 +24,14 @@ export function PillNav() {
 
   const navItems: NavItem[] = [
     { label: 'Home', href: '#home' },
-    { label: 'How It Works', href: '#how' },
     { label: 'Features', href: '#features' },
-    { label: 'Start Project', href: '/trip/plan' },
-    { label: isLoggedIn ? 'Dashboard' : 'Login', href: isLoggedIn ? '/trip/dashboard' : '/login' }
+    { label: 'How It Works', href: '#how' },
+    { label: 'Planner', href: '/trip/plan' },
+    { label: isLoggedIn ? 'Dashboard' : 'Login', href: isLoggedIn ? '/trip/dashboard' : '/login' },
   ];
+
+  const showAnchorLinks = pathname === '/';
+  const visibleNavItems = navItems.filter((item) => showAnchorLinks || !item.href.startsWith('#'));
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -35,15 +39,18 @@ export function PillNav() {
   };
 
   return (
-    <header className={cn(s.pillNavContainer, "w-full py-4")}>
-      <div className="hidden md:flex items-center w-full px-6 relative">
-        <div className="flex items-center z-10">
-          <Logo />
-        </div>
+    <header className={cn(s.pillNavContainer, 'w-full')}>
+      <div className="app-shell hidden md:block">
+        <div className={cn(s.navGlass, 'grid grid-cols-[auto_1fr_auto] items-center gap-3 px-3 py-2')}>
+          <Logo className="min-w-fit pr-1" />
 
-        <div className="absolute left-1/2 -translate-x-1/2">
-          <nav className={s.navGlass}>
-            {navItems.map((item) => (
+          <nav
+            className={cn(
+              'flex min-w-0 items-center gap-0.5',
+              showAnchorLinks ? 'justify-center' : 'justify-end'
+            )}
+          >
+            {visibleNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -55,54 +62,66 @@ export function PillNav() {
                 {item.label}
               </Link>
             ))}
-            {isLoggedIn && (
+          </nav>
+
+          <div className="flex items-center justify-end gap-2">
+            {isLoggedIn ? (
+              <button onClick={handleLogout} className={s.navAction}>
+                Logout
+              </button>
+            ) : (
+              <Link href="/login" className={s.navAction}>
+                Get Started
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="app-shell md:hidden">
+        <div className={cn(s.mobileFrame, 'flex items-center justify-between px-3 py-2.5')}>
+          <Logo />
+          <button
+            className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/8 bg-white/5 text-white"
+            onClick={() => setIsMenuOpen((current) => !current)}
+            aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          >
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+
+        {isMenuOpen && (
+          <div className={cn(s.mobileDropdown, 'mt-3 flex flex-col p-2')}>
+            {visibleNavItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={s.mobileNavItem}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+            {isLoggedIn ? (
               <button
                 onClick={handleLogout}
-                className={s.navItem}
+                className={s.mobileNavItem}
+                style={{ textAlign: 'left' }}
               >
                 Logout
               </button>
+            ) : (
+              <Link
+                href="/login"
+                className={s.mobileNavItem}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Get Started
+              </Link>
             )}
-          </nav>
-        </div>
+          </div>
+        )}
       </div>
-
-      <div className="flex md:hidden items-center justify-between w-full px-4">
-        <div>
-          <Logo />
-        </div>
-
-        <button
-          className="text-white text-2xl p-2"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? 'X' : '☰'}
-        </button>
-      </div>
-
-      {isMenuOpen && (
-        <div className={cn(s.mobileDropdown, "absolute top-full left-4 right-4 mt-2 p-2 flex flex-col")}>
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={s.mobileNavItem}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
-          {isLoggedIn && (
-            <button
-              onClick={handleLogout}
-              className={s.mobileNavItem}
-              style={{ textAlign: 'left' }}
-            >
-              Logout
-            </button>
-          )}
-        </div>
-      )}
     </header>
   );
 }

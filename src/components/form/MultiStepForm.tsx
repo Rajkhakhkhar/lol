@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button, ProgressSteps, Spinner, Toggle } from '@/components/ui';
+import { Button, ProgressSteps, Spinner } from '@/components/ui';
 import TravelerInfoStep from './TravelerInfoStep';
 import TravelLogisticsStep from './TravelLogisticsStep';
 import DayPlanStep from './DayPlanStep';
@@ -11,7 +11,7 @@ import BudgetStep from './BudgetStep';
 import InterestsStep from './InterestsStep';
 import ConstraintsStep from './ConstraintsStep';
 import type { TripFormData, GeminiItineraryResponse, DayPlanForm } from '@/types';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const INITIAL_STEPS = ['Travelers', 'Trip Setup'];
 const FINAL_STEPS = ['Budget', 'Interests', 'Constraints'];
@@ -56,15 +56,15 @@ function generateDayPlans(arrival: string, departure: string, existingPlans: Day
     return plans;
 }
 
-export default function MultiStepForm({ onComplete }: { onComplete: (data: { tripId: string; itinerary: GeminiItineraryResponse }) => void }) {
+export default function MultiStepForm({ onComplete: _onComplete }: { onComplete: (data: { tripId: string; itinerary: GeminiItineraryResponse }) => void }) {
     const router = useRouter();
     const searchParams = useSearchParams();
+    void _onComplete;
     const isEditMode = searchParams.get('edit') === 'true';
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState<TripFormData>(DEFAULT_FORM);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [direction, setDirection] = useState(1);
 
     const tripDays = useMemo(() => calculateTripDays(formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime), [formData.travel_logistics.arrival_datetime, formData.travel_logistics.departure_datetime]);
 
@@ -102,7 +102,7 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
         try {
             localStorage.setItem('tripData', JSON.stringify(formData));
             router.push('/trip/dashboard');
-        } catch (err: any) {
+        } catch {
             setError('Something went wrong saving your trip.');
         } finally {
             setLoading(false);
@@ -137,7 +137,6 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
         }
 
         if (step < steps.length - 1) {
-            setDirection(1);
             setStep(s => s + 1);
         } else {
             handleSubmit();
@@ -151,7 +150,6 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
         }
 
         if (step > 0) {
-            setDirection(-1);
             setStep(s => s - 1);
         }
     };
@@ -184,9 +182,9 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
     const finalStepRelativeIndex = step - (INITIAL_STEPS.length + tripDays);
 
     return (
-        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-0">
             <ProgressSteps steps={steps} currentStep={step} />
-            <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-8 min-h-[auto] md:min-h-[460px]">
+            <div className="relative min-h-[auto] overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-4 backdrop-blur-xl sm:p-8 lg:p-10 md:min-h-[460px]">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={step}
@@ -255,7 +253,7 @@ export default function MultiStepForm({ onComplete }: { onComplete: (data: { tri
                 </AnimatePresence>
             </div>
             {error && <div className="mt-4 p-4 rounded-xl bg-black border border-pink-500/50 text-pink-500 text-sm">{error}</div>}
-            <div className="flex items-center justify-between mt-6">
+            <div className="mt-6 flex items-center justify-between gap-4">
                 <Button variant="outline" onClick={prev} disabled={loading} className={(step === 0 && !isEditMode) ? 'invisible' : ''}>
                     <ChevronLeft className="w-4 h-4" /> {isEditMode ? 'Cancel' : 'Back'}
                 </Button>

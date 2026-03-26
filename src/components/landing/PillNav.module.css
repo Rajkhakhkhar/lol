@@ -1,72 +1,96 @@
-/* PillNav.module.css */
 .pillNavContainer {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: transparent;
-}
-
-.pillNav {
-  display: flex;
-  align-items: center;
-  position: relative;
-  height: 80px;
-  width: 100%;
+  padding: 12px 0;
 }
 
 .navGlass {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  padding: 10px 24px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  white-space: nowrap;
+  border-radius: 20px;
+  background: rgba(16, 12, 18, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
 }
 
 .navItem {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.875rem;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 12px;
+  color: rgba(245, 241, 239, 0.66);
+  font-size: 0.9rem;
+  font-weight: 600;
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: background 0.2s ease, color 0.2s ease;
   white-space: nowrap;
 }
 
 .navItem:hover {
   color: #fff;
+  background: rgba(255, 255, 255, 0.045);
 }
 
 .navItemActive {
   color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.navAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f5f1ef;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.navAction:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.mobileFrame {
+  background: rgba(16, 12, 18, 0.8);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
 }
 
 .mobileDropdown {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(10, 8, 12, 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
   overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
 }
 
 .mobileNavItem {
   color: white;
-  font-size: 1.125rem;
+  font-size: 0.98rem;
   font-weight: 500;
-  padding: 12px 16px;
+  padding: 14px 16px;
   text-decoration: none;
   transition: background 0.2s ease;
 }
 
 .mobileNavItem:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.07);
 }
-
-
-

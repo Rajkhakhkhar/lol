@@ -1,25 +1,21 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, CheckCircle2, Hotel, MapPin, Share2 } from 'lucide-react';
 import type { TripFormData } from '@/types';
 import Grainient from '@/components/Grainient';
-import { Button, Card } from '@/components/ui';
-import { Logo } from '@/components/common/Logo';
+import { Button } from '@/components/ui';
+import { PillNav } from '@/components/landing/PillNav';
 import { useRequireAuth } from '@/components/auth/AuthProvider';
-import { getSupabaseBrowserClient } from '@/lib/db/supabase';
 
 export default function PlanSummaryPage() {
     const { loading: authLoading } = useRequireAuth();
-    const supabase = useMemo(() => getSupabaseBrowserClient(), []);
     const [formData, setFormData] = useState<TripFormData | null>(null);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if (authLoading) {
-            return;
-        }
+        if (authLoading) return;
 
         try {
             const raw = localStorage.getItem('tripData');
@@ -33,36 +29,24 @@ export default function PlanSummaryPage() {
         }
     }, [authLoading]);
 
-    const handleLogout = async () => {
-        await supabase.auth.signOut();
-        window.location.href = '/';
-    };
-
     const handleShare = async () => {
         if (!formData) return;
 
         const { destination_city, destination_country } = formData.travel_logistics;
         const tripDays = formData.day_plans.length;
-
         let shareText = `Trip to ${destination_city}, ${destination_country} (${tripDays} Days)\n\n`;
 
         formData.day_plans.forEach((day) => {
             shareText += `Day ${day.dayNumber}:\n`;
             shareText += `Hotel: ${day.hotel || 'Not specified'}\n`;
-            if (day.nothingPlanned || day.places.length === 0) {
-                shareText += 'Places: Nothing planned\n';
-            } else {
-                shareText += `Places: ${day.places.map(p => p.name).join(', ')}\n`;
-            }
-            shareText += '\n';
+            shareText += day.nothingPlanned || day.places.length === 0
+                ? 'Places: Nothing planned\n\n'
+                : `Places: ${day.places.map((p) => p.name).join(', ')}\n\n`;
         });
 
         if (navigator.share) {
             try {
-                await navigator.share({
-                    title: `My Trip to ${destination_city}`,
-                    text: shareText,
-                });
+                await navigator.share({ title: `My Trip to ${destination_city}`, text: shareText });
             } catch (err) {
                 console.error('Error sharing:', err);
             }
@@ -78,132 +62,141 @@ export default function PlanSummaryPage() {
 
     if (authLoading || !loaded) {
         return (
-            <main className="flex-1 min-h-screen flex items-center justify-center bg-black">
-                <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <main className="flex min-h-screen items-center justify-center bg-black">
+                <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-white" />
             </main>
         );
     }
 
     if (!formData) {
         return (
-            <main className="flex-1 min-h-screen flex flex-col items-center justify-center p-4">
-                <h1 className="text-xl text-white mb-4">No trip data found</h1>
-                <Link href="/trip/plan">
-                    <Button>Start Planning</Button>
-                </Link>
+            <main className="flex min-h-screen items-center justify-center px-4">
+                <div className="panel-soft rounded-[28px] p-8 text-center">
+                    <h1 className="text-xl text-white">No trip data found</h1>
+                    <Link href="/trip/plan" className="mt-5 inline-flex rounded-full border border-white/10 px-5 py-3 text-sm text-white transition hover:border-white/20">
+                        Start Planning
+                    </Link>
+                </div>
             </main>
         );
     }
 
     return (
-        <main className="flex-1 min-h-screen relative">
-            <div className="absolute inset-0 z-0 pointer-events-none">
+        <main className="relative min-h-screen">
+            <div className="fixed inset-0 z-0 pointer-events-none">
                 <Grainient
                     color1="#000000"
                     color2="#8b0f1f"
                     color3="#d11a35"
                     timeSpeed={1.7}
+                    colorBalance={-0.02}
+                    warpStrength={1}
+                    warpFrequency={5}
+                    warpSpeed={2}
+                    warpAmplitude={50}
+                    blendAngle={0}
+                    blendSoftness={0.05}
+                    rotationAmount={500}
+                    noiseScale={2}
+                    grainAmount={0.1}
+                    grainScale={2}
+                    grainAnimated={false}
                     contrast={1.5}
+                    gamma={1}
+                    saturation={1}
+                    centerX={0}
+                    centerY={0}
+                    zoom={0.9}
                 />
             </div>
 
-            <div className="relative z-10 flex flex-col min-h-screen">
-                <nav className="sticky top-0 z-50 glass">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[72px] h-auto py-3 flex items-center justify-between">
-                        <Logo size="sm" />
-                        <div className="flex items-center gap-4">
-                            <Button variant="outline" size="sm" onClick={handleShare} className="gap-2">
+            <div className="relative z-10 flex min-h-screen flex-col">
+                <PillNav />
+
+                <section className="app-shell flex-1 pt-28 pb-8 sm:pt-[7.5rem] sm:pb-10">
+                    <div className="content-shell max-w-5xl">
+                        <div className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
+                            <div className="space-y-3">
+                                <Link href="/trip/dashboard" className="inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] transition-colors hover:text-white">
+                                    <ArrowLeft className="w-4 h-4" />
+                                    Back to Dashboard
+                                </Link>
+                                <h1 className="section-title">Full itinerary summary.</h1>
+                                <p className="section-copy max-w-2xl">
+                                    Day-by-day review with less padding, wider reading width, and cleaner activity blocks.
+                                </p>
+                            </div>
+                            <Button variant="outline" size="sm" onClick={handleShare} className="gap-2 rounded-full border-white/10 bg-transparent px-4 shadow-none w-fit">
                                 <Share2 className="w-4 h-4" />
-                                <span className="hidden sm:inline">Share Plan</span>
+                                <span>Share</span>
                             </Button>
-                            <button
-                                onClick={handleLogout}
-                                className="text-sm text-white/60 hover:text-white transition"
-                            >
-                                Logout
-                            </button>
                         </div>
-                    </div>
-                </nav>
 
-                <div className="w-full max-w-3xl mx-auto px-4 py-8 sm:py-12">
-                    <div className="flex items-center justify-between mb-8">
-                        <div>
-                            <Link href="/trip/dashboard" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors mb-2">
-                                <ArrowLeft className="w-4 h-4" />
-                                Back to Dashboard
-                            </Link>
-                            <h1 className="text-2xl sm:text-3xl font-bold text-white">Full Itinerary Summary</h1>
-                        </div>
-                    </div>
-
-                    <div className="space-y-6">
-                        {formData.day_plans.map((day) => (
-                            <Card key={day.dayNumber} className="relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                                    <span className="text-6xl font-black italic">DAY {day.dayNumber}</span>
-                                </div>
-
-                                <div className="flex items-center gap-3 mb-6 relative z-10">
-                                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                                        <Calendar className="w-5 h-5 text-blue-500" />
-                                    </div>
-                                    <div>
-                                        <div className="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Day {day.dayNumber}</div>
-                                        <h3 className="text-lg font-bold text-white">
-                                            {new Date(`${day.date}T00:00:00`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-                                        </h3>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-4 relative z-10">
-                                    <div className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-                                        <Hotel className="w-4 h-4 text-[#7a7a7a] mt-1" />
-                                        <div className="flex-1">
-                                            <div className="text-[10px] text-[#7a7a7a] uppercase font-bold tracking-tight mb-0.5">Staying At</div>
-                                            <div className="text-sm text-white font-medium">{day.hotel || 'No Hotel Specified'}</div>
+                        <div className="space-y-4">
+                            {formData.day_plans.map((day) => (
+                                <article key={day.dayNumber} className="panel-soft rounded-[28px] p-5 sm:p-6">
+                                    <div className="mb-5 flex flex-col gap-4 border-b border-white/6 pb-5 sm:flex-row sm:items-center sm:justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                                                <Calendar className="h-5 w-5 text-[var(--accent)]" />
+                                            </div>
+                                            <div>
+                                                <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                                                    Day {day.dayNumber}
+                                                </div>
+                                                <h3 className="text-xl font-semibold text-white">
+                                                    {new Date(`${day.date}T00:00:00`).toLocaleDateString('en-US', {
+                                                        weekday: 'long',
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                    })}
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/4 px-4 py-2 text-sm text-[var(--text-secondary)]">
+                                            <Hotel className="h-4 w-4 text-[var(--accent)]" />
+                                            {day.hotel || 'No hotel specified'}
                                         </div>
                                     </div>
 
-                                    <div className="space-y-3">
-                                        <div className="text-[10px] text-[#7a7a7a] uppercase font-bold tracking-tight px-3">Places To Visit</div>
-
-                                        {(day.nothingPlanned || day.places.length === 0) ? (
-                                            <div className="flex items-center gap-3 p-4 rounded-xl bg-black border border-white/5 opacity-60">
-                                                <CheckCircle2 className="w-4 h-4 text-white/20" />
-                                                <span className="text-sm text-white/40 italic">Nothing planned for this day</span>
-                                            </div>
-                                        ) : (
-                                            <div className="space-y-2">
-                                                {day.places.map((place, index) => (
-                                                    <div key={index} className="flex items-center justify-between p-3 rounded-xl bg-[#141414] border border-[#2a2a2a] group/place hover:border-blue-500/30 transition-all">
-                                                        <div className="flex items-center gap-3 min-w-0">
-                                                            <MapPin className="w-3.5 h-3.5 text-blue-500" />
-                                                            <span className="text-sm text-white/90 font-medium truncate">{place.name}</span>
-                                                        </div>
-                                                        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-blue-500/5 border border-blue-500/10 shrink-0">
-                                                            <span className="text-[10px] font-bold text-blue-400">{place.time}</span>
-                                                        </div>
+                                    {(day.nothingPlanned || day.places.length === 0) ? (
+                                        <div className="flex items-center gap-3 rounded-2xl border border-white/8 bg-black/20 px-4 py-4 text-sm text-[var(--text-secondary)]">
+                                            <CheckCircle2 className="h-4 w-4 text-white/30" />
+                                            Nothing planned for this day
+                                        </div>
+                                    ) : (
+                                        <div className="grid gap-3">
+                                            {day.places.map((place, index) => (
+                                                <div key={index} className="grid gap-3 rounded-2xl border border-white/8 bg-white/4 px-4 py-4 sm:grid-cols-[1fr_auto] sm:items-center">
+                                                    <div className="flex min-w-0 items-center gap-3">
+                                                        <MapPin className="h-4 w-4 shrink-0 text-[var(--accent)]" />
+                                                        <span className="truncate text-sm font-medium text-white/92">
+                                                            {place.name}
+                                                        </span>
                                                     </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </Card>
-                        ))}
-                    </div>
+                                                    <div className="inline-flex w-fit items-center rounded-full border border-white/8 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent-strong)]">
+                                                        {place.time}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </article>
+                            ))}
+                        </div>
 
-                    <div className="mt-12 text-center p-8 rounded-2xl bg-black border border-white/5 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-blue-500/5 animate-pulse" />
-                        <h4 className="text-xl font-bold text-white mb-2 relative z-10">All set for your adventure?</h4>
-                        <p className="text-sm text-white/40 mb-6 relative z-10">Share your detailed plan with travel buddies or keep it for your reference.</p>
-                        <Button onClick={handleShare} className="gap-2 relative z-10">
-                            <Share2 className="w-4 h-4" />
-                            Share Full Itinerary
-                        </Button>
+                        <div className="mt-8 panel-soft rounded-[28px] p-6 text-center sm:p-8">
+                            <h4 className="text-2xl font-semibold text-white">Ready to share this plan?</h4>
+                            <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[var(--text-secondary)]">
+                                Copy or share the full itinerary once everything looks right.
+                            </p>
+                            <Button onClick={handleShare} className="mt-6 gap-2 px-6 shadow-none">
+                                <Share2 className="w-4 h-4" />
+                                Share Full Itinerary
+                            </Button>
+                        </div>
                     </div>
-                </div>
+                </section>
             </div>
         </main>
     );

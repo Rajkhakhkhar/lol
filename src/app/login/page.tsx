@@ -141,7 +141,7 @@ export default function LoginPage() {
     }
 
     return (
-        <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-6 sm:py-8">
+        <main className="relative min-h-screen overflow-hidden py-4 sm:py-6">
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <PrismaticBurst
                     animationType="rotate3d"
@@ -160,184 +160,186 @@ export default function LoginPage() {
                 />
             </div>
 
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="relative z-10 w-full max-w-[660px] rounded-[28px] border border-white/10 bg-white/5 p-4 shadow-4xl backdrop-blur-3xl sm:rounded-[40px] sm:p-6 md:p-8"
-            >
-                <div className="mb-6 flex justify-center sm:mb-8">
-                    <Logo size="lg" />
-                </div>
-
-                <div className="mb-6 text-center sm:mb-8">
-                    <div className="mx-auto mb-5 inline-flex rounded-full border border-white/10 bg-black/20 p-1">
-                        <button
-                            type="button"
-                            onClick={() => setMode('login')}
-                            className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-                                mode === 'login'
-                                    ? 'bg-white text-black'
-                                    : 'text-white/50 hover:text-white'
-                            }`}
-                        >
-                            Login
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setMode('signup')}
-                            className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-                                mode === 'signup'
-                                    ? 'bg-white text-black'
-                                    : 'text-white/50 hover:text-white'
-                            }`}
-                        >
-                            Sign Up
-                        </button>
-                    </div>
-
-                    <h1 className="mb-2 text-2xl font-bold text-white sm:mb-4 sm:text-4xl">
-                        {mode === 'login' ? 'Secure Access' : 'Create Your Account'}
-                    </h1>
-                    <p className="text-base text-white/40 sm:text-lg">
-                        {mode === 'login'
-                            ? 'Sign in to continue planning and managing your trips.'
-                            : 'Create an account to save your travel planning progress.'}
-                    </p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
-                    {mode === 'signup' && (
-                        <div className="space-y-3">
-                            <label className="ml-1 text-[10px] font-bold uppercase tracking-wider text-white/60 sm:text-xs">
-                                Full Name
-                            </label>
-                            <div className="relative">
-                                <UserIcon className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/30 sm:h-6 sm:w-6" />
-                                <input
-                                    type="text"
-                                    required
-                                    value={fullName}
-                                    onChange={(e) => setFullName(e.target.value)}
-                                    placeholder="Your name"
-                                    className="h-[52px] w-full rounded-xl border border-white/10 bg-white/5 pl-12 pr-4 text-base text-white placeholder:text-white/20 focus:border-blue-500 focus:outline-none transition-all sm:h-14 sm:pl-14 sm:text-lg"
-                                />
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="space-y-3">
-                        <label className="ml-1 text-[10px] font-bold uppercase tracking-wider text-white/60 sm:text-xs">
-                            Email Address
-                        </label>
-                        <div className="relative">
-                            <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/30 sm:h-6 sm:w-6" />
-                            <input
-                                type="email"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="name@example.com"
-                                className="h-[52px] w-full rounded-xl border border-white/10 bg-white/5 pl-12 pr-4 text-base text-white placeholder:text-white/20 focus:border-blue-500 focus:outline-none transition-all sm:h-14 sm:pl-14 sm:text-lg"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="space-y-3">
-                        <label className="ml-1 text-[10px] font-bold uppercase tracking-wider text-white/60 sm:text-xs">
-                            Password
-                        </label>
-                        <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/30 sm:h-6 sm:w-6" />
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="••••••••"
-                                className="h-[52px] w-full rounded-xl border border-white/10 bg-white/5 pl-12 pr-14 text-base text-white placeholder:text-white/20 focus:border-pink-500 focus:outline-none transition-all sm:h-14 sm:pl-14 sm:pr-16 sm:text-lg"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword((current) => !current)}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 transition-colors hover:text-white"
-                                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                            >
-                                {showPassword ? (
-                                    <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
-                                ) : (
-                                    <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
-                                )}
-                            </button>
-                        </div>
-                        {mode === 'signup' && password.length > 0 && (
-                            <PasswordStrength password={password} />
-                        )}
-                        {mode === 'login' && (
-                            <div className="mt-1.5 flex justify-end">
-                                <Link
-                                    href="/forgot-password"
-                                    className="text-sm text-white/40 transition-colors hover:text-white sm:text-base"
-                                >
-                                    Forgot password?
-                                </Link>
-                            </div>
-                        )}
-                    </div>
-
-                    {error && (
-                        <motion.div
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className="flex items-start gap-3 rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-400 sm:text-base"
-                        >
-                            <AlertCircle className="h-5 w-5 shrink-0 sm:h-6 sm:w-6" />
-                            <span>{error}</span>
-                        </motion.div>
-                    )}
-
-                    {message && (
-                        <motion.div
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className="rounded-lg border border-green-500/20 bg-green-500/10 p-4 text-sm text-green-300 sm:text-base"
-                        >
-                            {message}
-                        </motion.div>
-                    )}
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="mt-2 flex h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-white text-lg font-bold text-black shadow-2xl transition-all hover:bg-blue-50 active:scale-[0.98] disabled:opacity-50 sm:mt-4 sm:h-14 sm:text-xl"
+            <div className="app-shell relative z-10">
+                <div className="grid min-h-[calc(100vh-2rem)] items-center">
+                    <motion.section
+                        initial={{ opacity: 0, y: 22 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="panel-soft mx-auto flex w-full max-w-[680px] rounded-[28px] p-5 sm:p-6 lg:rounded-[32px] lg:p-8"
                     >
-                        {loading ? (
-                            <div className="h-6 w-6 animate-spin rounded-full border-2 border-black/20 border-t-black sm:h-8 sm:w-8" />
-                        ) : (
-                            <>
-                                {mode === 'login' ? 'Sign In' : 'Create Account'}
-                                <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6" />
-                            </>
-                        )}
-                    </button>
-                </form>
+                        <div className="mx-auto flex w-full max-w-[520px] flex-col justify-center">
+                            <div className="mb-8 flex justify-center">
+                                <Logo size="lg" />
+                            </div>
 
-                <div className="mt-6 border-t border-white/5 pt-6 text-center sm:mt-8 sm:pt-8">
-                    <p className="text-sm text-white/30 sm:text-base">
-                        {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}{' '}
-                        <button
-                            type="button"
-                            onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-                            className="font-bold text-white transition-colors hover:text-blue-400"
-                        >
-                            {mode === 'login' ? 'Sign up here' : 'Log in'}
-                        </button>
-                    </p>
+                            <div className="mb-6 space-y-4 sm:mb-8">
+                                <div className="inline-flex rounded-full border border-white/10 bg-black/20 p-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setMode('login')}
+                                        className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                                            mode === 'login'
+                                                ? 'bg-white text-black'
+                                                : 'text-white/50 hover:text-white'
+                                        }`}
+                                    >
+                                        Login
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setMode('signup')}
+                                        className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                                            mode === 'signup'
+                                                ? 'bg-white text-black'
+                                                : 'text-white/50 hover:text-white'
+                                        }`}
+                                    >
+                                        Sign Up
+                                    </button>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <h2 className="text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+                                        {mode === 'login' ? 'Welcome back' : 'Create your account'}
+                                    </h2>
+                                    <p className="max-w-md text-sm leading-6 text-[var(--text-secondary)] sm:text-base">
+                                        {mode === 'login'
+                                            ? 'Sign in to continue planning and managing your trips.'
+                                            : 'Create an account to start planning with a cleaner flow.'}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+                                {mode === 'signup' && (
+                                    <div className="space-y-2">
+                                        <label className="ml-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                                            Full Name
+                                        </label>
+                                        <div className="relative">
+                                            <UserIcon className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/28" />
+                                            <input
+                                                type="text"
+                                                required
+                                                value={fullName}
+                                                onChange={(e) => setFullName(e.target.value)}
+                                                placeholder="Your name"
+                                                className="h-14 w-full rounded-2xl border border-white/8 bg-white/4 pl-12 pr-4 text-base text-white placeholder:text-white/18 transition-all focus:border-[var(--accent)]"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="space-y-2">
+                                    <label className="ml-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                                        Email Address
+                                    </label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/28" />
+                                        <input
+                                            type="email"
+                                            required
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="name@example.com"
+                                            className="h-14 w-full rounded-2xl border border-white/8 bg-white/4 pl-12 pr-4 text-base text-white placeholder:text-white/18 transition-all focus:border-[var(--accent)]"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="ml-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                                        Password
+                                    </label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/28" />
+                                        <input
+                                            type={showPassword ? 'text' : 'password'}
+                                            required
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            placeholder="••••••••"
+                                            className="h-14 w-full rounded-2xl border border-white/8 bg-white/4 pl-12 pr-14 text-base text-white placeholder:text-white/18 transition-all focus:border-[var(--accent)]"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword((current) => !current)}
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 transition-colors hover:text-white"
+                                            aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                        >
+                                            {showPassword ? (
+                                                <EyeOff className="h-5 w-5" />
+                                            ) : (
+                                                <Eye className="h-5 w-5" />
+                                            )}
+                                        </button>
+                                    </div>
+                                    {mode === 'signup' && password.length > 0 && (
+                                        <PasswordStrength password={password} />
+                                    )}
+                                    {mode === 'login' && (
+                                        <div className="flex justify-end pt-1">
+                                            <Link
+                                                href="/forgot-password"
+                                                className="text-sm text-[var(--text-secondary)] transition-colors hover:text-white"
+                                            >
+                                                Forgot password?
+                                            </Link>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {error && (
+                                    <motion.div
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        className="flex items-start gap-3 rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300"
+                                    >
+                                        <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
+                                        <span>{error}</span>
+                                    </motion.div>
+                                )}
+
+                                {message && (
+                                    <motion.div
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        className="rounded-2xl border border-green-500/20 bg-green-500/10 p-4 text-sm text-green-200"
+                                    >
+                                        {message}
+                                    </motion.div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-white text-lg font-semibold text-black transition-all hover:bg-[#f3e7df] active:scale-[0.99] disabled:opacity-50"
+                                >
+                                    {loading ? (
+                                        <div className="h-6 w-6 animate-spin rounded-full border-2 border-black/20 border-t-black" />
+                                    ) : (
+                                        <>
+                                            {mode === 'login' ? 'Sign In' : 'Create Account'}
+                                            <ArrowRight className="h-5 w-5" />
+                                        </>
+                                    )}
+                                </button>
+                            </form>
+
+                            <div className="mt-8 border-t border-white/6 pt-6 text-sm text-[var(--text-secondary)]">
+                                {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}{' '}
+                                <button
+                                    type="button"
+                                    onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
+                                    className="font-semibold text-white transition-colors hover:text-[var(--accent-strong)]"
+                                >
+                                    {mode === 'login' ? 'Sign up here' : 'Log in'}
+                                </button>
+                            </div>
+                        </div>
+                    </motion.section>
                 </div>
-            </motion.div>
-
-            <p className="absolute bottom-8 text-[10px] uppercase tracking-[1px] text-white/10 sm:tracking-[4px]">
-                EYEKON Security Systems © 2026
-            </p>
+            </div>
         </main>
     );
 }
